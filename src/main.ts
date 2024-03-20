@@ -1,5 +1,7 @@
 import * as PIXI from "pixi.js";
 
+let moveUp: { [key: string]: boolean } = {};
+
 (async () => {
   const app = new PIXI.Application();
   await app.init({ antialias: true, width: 700, height: 500 });
@@ -19,4 +21,25 @@ import * as PIXI from "pixi.js";
 
   const ceil = new PIXI.Graphics().rect(0, 0, app.canvas.width, 20).fill("red");
   app.stage.addChild(ceil);
+
+  window.addEventListener("keydown", keyDown);
+  window.addEventListener("keyup", keyUp);
+
+  function keyDown(e: KeyboardEvent): void {
+    moveUp[e.key] = true;
+  }
+
+  function keyUp(e: KeyboardEvent): void {
+    moveUp[e.key] = false;
+  }
+
+  function movePlayer(): void {
+    if (moveUp[" "]) {
+      player.y -= 5;
+    } else {
+      player.y += 5;
+    }
+  }
+
+  app.ticker.add(movePlayer);
 })();
