@@ -1,5 +1,46 @@
 import * as PIXI from "pixi.js";
 
+function keyDown(e: KeyboardEvent): void {
+  console.log(e.key);
+  keys[e.key] = true;
+}
+
+function keyUp(e: KeyboardEvent): void {
+  keys[e.key] = false;
+}
+
+function startGame(): void {
+  if (keys[" "]) {
+    gameRunning = true;
+  } else if (keys["Escape"]) {
+    gameRunning = false;
+  }
+}
+
+function movePlayer(player: PIXI.Graphics): void {
+  if (keys[" "]) {
+    player.y -= 5;
+  } else {
+    player.y += 5;
+  }
+}
+
+function collide(
+  player: PIXI.Graphics,
+  ceil: PIXI.Graphics,
+  floor: PIXI.Graphics
+): boolean {
+  const playerTop = player.y - player.height / 2;
+  const playerBottom = player.y + player.height / 2;
+
+  const ceilBottom = ceil.y + ceil.height;
+  const floorTop = floor.y;
+
+  if (playerTop <= ceilBottom || playerBottom >= floorTop) {
+    return true;
+  } else return false;
+}
+
 let keys: { [key: string]: boolean } = {};
 let gameRunning = false;
 
@@ -26,52 +67,11 @@ let gameRunning = false;
   window.addEventListener("keydown", keyDown);
   window.addEventListener("keyup", keyUp);
 
-  function keyDown(e: KeyboardEvent): void {
-    console.log(e.key);
-    keys[e.key] = true;
-  }
-
-  function keyUp(e: KeyboardEvent): void {
-    keys[e.key] = false;
-  }
-
-  function startGame(): void {
-    if (keys[" "]) {
-      gameRunning = true;
-    } else if (keys["Escape"]) {
-      gameRunning = false;
-    }
-  }
-
-  function movePlayerUp(): void {
-    player.y -= 5;
-  }
-
-  function movePlayerDown(): void {
-    player.y += 5;
-  }
-
-  function collide(player: PIXI.Graphics): boolean {
-    const playerTop = player.y - player.height / 2;
-    const playerBottom = player.y + player.height / 2;
-
-    const ceilBottom = ceil.y + ceil.height;
-    const floorTop = floor.y;
-
-    if (playerTop <= ceilBottom || playerBottom >= floorTop) {
-      return true;
-    } else return false;
-  }
-
   app.ticker.add(() => {
     startGame();
     if (gameRunning) {
-      if (!collide(player)) {
-        if (keys[" "]) {
-          movePlayerUp();
-        } else {
-          movePlayerDown();
-        }
+      if (!collide(player, ceil, floor)) {
+        movePlayer(player);
       }
     }
   });
