@@ -1,6 +1,7 @@
 import * as PIXI from "pixi.js";
 
-let moveUp: { [key: string]: boolean } = {};
+let keys: { [key: string]: boolean } = {};
+let gameRunning = false;
 
 (async () => {
   const app = new PIXI.Application();
@@ -26,20 +27,29 @@ let moveUp: { [key: string]: boolean } = {};
   window.addEventListener("keyup", keyUp);
 
   function keyDown(e: KeyboardEvent): void {
-    moveUp[e.key] = true;
+    console.log(e.key);
+    keys[e.key] = true;
   }
 
   function keyUp(e: KeyboardEvent): void {
-    moveUp[e.key] = false;
+    keys[e.key] = false;
   }
 
-  // function movePlayer(): void {
-  //   if (moveUp[" "]) {
-  //     player.y -= 5;
-  //   } else {
-  //     player.y += 5;
-  //   }
-  // }
+  function startGame(): void {
+    if (keys[" "]) {
+      gameRunning = true;
+    } else if (keys["Escape"]) {
+      gameRunning = false;
+    }
+  }
+
+  function movePlayerUp(): void {
+    player.y -= 5;
+  }
+
+  function movePlayerDown(): void {
+    player.y += 5;
+  }
 
   function collide(player: PIXI.Graphics): boolean {
     const playerTop = player.y - player.height / 2;
@@ -54,11 +64,14 @@ let moveUp: { [key: string]: boolean } = {};
   }
 
   app.ticker.add(() => {
-    if (!collide(player)) {
-      if (moveUp[" "]) {
-        player.y -= 5;
-      } else {
-        player.y += 5;
+    startGame();
+    if (gameRunning) {
+      if (!collide(player)) {
+        if (keys[" "]) {
+          movePlayerUp();
+        } else {
+          movePlayerDown();
+        }
       }
     }
   });
