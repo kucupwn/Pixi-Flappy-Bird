@@ -159,7 +159,6 @@ const obstaclesArr: PIXI.Graphics[] = [];
       obstacleInterval = setInterval(() => {
         const obstacleHeights = getRandomHeights(app, bordersHeight);
         getObstacles(app, obstacleHeights);
-        console.log(gameRunning);
       }, 1000);
     } else if (obstacleInterval && !gameRunning) {
       clearInterval(obstacleInterval);
