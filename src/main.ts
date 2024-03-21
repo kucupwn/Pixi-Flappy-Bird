@@ -113,6 +113,7 @@ function getObstacles(app: PIXI.Application, obstacleHeights: number[]): void {
 
 let keys: { [key: string]: boolean } = {};
 let gameRunning = false;
+let obstacleInterval: ReturnType<typeof setTimeout>;
 const obstaclesArr: PIXI.Graphics[] = [];
 
 (async () => {
@@ -137,11 +138,6 @@ const obstaclesArr: PIXI.Graphics[] = [];
 
   const bordersHeight = ceil.height + floor.height;
 
-  setInterval(() => {
-    const obstacleHeights = getRandomHeights(app, bordersHeight);
-    getObstacles(app, obstacleHeights);
-  }, 1000);
-
   window.addEventListener("keydown", keyDown);
   window.addEventListener("keyup", keyUp);
 
@@ -157,6 +153,16 @@ const obstaclesArr: PIXI.Graphics[] = [];
           obs.x -= 5;
         });
       }
+    }
+
+    if (!obstacleInterval && gameRunning) {
+      obstacleInterval = setInterval(() => {
+        const obstacleHeights = getRandomHeights(app, bordersHeight);
+        getObstacles(app, obstacleHeights);
+        console.log(gameRunning);
+      }, 1000);
+    } else if (obstacleInterval && !gameRunning) {
+      clearInterval(obstacleInterval);
     }
   });
 })();
