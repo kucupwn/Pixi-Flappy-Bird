@@ -25,7 +25,7 @@ function movePlayer(player: PIXI.Graphics): void {
   }
 }
 
-function collide(
+function collideWithBoundaries(
   player: PIXI.Graphics,
   ceil: PIXI.Graphics,
   floor: PIXI.Graphics
@@ -39,6 +39,33 @@ function collide(
   if (playerTop <= ceilBottom || playerBottom >= floorTop) {
     return true;
   } else return false;
+}
+
+function collideWithObstacles(
+  player: PIXI.Graphics,
+  obstaclesArr: PIXI.Graphics[]
+): boolean {
+  for (const obstacle of obstaclesArr) {
+    const playerLeft = player.x - player.width / 2;
+    const playerRight = player.x + player.width / 2;
+    const playerTop = player.y - player.height / 2;
+    const playerBottom = player.y + player.height / 2;
+
+    const obstacleLeft = obstacle.x;
+    const obstacleRight = obstacle.x + obstacle.width;
+    const obstacleTop = obstacle.y;
+    const obstacleBottom = obstacle.y + obstacle.height;
+
+    if (
+      playerRight > obstacleLeft &&
+      playerLeft < obstacleRight &&
+      playerBottom > obstacleTop &&
+      playerTop < obstacleBottom
+    ) {
+      return true;
+    }
+  }
+  return false;
 }
 
 function getRandomHeights(
@@ -121,9 +148,11 @@ const obstaclesArr: PIXI.Graphics[] = [];
   app.ticker.add(() => {
     startGame();
     if (gameRunning) {
-      if (!collide(player, ceil, floor)) {
+      if (
+        !collideWithBoundaries(player, ceil, floor) &&
+        !collideWithObstacles(player, obstaclesArr)
+      ) {
         movePlayer(player);
-
         obstaclesArr.forEach((obs) => {
           obs.x -= 5;
         });
