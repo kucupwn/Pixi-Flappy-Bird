@@ -68,11 +68,8 @@ function collideWithObstacles(
   return false;
 }
 
-function getRandomHeights(
-  app: PIXI.Application,
-  bordersHeight: number
-): number[] {
-  const obstacleSumHeight = app.canvas.height - bordersHeight - 100;
+function getRandomHeights(app: PIXI.Application): number[] {
+  const obstacleSumHeight = app.canvas.height - 250;
   const randomHeight1 = Math.floor(Math.random() * obstacleSumHeight + 1);
   const randomHeight2 = obstacleSumHeight - randomHeight1;
 
@@ -81,32 +78,48 @@ function getRandomHeights(
 
 function generateObstacleUpper(
   app: PIXI.Application,
+  bordersHeight: number,
   obstacleHeights: number[]
 ): PIXI.Graphics {
-  const obstacleUpper = new PIXI.Graphics().rect(0, 0, 20, 20).fill("red");
+  const obstacleUpper = new PIXI.Graphics().rect(0, 0, 30, 20).fill("pink");
   obstacleUpper.height = obstacleHeights[0];
   obstacleUpper.x = app.canvas.width;
+  obstacleUpper.y += bordersHeight / 2;
 
   return obstacleUpper;
 }
 
 function generateObstacleLower(
   app: PIXI.Application,
+  bordersHeight: number,
   obstacleHeights: number[]
 ): PIXI.Graphics {
-  const obstacleLower = new PIXI.Graphics().rect(0, 0, 20, 20).fill("red");
+  const obstacleLower = new PIXI.Graphics().rect(0, 0, 30, 20).fill("pink");
   obstacleLower.height = obstacleHeights[1];
   obstacleLower.x = app.canvas.width;
-  obstacleLower.y = app.canvas.height - obstacleLower.height;
+  obstacleLower.y =
+    app.canvas.height - obstacleLower.height - bordersHeight / 2;
 
   return obstacleLower;
 }
 
-function getObstacles(app: PIXI.Application, obstacleHeights: number[]): void {
-  let obstacleUpper = generateObstacleUpper(app, obstacleHeights);
+function getObstacles(
+  app: PIXI.Application,
+  bordersHeight: number,
+  obstacleHeights: number[]
+): void {
+  let obstacleUpper = generateObstacleUpper(
+    app,
+    bordersHeight,
+    obstacleHeights
+  );
   app.stage.addChild(obstacleUpper);
   obstaclesArr.push(obstacleUpper);
-  let obstacleLower = generateObstacleLower(app, obstacleHeights);
+  let obstacleLower = generateObstacleLower(
+    app,
+    bordersHeight,
+    obstacleHeights
+  );
   app.stage.addChild(obstacleLower);
   obstaclesArr.push(obstacleLower);
 }
@@ -157,8 +170,8 @@ const obstaclesArr: PIXI.Graphics[] = [];
 
     if (!obstacleInterval && gameRunning) {
       obstacleInterval = setInterval(() => {
-        const obstacleHeights = getRandomHeights(app, bordersHeight);
-        getObstacles(app, obstacleHeights);
+        const obstacleHeights = getRandomHeights(app);
+        getObstacles(app, bordersHeight, obstacleHeights);
       }, 1000);
     } else if (obstacleInterval && !gameRunning) {
       clearInterval(obstacleInterval);
