@@ -41,6 +41,34 @@ function collide(
   } else return false;
 }
 
+function getRandomHeights(
+  app: PIXI.Application,
+  bordersHeight: number
+): number[] {
+  const obstacleSumHeight = app.canvas.height - bordersHeight - 100;
+  const randomHeight1 = Math.floor(Math.random() * obstacleSumHeight + 1);
+  const randomHeight2 = obstacleSumHeight - randomHeight1;
+
+  return [randomHeight1, randomHeight2];
+}
+
+function generateObstacles(
+  app: PIXI.Application,
+  obstacleHeights: number[]
+): void {
+  const obstacleUpper = new PIXI.Graphics().rect(0, 0, 20, 20).fill("red");
+  obstacleUpper.height = obstacleHeights[0];
+  obstacleUpper.x = app.canvas.width - 100;
+
+  const obstacleLower = new PIXI.Graphics().rect(0, 0, 20, 20).fill("red");
+  obstacleLower.height = obstacleHeights[1];
+  obstacleLower.x = app.canvas.width - 100;
+  obstacleLower.y = app.canvas.height - obstacleLower.height;
+
+  app.stage.addChild(obstacleUpper);
+  app.stage.addChild(obstacleLower);
+}
+
 let keys: { [key: string]: boolean } = {};
 let gameRunning = false;
 
@@ -63,6 +91,15 @@ let gameRunning = false;
     .fill("red");
   floor.y = app.canvas.height - floor.height;
   app.stage.addChild(floor);
+
+  const bordersHeight = ceil.height + floor.height;
+  const obstacleHeights = getRandomHeights(app, bordersHeight);
+  const obstacles = generateObstacles(app, obstacleHeights);
+
+  // const rectangle = new PIXI.Graphics().rect(0, 0, 20, 50).fill("red");
+  // rectangle.x = app.canvas.width - 10;
+  // rectangle.y = app.canvas.height - rectangle.height;
+  // app.stage.addChild(rectangle);
 
   window.addEventListener("keydown", keyDown);
   window.addEventListener("keyup", keyUp);
