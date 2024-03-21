@@ -75,8 +75,18 @@ function generateObstacleLower(
   return obstacleLower;
 }
 
+function getObstacles(app: PIXI.Application, obstacleHeights: number[]): void {
+  let obstacleUpper = generateObstacleUpper(app, obstacleHeights);
+  app.stage.addChild(obstacleUpper);
+  obstaclesArr.push(obstacleUpper);
+  let obstacleLower = generateObstacleLower(app, obstacleHeights);
+  app.stage.addChild(obstacleLower);
+  obstaclesArr.push(obstacleLower);
+}
+
 let keys: { [key: string]: boolean } = {};
 let gameRunning = false;
+const obstaclesArr: PIXI.Graphics[] = [];
 
 (async () => {
   const app = new PIXI.Application();
@@ -99,17 +109,11 @@ let gameRunning = false;
   app.stage.addChild(floor);
 
   const bordersHeight = ceil.height + floor.height;
-  const obstacleHeights = getRandomHeights(app, bordersHeight);
-  const obstacleUpper = generateObstacleUpper(app, obstacleHeights);
-  const obstacleLower = generateObstacleLower(app, obstacleHeights);
 
-  app.stage.addChild(obstacleUpper);
-  app.stage.addChild(obstacleLower);
-
-  // const rectangle = new PIXI.Graphics().rect(0, 0, 20, 50).fill("red");
-  // rectangle.x = app.canvas.width - 10;
-  // rectangle.y = app.canvas.height - rectangle.height;
-  // app.stage.addChild(rectangle);
+  setInterval(() => {
+    const obstacleHeights = getRandomHeights(app, bordersHeight);
+    getObstacles(app, obstacleHeights);
+  }, 1000);
 
   window.addEventListener("keydown", keyDown);
   window.addEventListener("keyup", keyUp);
@@ -119,8 +123,10 @@ let gameRunning = false;
     if (gameRunning) {
       if (!collide(player, ceil, floor)) {
         movePlayer(player);
-        obstacleLower.x -= 5;
-        obstacleUpper.x -= 5;
+
+        obstaclesArr.forEach((obs) => {
+          obs.x -= 5;
+        });
       }
     }
   });
