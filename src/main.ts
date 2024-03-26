@@ -209,6 +209,8 @@ class Game {
 
     window.addEventListener("keydown", this.keyDown.bind(this));
     window.addEventListener("keyup", this.keyUp.bind(this));
+
+    this.app.ticker.add(this.gameLoop.bind(this));
   }
 
   private addPlayer(): void {
