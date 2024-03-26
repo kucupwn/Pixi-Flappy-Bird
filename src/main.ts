@@ -181,16 +181,21 @@ import * as PIXI from "pixi.js";
 // })();
 
 class Game {
-  app = new PIXI.Application();
-  player = new PIXI.Graphics().circle(0, 0, 30).fill("green");
-  ceil = new PIXI.Graphics().rect(0, 0, 20, 20).fill("red");
-  floor = new PIXI.Graphics().rect(0, 0, 20, 20).fill("red");
+  app: PIXI.Application;
+  player: PIXI.Graphics;
+  ceil: PIXI.Graphics;
+  floor: PIXI.Graphics;
   keys: { [key: string]: boolean } = {};
   gameRunning: boolean = false;
   obstacleInterval?: ReturnType<typeof setTimeout>;
   obstaclesArr: PIXI.Graphics[] = [];
 
-  constructor() {}
+  constructor() {
+    this.app = new PIXI.Application();
+    this.player = new PIXI.Graphics().circle(0, 0, 30).fill("green");
+    this.ceil = new PIXI.Graphics().rect(0, 0, 20, 20).fill("red");
+    this.floor = new PIXI.Graphics().rect(0, 0, 20, 20).fill("red");
+  }
 
   public async init() {
     await this.app.init({ antialias: true, width: 700, height: 500 });
@@ -198,14 +203,12 @@ class Game {
     this.setup();
   }
 
-  private setup() {
+  public setup() {
     this.addPlayer();
     this.addBoundaries();
 
     window.addEventListener("keydown", this.keyDown.bind(this));
     window.addEventListener("keyup", this.keyUp.bind(this));
-
-    this.app.ticker.add(this.gameLoop.bind(this));
   }
 
   private addPlayer(): void {
@@ -283,7 +286,7 @@ class Game {
 
   private getRandomHeights(): number[] {
     const obstacleSumHeight = this.app.canvas.height - 200;
-    const randomHeight1 = Math.floor(Math.random() * obstacleSumHeight + 1);
+    const randomHeight1 = Math.floor(Math.random() * obstacleSumHeight);
     const randomHeight2 = obstacleSumHeight - randomHeight1;
 
     return [randomHeight1, randomHeight2];
