@@ -192,25 +192,15 @@ class Game {
 
   constructor() {}
 
-  async init() {
+  public async init() {
     await this.app.init({ antialias: true, width: 700, height: 500 });
     document.body.appendChild(this.app.canvas);
     this.setup();
   }
 
-  setup() {
-    // this.player = new PIXI.Graphics().circle(0, 0, 30).fill("green");
-    this.player.x = 200;
-    this.player.y = this.app.canvas.height / 2;
-    this.player.pivot.set(0.5);
-    this.app.stage.addChild(this.player);
-
-    this.ceil.width = this.app.canvas.width;
-    this.app.stage.addChild(this.ceil);
-
-    this.floor.width = this.app.canvas.width;
-    this.floor.y = this.app.canvas.height - this.floor.height;
-    this.app.stage.addChild(this.floor);
+  private setup() {
+    this.addPlayer();
+    this.addBoundaries();
 
     window.addEventListener("keydown", this.keyDown.bind(this));
     window.addEventListener("keyup", this.keyUp.bind(this));
@@ -218,15 +208,31 @@ class Game {
     this.app.ticker.add(this.gameLoop.bind(this));
   }
 
-  keyDown(e: KeyboardEvent): void {
+  private addPlayer(): void {
+    this.player.x = 200;
+    this.player.y = this.app.canvas.height / 2;
+    this.player.pivot.set(0.5);
+    this.app.stage.addChild(this.player);
+  }
+
+  private addBoundaries() {
+    this.ceil.width = this.app.canvas.width;
+    this.app.stage.addChild(this.ceil);
+
+    this.floor.width = this.app.canvas.width;
+    this.floor.y = this.app.canvas.height - this.floor.height;
+    this.app.stage.addChild(this.floor);
+  }
+
+  private keyDown(e: KeyboardEvent): void {
     this.keys[e.key] = true;
   }
 
-  keyUp(e: KeyboardEvent): void {
+  private keyUp(e: KeyboardEvent): void {
     this.keys[e.key] = false;
   }
 
-  startGame(): void {
+  private startGame(): void {
     if (this.keys[" "]) {
       this.gameRunning = true;
     } else if (this.keys["Escape"]) {
@@ -234,7 +240,7 @@ class Game {
     }
   }
 
-  movePlayer(): void {
+  private movePlayer(): void {
     if (this.keys[" "]) {
       this.player.y -= 5;
     } else {
@@ -242,7 +248,7 @@ class Game {
     }
   }
 
-  collideWithBoundaries(): boolean {
+  private collideWithBoundaries(): boolean {
     const playerTop = this.player.y - this.player.height / 2;
     const playerBottom = this.player.y + this.player.height / 2;
     const ceilBottom = this.ceil.y + this.ceil.height;
@@ -251,7 +257,7 @@ class Game {
     return playerTop <= ceilBottom || playerBottom >= floorTop;
   }
 
-  collideWithObstacles(): boolean {
+  private collideWithObstacles(): boolean {
     for (const obstacle of this.obstaclesArr) {
       const playerLeft = this.player.x - this.player.width / 2;
       const playerRight = this.player.x + this.player.width / 2;
@@ -275,7 +281,7 @@ class Game {
     return false;
   }
 
-  getRandomHeights(): number[] {
+  private getRandomHeights(): number[] {
     const obstacleSumHeight = this.app.canvas.height - 200;
     const randomHeight1 = Math.floor(Math.random() * obstacleSumHeight + 1);
     const randomHeight2 = obstacleSumHeight - randomHeight1;
@@ -283,7 +289,7 @@ class Game {
     return [randomHeight1, randomHeight2];
   }
 
-  generateObstacleUpper(obstacleHeights: number[]): PIXI.Graphics {
+  private generateObstacleUpper(obstacleHeights: number[]): PIXI.Graphics {
     const obstacleUpper = new PIXI.Graphics().rect(0, 0, 30, 20).fill("red");
     obstacleUpper.height = obstacleHeights[0];
     obstacleUpper.x = this.app.canvas.width;
@@ -292,7 +298,7 @@ class Game {
     return obstacleUpper;
   }
 
-  generateObstacleLower(obstacleHeights: number[]): PIXI.Graphics {
+  private generateObstacleLower(obstacleHeights: number[]): PIXI.Graphics {
     const obstacleLower = new PIXI.Graphics().rect(0, 0, 30, 20).fill("red");
 
     obstacleLower.height = obstacleHeights[1];
@@ -305,7 +311,7 @@ class Game {
     return obstacleLower;
   }
 
-  getObstacles(): void {
+  private getObstacles(): void {
     const obstacleHeights = this.getRandomHeights();
 
     let obstacleUpper = this.generateObstacleUpper(obstacleHeights);
@@ -317,7 +323,7 @@ class Game {
     this.obstaclesArr.push(obstacleLower);
   }
 
-  gameLoop(): void {
+  private gameLoop(): void {
     this.startGame();
     if (
       this.gameRunning &&
