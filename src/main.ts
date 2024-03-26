@@ -311,7 +311,6 @@ class Game {
       const playerRight = this._player.getBounds().maxX;
       const playerTop = this._player.getBounds().minY;
       const playerBottom = this._player.getBounds().maxY;
-      console.log(playerLeft);
 
       const obstacleLeft = obstacle.x;
       const obstacleRight = obstacle.x + obstacle.width;
