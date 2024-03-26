@@ -134,10 +134,10 @@ class Game {
       const obstacleBottom = obstacle.getBounds().maxY;
 
       if (
-        playerRight > obstacleLeft &&
-        playerLeft < obstacleRight &&
-        playerBottom > obstacleTop &&
-        playerTop < obstacleBottom
+        playerRight >= obstacleLeft &&
+        playerLeft <= obstacleRight &&
+        playerBottom >= obstacleTop &&
+        playerTop <= obstacleBottom
       ) {
         return true;
       }
