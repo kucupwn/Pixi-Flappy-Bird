@@ -254,39 +254,6 @@ class Game {
     }
   }
 
-  private collideWithBoundaries(): boolean {
-    const playerTop = this._player.y - this._player.height / 2;
-    const playerBottom = this._player.y + this._player.height / 2;
-    const ceilBottom = this._ceil.y + this._ceil.height;
-    const floorTop = this._floor.y;
-
-    return playerTop <= ceilBottom || playerBottom >= floorTop;
-  }
-
-  private collideWithObstacles(): boolean {
-    for (const obstacle of this.obstaclesArr) {
-      const playerLeft = this._player.getBounds().minX;
-      const playerRight = this._player.getBounds().maxX;
-      const playerTop = this._player.getBounds().minY;
-      const playerBottom = this._player.getBounds().maxY;
-
-      const obstacleLeft = obstacle.x;
-      const obstacleRight = obstacle.x + obstacle.width;
-      const obstacleTop = obstacle.y;
-      const obstacleBottom = obstacle.y + obstacle.height;
-
-      if (
-        playerRight > obstacleLeft &&
-        playerLeft < obstacleRight &&
-        playerBottom > obstacleTop &&
-        playerTop < obstacleBottom
-      ) {
-        return true;
-      }
-    }
-    return false;
-  }
-
   private getRandomHeights(): number[] {
     const obstacleSumHeight = this._app.canvas.height - 200;
     const randomHeight1 = Math.floor(Math.random() * obstacleSumHeight);
@@ -329,6 +296,40 @@ class Game {
     this.obstaclesArr.push(obstacleLower);
   }
 
+  private collideWithBoundaries(): boolean {
+    const playerTop = this._player.y - this._player.height / 2;
+    const playerBottom = this._player.y + this._player.height / 2;
+    const ceilBottom = this._ceil.y + this._ceil.height;
+    const floorTop = this._floor.y;
+
+    return playerTop <= ceilBottom || playerBottom >= floorTop;
+  }
+
+  private collideWithObstacles(): boolean {
+    for (const obstacle of this.obstaclesArr) {
+      const playerLeft = this._player.getBounds().minX;
+      const playerRight = this._player.getBounds().maxX;
+      const playerTop = this._player.getBounds().minY;
+      const playerBottom = this._player.getBounds().maxY;
+      console.log(playerLeft);
+
+      const obstacleLeft = obstacle.x;
+      const obstacleRight = obstacle.x + obstacle.width;
+      const obstacleTop = obstacle.y;
+      const obstacleBottom = obstacle.y + obstacle.height;
+
+      if (
+        playerRight > obstacleLeft &&
+        playerLeft < obstacleRight &&
+        playerBottom > obstacleTop &&
+        playerTop < obstacleBottom
+      ) {
+        return true;
+      }
+    }
+    return false;
+  }
+
   private gameLoop(): void {
     this.setGameStatus();
     if (
@@ -348,7 +349,6 @@ class Game {
       }, 1000);
     } else if (this.obstacleInterval && !this.gameRunning) {
       clearInterval(this.obstacleInterval);
-      this._app.ticker.remove(this.gameLoop.bind(this));
     }
   }
 }
