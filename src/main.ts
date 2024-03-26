@@ -214,9 +214,8 @@ class Game {
   }
 
   private addPlayer(): void {
-    this._player.x = 200;
+    this._player.x = this._app.canvas.width * 0.3;
     this._player.y = this._app.canvas.height / 2;
-    this._player.pivot.set(0.5);
     this._app.stage.addChild(this._player);
   }
 
@@ -242,7 +241,6 @@ class Game {
       this.gameRunning = true;
     } else if (this.keys["Escape"]) {
       this.gameRunning = false;
-      this._app.ticker.remove(this.gameLoop.bind(this));
     }
   }
 
@@ -266,7 +264,7 @@ class Game {
     const obstacleUpper = new PIXI.Graphics().rect(0, 0, 30, 20).fill("red");
     obstacleUpper.height = obstacleHeights[0];
     obstacleUpper.x = this._app.canvas.width;
-    obstacleUpper.y += (this._ceil.height + this._floor.height) / 2;
+    obstacleUpper.y += this._ceil.height;
 
     return obstacleUpper;
   }
@@ -277,9 +275,7 @@ class Game {
     obstacleLower.height = obstacleHeights[1];
     obstacleLower.x = this._app.canvas.width;
     obstacleLower.y =
-      this._app.canvas.height -
-      obstacleLower.height -
-      (this._ceil.height + this._floor.height) / 2;
+      this._app.canvas.height - obstacleLower.height - this._floor.height;
 
     return obstacleLower;
   }
@@ -297,10 +293,10 @@ class Game {
   }
 
   private collideWithBoundaries(): boolean {
-    const playerTop = this._player.y - this._player.height / 2;
-    const playerBottom = this._player.y + this._player.height / 2;
-    const ceilBottom = this._ceil.y + this._ceil.height;
-    const floorTop = this._floor.y;
+    const playerTop = this._player.getBounds().minY;
+    const playerBottom = this._player.getBounds().maxY;
+    const ceilBottom = this._ceil.getBounds().maxY;
+    const floorTop = this._floor.getBounds().minY;
 
     return playerTop <= ceilBottom || playerBottom >= floorTop;
   }
@@ -312,10 +308,10 @@ class Game {
       const playerTop = this._player.getBounds().minY;
       const playerBottom = this._player.getBounds().maxY;
 
-      const obstacleLeft = obstacle.x;
-      const obstacleRight = obstacle.x + obstacle.width;
-      const obstacleTop = obstacle.y;
-      const obstacleBottom = obstacle.y + obstacle.height;
+      const obstacleLeft = obstacle.getBounds().minX;
+      const obstacleRight = obstacle.getBounds().maxX;
+      const obstacleTop = obstacle.getBounds().minY;
+      const obstacleBottom = obstacle.getBounds().maxY;
 
       if (
         playerRight > obstacleLeft &&
@@ -326,6 +322,7 @@ class Game {
         return true;
       }
     }
+
     return false;
   }
 
