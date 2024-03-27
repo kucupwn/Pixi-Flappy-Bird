@@ -14,7 +14,6 @@ export class Game {
     this._app = new PIXI.Application();
     this._player = new Player();
     this._gameWorld = new GameWorld(this);
-    this.init();
   }
 
   public async init() {
@@ -91,7 +90,6 @@ export class Game {
 
   private gameLoop(): void {
     this.setGameStatus();
-    console.log(this.obstaclesArr);
     if (
       this.gameRunning &&
       !this.collideWithBoundaries() &&
@@ -115,3 +113,4 @@ export class Game {
 }
 
 const game = new Game();
+game.init();
