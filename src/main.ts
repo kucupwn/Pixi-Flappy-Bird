@@ -31,20 +31,28 @@ class Player {
   }
 }
 
+class GameWorld {
+  ceil: PIXI.Graphics;
+  floor: PIXI.Graphics;
+
+  constructor() {
+    this.ceil = new PIXI.Graphics().rect(0, 0, 20, 20).fill("red");
+    this.floor = new PIXI.Graphics().rect(0, 0, 20, 20).fill("red");
+  }
+}
+
 class Game {
   _app: PIXI.Application;
   _player: Player;
-  _ceil: PIXI.Graphics;
-  _floor: PIXI.Graphics;
+  _gameWorld: GameWorld;
   gameRunning: boolean = false;
   obstacleInterval?: ReturnType<typeof setTimeout>;
   obstaclesArr: PIXI.Graphics[] = [];
 
-  constructor(player: Player) {
+  constructor(player: Player, gameWorld: GameWorld) {
     this._app = new PIXI.Application();
     this._player = player;
-    this._ceil = new PIXI.Graphics().rect(0, 0, 20, 20).fill("red");
-    this._floor = new PIXI.Graphics().rect(0, 0, 20, 20).fill("red");
+    this._gameWorld = gameWorld;
   }
 
   public async init() {
@@ -56,7 +64,6 @@ class Game {
   public setup() {
     this.addPlayer();
     this.addBoundaries();
-    console.log(this._player);
 
     this._app.ticker.add(this.gameLoop.bind(this));
   }
@@ -76,12 +83,13 @@ class Game {
   }
 
   private addBoundaries() {
-    this._ceil.width = this._app.canvas.width;
-    this._app.stage.addChild(this._ceil);
+    this._gameWorld.ceil.width = this._app.canvas.width;
+    this._app.stage.addChild(this._gameWorld.ceil);
 
-    this._floor.width = this._app.canvas.width;
-    this._floor.y = this._app.canvas.height - this._floor.height;
-    this._app.stage.addChild(this._floor);
+    this._gameWorld.floor.width = this._app.canvas.width;
+    this._gameWorld.floor.y =
+      this._app.canvas.height - this._gameWorld.floor.height;
+    this._app.stage.addChild(this._gameWorld.floor);
   }
 
   private getRandomHeights(): number[] {
@@ -96,7 +104,7 @@ class Game {
     const obstacleUpper = new PIXI.Graphics().rect(0, 0, 30, 20).fill("red");
     obstacleUpper.height = obstacleHeights[0];
     obstacleUpper.x = this._app.canvas.width;
-    obstacleUpper.y += this._ceil.height;
+    obstacleUpper.y += this._gameWorld.ceil.height;
 
     return obstacleUpper;
   }
@@ -107,7 +115,9 @@ class Game {
     obstacleLower.height = obstacleHeights[1];
     obstacleLower.x = this._app.canvas.width;
     obstacleLower.y =
-      this._app.canvas.height - obstacleLower.height - this._floor.height;
+      this._app.canvas.height -
+      obstacleLower.height -
+      this._gameWorld.floor.height;
 
     return obstacleLower;
   }
@@ -127,8 +137,8 @@ class Game {
   private collideWithBoundaries(): boolean {
     const playerTop = this._player.graphics.getBounds().minY;
     const playerBottom = this._player.graphics.getBounds().maxY;
-    const ceilBottom = this._ceil.getBounds().maxY;
-    const floorTop = this._floor.getBounds().minY;
+    const ceilBottom = this._gameWorld.ceil.getBounds().maxY;
+    const floorTop = this._gameWorld.floor.getBounds().minY;
 
     return playerTop <= ceilBottom || playerBottom >= floorTop;
   }
@@ -182,5 +192,6 @@ class Game {
 }
 
 const player = new Player();
-const game = new Game(player);
+const gameWorld = new GameWorld();
+const game = new Game(player, gameWorld);
 game.init();
