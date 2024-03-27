@@ -1,18 +1,48 @@
 import * as PIXI from "pixi.js";
 
+class Player {
+  graphics: PIXI.Graphics;
+  keys: { [key: string]: boolean } = {};
+
+  constructor() {
+    this.graphics = new PIXI.Graphics().circle(0, 0, 30).fill("green");
+    this.eventListener();
+  }
+
+  private eventListener(): void {
+    window.addEventListener("keydown", this.keyDown.bind(this));
+    window.addEventListener("keyup", this.keyUp.bind(this));
+  }
+
+  private keyDown(e: KeyboardEvent): void {
+    this.keys[e.key] = true;
+  }
+
+  private keyUp(e: KeyboardEvent): void {
+    this.keys[e.key] = false;
+  }
+
+  public movePlayer(): void {
+    if (this.keys[" "]) {
+      this.graphics.y -= 5;
+    } else {
+      this.graphics.y += 5;
+    }
+  }
+}
+
 class Game {
   _app: PIXI.Application;
-  _player: PIXI.Graphics;
+  _player: Player;
   _ceil: PIXI.Graphics;
   _floor: PIXI.Graphics;
-  keys: { [key: string]: boolean } = {};
   gameRunning: boolean = false;
   obstacleInterval?: ReturnType<typeof setTimeout>;
   obstaclesArr: PIXI.Graphics[] = [];
 
-  constructor() {
+  constructor(player: Player) {
     this._app = new PIXI.Application();
-    this._player = new PIXI.Graphics().circle(0, 0, 30).fill("green");
+    this._player = player;
     this._ceil = new PIXI.Graphics().rect(0, 0, 20, 20).fill("red");
     this._floor = new PIXI.Graphics().rect(0, 0, 20, 20).fill("red");
   }
@@ -26,17 +56,23 @@ class Game {
   public setup() {
     this.addPlayer();
     this.addBoundaries();
-
-    window.addEventListener("keydown", this.keyDown.bind(this));
-    window.addEventListener("keyup", this.keyUp.bind(this));
+    console.log(this._player);
 
     this._app.ticker.add(this.gameLoop.bind(this));
   }
 
+  protected setGameStatus(): void {
+    if (this._player.keys[" "]) {
+      this.gameRunning = true;
+    } else if (this._player.keys["Escape"]) {
+      this.gameRunning = false;
+    }
+  }
+
   private addPlayer(): void {
-    this._player.x = this._app.canvas.width * 0.3;
-    this._player.y = this._app.canvas.height / 2;
-    this._app.stage.addChild(this._player);
+    this._player.graphics.x = this._app.canvas.width * 0.3;
+    this._player.graphics.y = this._app.canvas.height / 2;
+    this._app.stage.addChild(this._player.graphics);
   }
 
   private addBoundaries() {
@@ -46,30 +82,6 @@ class Game {
     this._floor.width = this._app.canvas.width;
     this._floor.y = this._app.canvas.height - this._floor.height;
     this._app.stage.addChild(this._floor);
-  }
-
-  private keyDown(e: KeyboardEvent): void {
-    this.keys[e.key] = true;
-  }
-
-  private keyUp(e: KeyboardEvent): void {
-    this.keys[e.key] = false;
-  }
-
-  private setGameStatus(): void {
-    if (this.keys[" "]) {
-      this.gameRunning = true;
-    } else if (this.keys["Escape"]) {
-      this.gameRunning = false;
-    }
-  }
-
-  private movePlayer(): void {
-    if (this.keys[" "]) {
-      this._player.y -= 5;
-    } else {
-      this._player.y += 5;
-    }
   }
 
   private getRandomHeights(): number[] {
@@ -113,8 +125,8 @@ class Game {
   }
 
   private collideWithBoundaries(): boolean {
-    const playerTop = this._player.getBounds().minY;
-    const playerBottom = this._player.getBounds().maxY;
+    const playerTop = this._player.graphics.getBounds().minY;
+    const playerBottom = this._player.graphics.getBounds().maxY;
     const ceilBottom = this._ceil.getBounds().maxY;
     const floorTop = this._floor.getBounds().minY;
 
@@ -123,10 +135,10 @@ class Game {
 
   private collideWithObstacles(): boolean {
     for (const obstacle of this.obstaclesArr) {
-      const playerLeft = this._player.getBounds().minX;
-      const playerRight = this._player.getBounds().maxX;
-      const playerTop = this._player.getBounds().minY;
-      const playerBottom = this._player.getBounds().maxY;
+      const playerLeft = this._player.graphics.getBounds().minX;
+      const playerRight = this._player.graphics.getBounds().maxX;
+      const playerTop = this._player.graphics.getBounds().minY;
+      const playerBottom = this._player.graphics.getBounds().maxY;
 
       const obstacleLeft = obstacle.getBounds().minX;
       const obstacleRight = obstacle.getBounds().maxX;
@@ -153,7 +165,7 @@ class Game {
       !this.collideWithBoundaries() &&
       !this.collideWithObstacles()
     ) {
-      this.movePlayer();
+      this._player.movePlayer();
       this.obstaclesArr.forEach((obs) => {
         obs.x -= 5;
       });
@@ -169,5 +181,6 @@ class Game {
   }
 }
 
-const game = new Game();
+const player = new Player();
+const game = new Game(player);
 game.init();
