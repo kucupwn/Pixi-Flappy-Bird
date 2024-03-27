@@ -20,14 +20,14 @@ export class Game {
   public async init() {
     await this._app.init({ antialias: true, width: 700, height: 500 });
     document.body.appendChild(this._app.canvas);
-    this.setup();
-  }
-
-  private setup() {
     this.addPlayer();
     this.addBoundaries();
 
-    this._app.ticker.add(this.gameLoop.bind(this));
+    window.addEventListener("keydown", (e) => {
+      if (e.key === " " && !this.gameRunning) {
+        this._app.ticker.add(this.gameLoop.bind(this));
+      }
+    });
   }
 
   private setGameStatus(): void {
@@ -44,7 +44,7 @@ export class Game {
     this._app.stage.addChild(this._player.graphics);
   }
 
-  private addBoundaries() {
+  private addBoundaries(): void {
     this._gameWorld.ceil.width = this._app.canvas.width;
     this._app.stage.addChild(this._gameWorld.ceil);
 
@@ -81,6 +81,7 @@ export class Game {
         playerBottom >= obstacleTop &&
         playerTop <= obstacleBottom
       ) {
+        this.gameRunning = false;
         return true;
       }
     }
@@ -90,6 +91,7 @@ export class Game {
 
   private gameLoop(): void {
     this.setGameStatus();
+    console.log(this.obstaclesArr);
     if (
       this.gameRunning &&
       !this.collideWithBoundaries() &&
@@ -107,6 +109,7 @@ export class Game {
       }, 1000);
     } else if (this.obstacleInterval && !this.gameRunning) {
       clearInterval(this.obstacleInterval);
+      this._app.ticker.stop();
     }
   }
 }
