@@ -32,12 +32,54 @@ class Player {
 }
 
 class GameWorld {
+  _app: PIXI.Application;
   ceil: PIXI.Graphics;
   floor: PIXI.Graphics;
 
-  constructor() {
+  constructor(app: PIXI.Application) {
+    this._app = app;
     this.ceil = new PIXI.Graphics().rect(0, 0, 20, 20).fill("red");
     this.floor = new PIXI.Graphics().rect(0, 0, 20, 20).fill("red");
+  }
+
+  private getRandomHeights(): number[] {
+    const obstacleSumHeight = game._app.canvas.height - 200;
+    const randomHeight1 = Math.floor(Math.random() * obstacleSumHeight);
+    const randomHeight2 = obstacleSumHeight - randomHeight1;
+
+    return [randomHeight1, randomHeight2];
+  }
+
+  private getObstacleUpper(obstacleHeights: number[]): PIXI.Graphics {
+    const obstacleUpper = new PIXI.Graphics().rect(0, 0, 30, 20).fill("red");
+    obstacleUpper.height = obstacleHeights[0];
+    obstacleUpper.x = game._app.canvas.width;
+    obstacleUpper.y += this.ceil.height;
+
+    return obstacleUpper;
+  }
+
+  private getObstacleLower(obstacleHeights: number[]): PIXI.Graphics {
+    const obstacleLower = new PIXI.Graphics().rect(0, 0, 30, 20).fill("red");
+
+    obstacleLower.height = obstacleHeights[1];
+    obstacleLower.x = game._app.canvas.width;
+    obstacleLower.y =
+      game._app.canvas.height - obstacleLower.height - this.floor.height;
+
+    return obstacleLower;
+  }
+
+  public getObstacles(): void {
+    const obstacleHeights = this.getRandomHeights();
+
+    let obstacleUpper = this.getObstacleUpper(obstacleHeights);
+    game._app.stage.addChild(obstacleUpper);
+    game.obstaclesArr.push(obstacleUpper);
+
+    let obstacleLower = this.getObstacleLower(obstacleHeights);
+    game._app.stage.addChild(obstacleLower);
+    game.obstaclesArr.push(obstacleLower);
   }
 }
 
@@ -61,14 +103,14 @@ class Game {
     this.setup();
   }
 
-  public setup() {
+  private setup() {
     this.addPlayer();
     this.addBoundaries();
 
     this._app.ticker.add(this.gameLoop.bind(this));
   }
 
-  protected setGameStatus(): void {
+  private setGameStatus(): void {
     if (this._player.keys[" "]) {
       this.gameRunning = true;
     } else if (this._player.keys["Escape"]) {
@@ -90,48 +132,6 @@ class Game {
     this._gameWorld.floor.y =
       this._app.canvas.height - this._gameWorld.floor.height;
     this._app.stage.addChild(this._gameWorld.floor);
-  }
-
-  private getRandomHeights(): number[] {
-    const obstacleSumHeight = this._app.canvas.height - 200;
-    const randomHeight1 = Math.floor(Math.random() * obstacleSumHeight);
-    const randomHeight2 = obstacleSumHeight - randomHeight1;
-
-    return [randomHeight1, randomHeight2];
-  }
-
-  private getObstacleUpper(obstacleHeights: number[]): PIXI.Graphics {
-    const obstacleUpper = new PIXI.Graphics().rect(0, 0, 30, 20).fill("red");
-    obstacleUpper.height = obstacleHeights[0];
-    obstacleUpper.x = this._app.canvas.width;
-    obstacleUpper.y += this._gameWorld.ceil.height;
-
-    return obstacleUpper;
-  }
-
-  private getObstacleLower(obstacleHeights: number[]): PIXI.Graphics {
-    const obstacleLower = new PIXI.Graphics().rect(0, 0, 30, 20).fill("red");
-
-    obstacleLower.height = obstacleHeights[1];
-    obstacleLower.x = this._app.canvas.width;
-    obstacleLower.y =
-      this._app.canvas.height -
-      obstacleLower.height -
-      this._gameWorld.floor.height;
-
-    return obstacleLower;
-  }
-
-  private getObstacles(): void {
-    const obstacleHeights = this.getRandomHeights();
-
-    let obstacleUpper = this.getObstacleUpper(obstacleHeights);
-    this._app.stage.addChild(obstacleUpper);
-    this.obstaclesArr.push(obstacleUpper);
-
-    let obstacleLower = this.getObstacleLower(obstacleHeights);
-    this._app.stage.addChild(obstacleLower);
-    this.obstaclesArr.push(obstacleLower);
   }
 
   private collideWithBoundaries(): boolean {
@@ -183,7 +183,7 @@ class Game {
 
     if (!this.obstacleInterval && this.gameRunning) {
       this.obstacleInterval = setInterval(() => {
-        this.getObstacles();
+        gameWorld.getObstacles();
       }, 1000);
     } else if (this.obstacleInterval && !this.gameRunning) {
       clearInterval(this.obstacleInterval);
@@ -192,6 +192,6 @@ class Game {
 }
 
 const player = new Player();
-const gameWorld = new GameWorld();
+const gameWorld = new GameWorld(new PIXI.Application());
 const game = new Game(player, gameWorld);
 game.init();
