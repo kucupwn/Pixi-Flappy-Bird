@@ -1,6 +1,7 @@
 import * as PIXI from "pixi.js";
 import { Player } from "./player";
 import { GameWorld } from "./gameWorld";
+import { collideWithBoundaries, collideWithObstacles } from "./collisionCheck";
 
 const appContainer = document.getElementById("app");
 
@@ -48,46 +49,11 @@ export class Game {
     this._app.stage.addChild(this._gameWorld.floor);
   }
 
-  private collideWithBoundaries(): boolean {
-    const playerTop = this._player.graphics.getBounds().minY;
-    const playerBottom = this._player.graphics.getBounds().maxY;
-    const ceilBottom = this._gameWorld.ceil.getBounds().maxY;
-    const floorTop = this._gameWorld.floor.getBounds().minY;
-
-    return playerTop <= ceilBottom || playerBottom >= floorTop;
-  }
-
-  private collideWithObstacles(): boolean {
-    for (const obstacle of this.obstaclesArr) {
-      const playerLeft = this._player.graphics.getBounds().minX;
-      const playerRight = this._player.graphics.getBounds().maxX;
-      const playerTop = this._player.graphics.getBounds().minY;
-      const playerBottom = this._player.graphics.getBounds().maxY;
-
-      const obstacleLeft = obstacle.getBounds().minX;
-      const obstacleRight = obstacle.getBounds().maxX;
-      const obstacleTop = obstacle.getBounds().minY;
-      const obstacleBottom = obstacle.getBounds().maxY;
-
-      if (
-        playerRight >= obstacleLeft &&
-        playerLeft <= obstacleRight &&
-        playerBottom >= obstacleTop &&
-        playerTop <= obstacleBottom
-      ) {
-        this.gameRunning = false;
-        return true;
-      }
-    }
-
-    return false;
-  }
-
   public gameLoop(): void {
     if (
       this.gameRunning &&
-      !this.collideWithBoundaries() &&
-      !this.collideWithObstacles()
+      !collideWithBoundaries(this) &&
+      !collideWithObstacles(this)
     ) {
       this._player.movePlayer();
       this.obstaclesArr.forEach((obs) => {
