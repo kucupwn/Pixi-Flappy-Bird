@@ -2,6 +2,8 @@ import * as PIXI from "pixi.js";
 import { Player } from "./player";
 import { GameWorld } from "./gameWorld";
 
+const appContainer = document.getElementById("app");
+
 export class Game {
   _app: PIXI.Application;
   _player: Player;
@@ -18,7 +20,7 @@ export class Game {
 
   public async init() {
     await this._app.init({ antialias: true, width: 700, height: 500 });
-    document.body.appendChild(this._app.canvas);
+    appContainer!.appendChild(this._app.canvas);
     this.addPlayer();
     this.addBoundaries();
 
