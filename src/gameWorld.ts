@@ -3,6 +3,7 @@ import { Game } from "./main";
 
 export class GameWorld {
   game: Game;
+  background: PIXI.TilingSprite;
   ceil: PIXI.Graphics;
   floor: PIXI.Graphics;
   obstacleDistance: number = 400;
@@ -11,6 +12,24 @@ export class GameWorld {
     this.game = game;
     this.ceil = new PIXI.Graphics().rect(0, 0, 20, 20).fill("red");
     this.floor = new PIXI.Graphics().rect(0, 0, 20, 20).fill("red");
+    this.background = new PIXI.TilingSprite();
+    this.loadBackgroundSprite();
+  }
+
+  public async loadBackgroundSprite(): Promise<void> {
+    const texture = await PIXI.Assets.load("./assets/background-day.png");
+    const tilingTexture = PIXI.TilingSprite.from(texture);
+    this.setBackgroundSprite(tilingTexture);
+  }
+
+  private setBackgroundSprite(background: PIXI.TilingSprite) {
+    this.background = background;
+    this.game._app.stage.addChild(background);
+    background.width = this.game._app.canvas.width;
+  }
+
+  public animateBackground(): void {
+    this.background.tilePosition.x -= 0.1;
   }
 
   public addBoundaries(): void {

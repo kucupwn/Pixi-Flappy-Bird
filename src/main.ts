@@ -21,6 +21,8 @@ export class Game {
   public async init() {
     await this._app.init({ antialias: true, width: 700, height: 500 });
     appContainer!.appendChild(this._app.canvas);
+    await this._gameWorld.loadBackgroundSprite();
+
     this.gameStatus();
     this._player.addPlayer();
     this._gameWorld.addBoundaries();
@@ -49,6 +51,7 @@ export class Game {
     ) {
       this._player.movePlayer();
       this._gameWorld.getObstacles();
+      this._gameWorld.animateBackground();
       this.obstaclesArr.forEach((obs) => {
         obs.x -= 5;
       });
