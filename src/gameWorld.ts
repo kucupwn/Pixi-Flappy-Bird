@@ -13,6 +13,16 @@ export class GameWorld {
     this.floor = new PIXI.Graphics().rect(0, 0, 20, 20).fill("red");
   }
 
+  public addBoundaries(): void {
+    this.game._gameWorld.ceil.width = this.game._app.canvas.width;
+    this.game._app.stage.addChild(this.game._gameWorld.ceil);
+
+    this.game._gameWorld.floor.width = this.game._app.canvas.width;
+    this.game._gameWorld.floor.y =
+      this.game._app.canvas.height - this.game._gameWorld.floor.height;
+    this.game._app.stage.addChild(this.game._gameWorld.floor);
+  }
+
   private getRandomHeights(): number[] {
     const obstacleSumHeight = this.game._app.canvas.height - 200;
     const randomHeight1 = Math.floor(Math.random() * obstacleSumHeight);

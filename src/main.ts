@@ -14,7 +14,7 @@ export class Game {
 
   constructor() {
     this._app = new PIXI.Application();
-    this._player = new Player();
+    this._player = new Player(this);
     this._gameWorld = new GameWorld(this);
   }
 
@@ -22,8 +22,8 @@ export class Game {
     await this._app.init({ antialias: true, width: 700, height: 500 });
     appContainer!.appendChild(this._app.canvas);
     this.gameStatus();
-    this.addPlayer();
-    this.addBoundaries();
+    this._player.addPlayer();
+    this._gameWorld.addBoundaries();
   }
 
   private gameStatus() {
@@ -41,22 +41,6 @@ export class Game {
     });
   }
 
-  private addPlayer(): void {
-    this._player.graphics.x = this._app.canvas.width * 0.3;
-    this._player.graphics.y = this._app.canvas.height / 2;
-    this._app.stage.addChild(this._player.graphics);
-  }
-
-  private addBoundaries(): void {
-    this._gameWorld.ceil.width = this._app.canvas.width;
-    this._app.stage.addChild(this._gameWorld.ceil);
-
-    this._gameWorld.floor.width = this._app.canvas.width;
-    this._gameWorld.floor.y =
-      this._app.canvas.height - this._gameWorld.floor.height;
-    this._app.stage.addChild(this._gameWorld.floor);
-  }
-
   public gameLoop(): void {
     if (
       this.gameRunning &&
@@ -64,13 +48,10 @@ export class Game {
       !collideWithObstacles(this)
     ) {
       this._player.movePlayer();
+      this._gameWorld.getObstacles();
       this.obstaclesArr.forEach((obs) => {
         obs.x -= 5;
       });
-    }
-
-    if (this.gameRunning) {
-      this._gameWorld.getObstacles();
     } else if (!this.gameRunning) {
       this._app.ticker.stop();
     }
