@@ -4,22 +4,28 @@ import { Game } from "./main";
 export class GameWorld {
   game: Game;
   background: PIXI.TilingSprite;
-  ceil: PIXI.Graphics;
-  floor: PIXI.Graphics;
+  ceil: PIXI.TilingSprite;
+  floor: PIXI.TilingSprite;
   obstacleDistance: number = 400;
 
   constructor(game: Game) {
     this.game = game;
-    this.ceil = new PIXI.Graphics().rect(0, 0, 20, 20).fill("red");
-    this.floor = new PIXI.Graphics().rect(0, 0, 20, 20).fill("red");
+    this.ceil = new PIXI.TilingSprite();
+    this.floor = new PIXI.TilingSprite();
     this.background = new PIXI.TilingSprite();
-    this.loadBackgroundSprite();
+    this.loadSprites();
   }
 
-  public async loadBackgroundSprite(): Promise<void> {
-    const texture = await PIXI.Assets.load("./assets/background-day.png");
-    const tilingTexture = PIXI.TilingSprite.from(texture);
-    this.setBackgroundSprite(tilingTexture);
+  public async loadSprites(): Promise<void> {
+    const backgroundTexture = await PIXI.Assets.load(
+      "./assets/background-day.png"
+    );
+    const tilingBackgroundTexture = PIXI.TilingSprite.from(backgroundTexture);
+    this.setBackgroundSprite(tilingBackgroundTexture);
+
+    const floorTexture = await PIXI.Assets.load("./assets/base.png");
+    const tilingFloorTexture = PIXI.TilingSprite.from(floorTexture);
+    this.setFloorSprite(tilingFloorTexture);
   }
 
   private setBackgroundSprite(background: PIXI.TilingSprite) {
@@ -28,18 +34,15 @@ export class GameWorld {
     background.width = this.game._app.canvas.width;
   }
 
-  public animateBackground(): void {
-    this.background.tilePosition.x -= 0.1;
+  private setFloorSprite(floor: PIXI.TilingSprite) {
+    this.floor = floor;
+    this.game._app.stage.addChild(this.floor);
+    this.floor.y = this.game._app.canvas.height * 0.9;
+    this.floor.scale.x = this.game._app.canvas.width;
   }
 
-  public addBoundaries(): void {
-    this.game._gameWorld.ceil.width = this.game._app.canvas.width;
-    this.game._app.stage.addChild(this.game._gameWorld.ceil);
-
-    this.game._gameWorld.floor.width = this.game._app.canvas.width;
-    this.game._gameWorld.floor.y =
-      this.game._app.canvas.height - this.game._gameWorld.floor.height;
-    this.game._app.stage.addChild(this.game._gameWorld.floor);
+  public animateWorld(): void {
+    this.background.tilePosition.x -= 0.1;
   }
 
   private getRandomHeights(): number[] {

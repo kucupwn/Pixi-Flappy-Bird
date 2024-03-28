@@ -20,12 +20,12 @@ export class Game {
 
   public async init() {
     await this._app.init({ antialias: true, width: 700, height: 500 });
-    appContainer!.appendChild(this._app.canvas);
-    await this._gameWorld.loadBackgroundSprite();
+    appContainer?.appendChild(this._app.canvas);
+    await this._gameWorld.loadSprites();
 
     this.gameStatus();
     this._player.addPlayer();
-    this._gameWorld.addBoundaries();
+    // this._gameWorld.addBoundaries();
   }
 
   private gameStatus() {
@@ -51,7 +51,7 @@ export class Game {
     ) {
       this._player.movePlayer();
       this._gameWorld.getObstacles();
-      this._gameWorld.animateBackground();
+      this._gameWorld.animateWorld();
       this.obstaclesArr.forEach((obs) => {
         obs.x -= 5;
       });
