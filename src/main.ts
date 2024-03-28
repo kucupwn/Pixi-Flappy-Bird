@@ -10,7 +10,6 @@ export class Game {
   _player: Player;
   _gameWorld: GameWorld;
   gameRunning: boolean = false;
-  obstacleInterval?: ReturnType<typeof setTimeout>;
   obstaclesArr: PIXI.Graphics[] = [];
 
   constructor() {
@@ -22,13 +21,22 @@ export class Game {
   public async init() {
     await this._app.init({ antialias: true, width: 700, height: 500 });
     appContainer!.appendChild(this._app.canvas);
+    this.gameStatus();
     this.addPlayer();
     this.addBoundaries();
+  }
 
+  private gameStatus() {
     window.addEventListener("keydown", (e) => {
       if (e.key === " " && !this.gameRunning) {
         this.gameRunning = true;
         this._app.ticker.add(this.gameLoop.bind(this));
+      } else if (e.key === "Escape" && this.gameRunning) {
+        this.gameRunning = false;
+        this._app.ticker.stop();
+      } else if (e.key === "Escape" && !this.gameRunning) {
+        this.gameRunning = true;
+        this._app.ticker.start();
       }
     });
   }
@@ -61,12 +69,9 @@ export class Game {
       });
     }
 
-    if (!this.obstacleInterval && this.gameRunning) {
-      this.obstacleInterval = setInterval(() => {
-        this._gameWorld.getObstacles();
-      }, 1000);
-    } else if (this.obstacleInterval && !this.gameRunning) {
-      clearInterval(this.obstacleInterval);
+    if (this.gameRunning) {
+      this._gameWorld.getObstacles();
+    } else if (!this.gameRunning) {
       this._app.ticker.stop();
     }
   }

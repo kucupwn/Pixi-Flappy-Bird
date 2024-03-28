@@ -5,6 +5,7 @@ export class GameWorld {
   game: Game;
   ceil: PIXI.Graphics;
   floor: PIXI.Graphics;
+  obstacleDistance: number = 400;
 
   constructor(game: Game) {
     this.game = game;
@@ -41,14 +42,19 @@ export class GameWorld {
   }
 
   public getObstacles(): void {
-    const obstacleHeights = this.getRandomHeights();
-
+    const obstacleHeights: number[] = this.getRandomHeights();
     let obstacleUpper = this.getObstacleUpper(obstacleHeights);
-    this.game._app.stage.addChild(obstacleUpper);
-    this.game.obstaclesArr.push(obstacleUpper);
-
     let obstacleLower = this.getObstacleLower(obstacleHeights);
-    this.game._app.stage.addChild(obstacleLower);
-    this.game.obstaclesArr.push(obstacleLower);
+    let distance =
+      this.game.obstaclesArr[this.game.obstaclesArr.length - 1]?.x >
+      this.obstacleDistance;
+
+    if (this.game.gameRunning && !distance) {
+      this.game._app.stage.addChild(obstacleUpper);
+      this.game.obstaclesArr.push(obstacleUpper);
+
+      this.game._app.stage.addChild(obstacleLower);
+      this.game.obstaclesArr.push(obstacleLower);
+    }
   }
 }
