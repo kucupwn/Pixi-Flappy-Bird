@@ -26,6 +26,10 @@ export class GameWorld {
     const floorTexture = await PIXI.Assets.load("./assets/base.png");
     const tilingFloorTexture = PIXI.TilingSprite.from(floorTexture);
     this.setFloorSprite(tilingFloorTexture);
+
+    const ceilTexture = await PIXI.Assets.load("./assets/base.png");
+    const tilingCeilTexture = PIXI.TilingSprite.from(ceilTexture);
+    this.setCeilSprite(tilingCeilTexture);
   }
 
   private setBackgroundSprite(background: PIXI.TilingSprite) {
@@ -34,15 +38,26 @@ export class GameWorld {
     background.width = this.game._app.canvas.width;
   }
 
+  private setCeilSprite(ceil: PIXI.TilingSprite) {
+    this.ceil = ceil;
+    this.game._app.stage.addChild(this.ceil);
+    this.ceil.anchor.y = 1;
+    this.ceil.scale.y *= -1;
+    this.ceil.y = -95;
+    this.ceil.width = this.game._app.canvas.width;
+  }
+
   private setFloorSprite(floor: PIXI.TilingSprite) {
     this.floor = floor;
     this.game._app.stage.addChild(this.floor);
     this.floor.y = this.game._app.canvas.height * 0.9;
-    this.floor.scale.x = this.game._app.canvas.width;
+    this.floor.width = this.game._app.canvas.width;
   }
 
   public animateWorld(): void {
     this.background.tilePosition.x -= 0.1;
+    this.ceil.tilePosition.x -= 5;
+    this.floor.tilePosition.x -= 5;
   }
 
   private getRandomHeights(): number[] {

@@ -50,7 +50,7 @@ export class Game {
       !collideWithObstacles(this)
     ) {
       this._player.movePlayer();
-      this._gameWorld.getObstacles();
+      // this._gameWorld.getObstacles();
       this._gameWorld.animateWorld();
       this.obstaclesArr.forEach((obs) => {
         obs.x -= 5;
