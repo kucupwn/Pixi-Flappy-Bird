@@ -24,17 +24,10 @@ export class Game {
 
     window.addEventListener("keydown", (e) => {
       if (e.key === " " && !this.gameRunning) {
+        this.gameRunning = true;
         this._app.ticker.add(this.gameLoop.bind(this));
       }
     });
-  }
-
-  private setGameStatus(): void {
-    if (this._player.keys[" "]) {
-      this.gameRunning = true;
-    } else if (this._player.keys["Escape"]) {
-      this.gameRunning = false;
-    }
   }
 
   private addPlayer(): void {
@@ -88,8 +81,7 @@ export class Game {
     return false;
   }
 
-  private gameLoop(): void {
-    this.setGameStatus();
+  public gameLoop(): void {
     if (
       this.gameRunning &&
       !this.collideWithBoundaries() &&
