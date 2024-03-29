@@ -61,12 +61,12 @@ export class GameWorld {
   public getObstacles(texture: PIXI.Texture): void {
     const obstacleClone1 = PIXI.Sprite.from(texture);
     obstacleClone1.x = this.game._app.canvas.width;
-    obstacleClone1.y = 180;
+    obstacleClone1.y = this.getObstacleOffset();
     obstacleClone1.scale.y *= -1;
 
     const obstacleClone2 = PIXI.Sprite.from(texture);
     obstacleClone2.x = this.game._app.canvas.width;
-    obstacleClone2.y = 320;
+    obstacleClone2.y = obstacleClone1.y + 150;
 
     const distance =
       this.obstaclesArr[this.obstaclesArr.length - 1]?.x >
