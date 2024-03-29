@@ -115,6 +115,7 @@ export class GameWorld {
         count++;
       }
     });
+    this.game.score = count;
 
     return count / 2;
   }

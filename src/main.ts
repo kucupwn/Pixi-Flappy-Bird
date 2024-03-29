@@ -10,13 +10,17 @@ export class Game {
   _player: Player;
   _gameWorld: GameWorld;
   gameRunning: boolean = false;
-  score: PIXI.Text;
+  scoreLabel: PIXI.Text;
+  highscoreLabel: PIXI.Text;
+  score: number = 0;
+  highScore: number = 0;
 
   constructor() {
     this._app = new PIXI.Application();
     this._player = new Player(this);
     this._gameWorld = new GameWorld(this);
-    this.score = new PIXI.Text({ text: "cica", style: { fill: "black" } });
+    this.scoreLabel = new PIXI.Text({ text: "", style: { fill: "black" } });
+    this.highscoreLabel = new PIXI.Text({ text: "", style: { fill: "black" } });
   }
 
   public async init() {
@@ -27,6 +31,7 @@ export class Game {
 
     this.gameStatus();
     this.displayScore();
+    this.displayHighScore();
   }
 
   private gameStatus() {
@@ -45,11 +50,25 @@ export class Game {
   }
 
   public displayScore() {
-    this._app.stage.addChild(this.score);
-    this.score.y = this._app.canvas.height * 0.94;
-    // this.score.x = this._app.canvas.width / 2;
-    this.score.zIndex = 1;
-    this.score.text = `Score: ${this._gameWorld.countObstacles()}`;
+    this._app.stage.addChild(this.scoreLabel);
+    this.scoreLabel.y = this._app.canvas.height * 0.94;
+    // this.scoreLabel.x = this._app.canvas.width / 2;
+    this.scoreLabel.zIndex = 1;
+    this.scoreLabel.text = `Score: ${this._gameWorld.countObstacles()}`;
+  }
+
+  private displayHighScore() {
+    this._app.stage.addChild(this.highscoreLabel);
+    this.highscoreLabel.y = this._app.canvas.height * 0.94;
+    this.highscoreLabel.x = this._app.canvas.width / 2;
+    this.highscoreLabel.zIndex = 1;
+    this.highscoreLabel.text = `Highscore: ${this.highScore}`;
+  }
+
+  private setHighScore() {
+    if (this.score > this.highScore) {
+      this.highScore = this.score / 2;
+    }
   }
 
   public gameLoop(): void {
@@ -67,6 +86,8 @@ export class Game {
         obs.x -= 5;
       });
     } else if (!this.gameRunning) {
+      this.setHighScore();
+      this.displayHighScore();
       this._app.ticker.stop();
     }
   }
