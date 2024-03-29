@@ -60,7 +60,7 @@ export class Game {
   private displayHighscore() {
     this._app.stage.addChild(this.highscoreLabel);
     this.highscoreLabel.y = this._app.canvas.height * 0.94;
-    this.highscoreLabel.x = this._app.canvas.width / 2;
+    this.highscoreLabel.x = this._app.canvas.width * 0.75;
     this.highscoreLabel.zIndex = 1;
     this.highscoreLabel.text = `Highscore: ${this.highScore}`;
   }
