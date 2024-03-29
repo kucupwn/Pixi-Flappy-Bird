@@ -48,9 +48,10 @@ export class Game {
       !collideWithBoundaries(this) &&
       !collideWithObstacles(this)
     ) {
+      console.log(game._gameWorld.obstaclesArr);
       this._player.movePlayer();
-      // this._gameWorld.getObstacles();
       this._gameWorld.animateWorld();
+      this._gameWorld.getObstacles(this._gameWorld.obstacleTexture);
       this._gameWorld.obstaclesArr.forEach((obs) => {
         obs.x -= 5;
       });

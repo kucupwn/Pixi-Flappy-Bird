@@ -9,7 +9,7 @@ export class Player {
 
   constructor(game: Game) {
     this.game = game;
-    this.graphics = new PIXI.Graphics().circle(0, 0, 30).fill("green");
+    this.graphics = new PIXI.Graphics().circle(0, 0, 25).fill("green");
     this.eventListener();
   }
 

@@ -42,24 +42,42 @@ export class GameWorld {
   private initObstacles(texture: PIXI.Texture) {
     const firstObs1 = PIXI.Sprite.from(texture);
     this.game._app.stage.addChild(firstObs1);
-    firstObs1.x = this.game._app.canvas.width - 200;
-    firstObs1.y = 150;
+    firstObs1.x = this.game._app.canvas.width;
+    firstObs1.y = 180;
     firstObs1.scale.y *= -1;
     this.obstaclesArr.push(firstObs1);
 
     const firstObs2 = PIXI.Sprite.from(texture);
     this.game._app.stage.addChild(firstObs2);
-    firstObs2.x = this.game._app.canvas.width - 200;
-    firstObs2.y = 350;
+    firstObs2.x = this.game._app.canvas.width;
+    firstObs2.y = 320;
     this.obstaclesArr.push(firstObs2);
   }
 
-  private getObstaclePair(texture: PIXI.Texture): void {
-    const obstacleClone1 = PIXI.Sprite.from(texture);
-    const obstacleClone2 = PIXI.Sprite.from(texture);
+  private getObstacleOffset(): number {
+    return Math.floor(Math.random() * 200 + 50);
+  }
 
-    this.game._app.stage.addChild(obstacleClone1);
-    this.game._app.stage.addChild(obstacleClone2);
+  public getObstacles(texture: PIXI.Texture): void {
+    const obstacleClone1 = PIXI.Sprite.from(texture);
+    obstacleClone1.x = this.game._app.canvas.width;
+    obstacleClone1.y = 180;
+    obstacleClone1.scale.y *= -1;
+
+    const obstacleClone2 = PIXI.Sprite.from(texture);
+    obstacleClone2.x = this.game._app.canvas.width;
+    obstacleClone2.y = 320;
+
+    const distance =
+      this.obstaclesArr[this.obstaclesArr.length - 1]?.x >
+      this.obstacleDistance;
+
+    if (this.game.gameRunning && !distance) {
+      this.game._app.stage.addChild(obstacleClone1);
+      this.obstaclesArr.push(obstacleClone1);
+      this.game._app.stage.addChild(obstacleClone2);
+      this.obstaclesArr.push(obstacleClone2);
+    }
   }
 
   private setBackgroundSprite(background: PIXI.TilingSprite) {
