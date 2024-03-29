@@ -3,14 +3,14 @@ import { Game } from "./main";
 export function collideWithBoundaries(game: Game): boolean {
   const playerTop = game._player.graphics.getBounds().minY;
   const playerBottom = game._player.graphics.getBounds().maxY;
-  const ceilBottom = game._gameWorld.ceil.getBounds().maxY;
-  const floorTop = game._gameWorld.floor.getBounds().minY;
+  const ceilBottom = game._gameWorld.ceil.y;
+  const floorTop = game._gameWorld.floor.y;
 
   return playerTop <= ceilBottom || playerBottom >= floorTop;
 }
 
 export function collideWithObstacles(game: Game): boolean {
-  for (const obstacle of game.obstaclesArr) {
+  for (const obstacle of game._gameWorld.obstaclesArr) {
     const playerLeft = game._player.graphics.getBounds().minX;
     const playerRight = game._player.graphics.getBounds().maxX;
     const playerTop = game._player.graphics.getBounds().minY;

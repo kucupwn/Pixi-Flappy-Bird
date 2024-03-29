@@ -10,7 +10,6 @@ export class Game {
   _player: Player;
   _gameWorld: GameWorld;
   gameRunning: boolean = false;
-  obstaclesArr: PIXI.Graphics[] = [];
 
   constructor() {
     this._app = new PIXI.Application();
@@ -21,7 +20,7 @@ export class Game {
   public async init() {
     await this._app.init({ antialias: true, width: 700, height: 500 });
     appContainer?.appendChild(this._app.canvas);
-    await this._gameWorld.loadSprites();
+    await this._gameWorld.initGameWorldSprites();
 
     this.gameStatus();
     this._player.addPlayer();
@@ -52,7 +51,7 @@ export class Game {
       this._player.movePlayer();
       // this._gameWorld.getObstacles();
       this._gameWorld.animateWorld();
-      this.obstaclesArr.forEach((obs) => {
+      this._gameWorld.obstaclesArr.forEach((obs) => {
         obs.x -= 5;
       });
     } else if (!this.gameRunning) {
