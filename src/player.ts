@@ -3,20 +3,29 @@ import { Game } from "./main";
 
 export class Player {
   game: Game;
-  graphics: PIXI.Graphics;
+  bird: PIXI.Sprite;
   velY: number = 0;
   jumpStrength: number = -6;
 
   constructor(game: Game) {
     this.game = game;
-    this.graphics = new PIXI.Graphics().circle(0, 0, 25).fill("green");
+    this.bird = new PIXI.Sprite();
     this.eventListener();
   }
 
-  public addPlayer(): void {
-    this.game._player.graphics.x = this.game._app.canvas.width * 0.3;
-    this.game._player.graphics.y = this.game._app.canvas.height / 2;
-    this.game._app.stage.addChild(this.game._player.graphics);
+  public async initBirdSprite() {
+    const birdTexture = await PIXI.Assets.load(
+      "./assets/yellowbird-upflap.png"
+    );
+    const birdSprite = PIXI.Sprite.from(birdTexture);
+    this.setPlayer(birdSprite);
+  }
+
+  public setPlayer(bird: PIXI.Sprite): void {
+    this.bird = bird;
+    this.bird.x = this.game._app.canvas.width * 0.3;
+    this.bird.y = this.game._app.canvas.height / 2;
+    this.game._app.stage.addChild(this.bird);
   }
 
   private eventListener(): void {
@@ -31,6 +40,6 @@ export class Player {
 
   public movePlayer(): void {
     this.velY += 0.3;
-    this.graphics.y += this.velY;
+    this.bird.y += this.velY;
   }
 }

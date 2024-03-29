@@ -8,6 +8,7 @@ export class GameWorld {
   floor: PIXI.TilingSprite;
   obstacleTexture: PIXI.Texture;
   obstaclesArr: PIXI.Sprite[] = [];
+  obstacleGap: number = 120;
   obstacleDistance: number = 400;
 
   constructor(game: Game) {
@@ -50,12 +51,12 @@ export class GameWorld {
     const firstObs2 = PIXI.Sprite.from(texture);
     this.game._app.stage.addChild(firstObs2);
     firstObs2.x = this.game._app.canvas.width;
-    firstObs2.y = 320;
+    firstObs2.y = firstObs1.y + this.obstacleGap;
     this.obstaclesArr.push(firstObs2);
   }
 
   private getObstacleOffset(): number {
-    return Math.floor(Math.random() * 200 + 50);
+    return Math.floor(Math.random() * 250 + 50);
   }
 
   public getObstacles(texture: PIXI.Texture): void {
@@ -66,7 +67,7 @@ export class GameWorld {
 
     const obstacleClone2 = PIXI.Sprite.from(texture);
     obstacleClone2.x = this.game._app.canvas.width;
-    obstacleClone2.y = obstacleClone1.y + 150;
+    obstacleClone2.y = obstacleClone1.y + this.obstacleGap;
 
     const distance =
       this.obstaclesArr[this.obstaclesArr.length - 1]?.x >
@@ -106,49 +107,4 @@ export class GameWorld {
     this.ceil.tilePosition.x -= 5;
     this.floor.tilePosition.x -= 5;
   }
-
-  // private getRandomHeights(): number[] {
-  //   const obstacleSumHeight = this.game._app.canvas.height - 200;
-  //   const randomHeight1 = Math.floor(Math.random() * obstacleSumHeight);
-  //   const randomHeight2 = obstacleSumHeight - randomHeight1;
-
-  //   return [randomHeight1, randomHeight2];
-  // }
-
-  // private getObstacleUpper(obstacleHeights: number[]): PIXI.Graphics {
-  //   const obstacleUpper = new PIXI.Graphics().rect(0, 0, 30, 20).fill("red");
-  //   obstacleUpper.height = obstacleHeights[0];
-  //   obstacleUpper.x = this.game._app.canvas.width;
-  //   obstacleUpper.y += this.ceil.height;
-
-  //   return obstacleUpper;
-  // }
-
-  // private getObstacleLower(obstacleHeights: number[]): PIXI.Graphics {
-  //   const obstacleLower = new PIXI.Graphics().rect(0, 0, 30, 20).fill("red");
-
-  //   obstacleLower.height = obstacleHeights[1];
-  //   obstacleLower.x = this.game._app.canvas.width;
-  //   obstacleLower.y =
-  //     this.game._app.canvas.height - obstacleLower.height - this.floor.height;
-
-  //   return obstacleLower;
-  // }
-
-  // public getObstacles(): void {
-  //   const obstacleHeights: number[] = this.getRandomHeights();
-  //   let obstacleUpper = this.getObstacleUpper(obstacleHeights);
-  //   let obstacleLower = this.getObstacleLower(obstacleHeights);
-  //   let distance =
-  //     this.game.obstaclesArr[this.game.obstaclesArr.length - 1]?.x >
-  //     this.obstacleDistance;
-
-  //   if (this.game.gameRunning && !distance) {
-  //     this.game._app.stage.addChild(obstacleUpper);
-  //     this.game.obstaclesArr.push(obstacleUpper);
-
-  //     this.game._app.stage.addChild(obstacleLower);
-  //     this.game.obstaclesArr.push(obstacleLower);
-  //   }
-  // }
 }

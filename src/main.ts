@@ -21,10 +21,9 @@ export class Game {
     await this._app.init({ antialias: true, width: 700, height: 500 });
     appContainer?.appendChild(this._app.canvas);
     await this._gameWorld.initGameWorldSprites();
+    await this._player.initBirdSprite();
 
     this.gameStatus();
-    this._player.addPlayer();
-    // this._gameWorld.addBoundaries();
   }
 
   private gameStatus() {
