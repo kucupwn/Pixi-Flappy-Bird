@@ -33,7 +33,7 @@ export class Player {
   }
 
   private keyDown(e: KeyboardEvent): void {
-    if (e.key === " ") {
+    if (e.key === " " && this.game.gameRunning) {
       this.velY = this.jumpStrength;
     }
   }
@@ -41,5 +41,11 @@ export class Player {
   public movePlayer(): void {
     this.velY += 0.3;
     this.bird.y += this.velY;
+  }
+
+  public resetPlayer() {
+    this.bird.x = this.game._app.canvas.width * 0.3;
+    this.bird.y = this.game._app.canvas.height / 2;
+    this.velY = 0;
   }
 }

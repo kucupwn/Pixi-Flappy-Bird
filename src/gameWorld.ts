@@ -62,7 +62,7 @@ export class GameWorld {
   }
 
   public animateWorld(): void {
-    this.background.tilePosition.x -= 0.1;
+    this.background.tilePosition.x -= 0.2;
     this.ceil.tilePosition.x -= 5;
     this.floor.tilePosition.x -= 5;
   }
@@ -118,5 +118,13 @@ export class GameWorld {
     this.game.score = count;
 
     return count / 2;
+  }
+
+  public resetGameWorld() {
+    this.obstaclesArr.forEach((obstacle) => {
+      this.game._app.stage.removeChild(obstacle);
+    });
+    this.obstaclesArr = [];
+    this.initObstacles(this.obstacleTexture);
   }
 }

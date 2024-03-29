@@ -10,8 +10,10 @@ export class Game {
   _player: Player;
   _gameWorld: GameWorld;
   gameRunning: boolean = false;
+  tickerAdded: boolean = false;
   startInfo: PIXI.Text;
   pauseInfo: PIXI.Text;
+  restartInfo: PIXI.Text;
   scoreLabel: PIXI.Text;
   highscoreLabel: PIXI.Text;
   score: number = 0;
@@ -31,6 +33,10 @@ export class Game {
       text: "Press 'Escape' to pause/unpause!",
       style: { fill: "black" },
     });
+    this.restartInfo = new PIXI.Text({
+      text: "Press 'Enter' to restart!",
+      style: { fill: "black" },
+    });
   }
 
   public async init() {
@@ -45,14 +51,16 @@ export class Game {
     this.displayHighscore();
   }
 
+  private startGame() {
+    this.gameRunning = true;
+    this._app.stage.removeChild(this.startInfo);
+    this._app.stage.removeChild(this.pauseInfo);
+    this._app.stage.removeChild(this.restartInfo);
+  }
+
   private gameStatus() {
     window.addEventListener("keydown", (e) => {
-      if (e.key === " " && !this.gameRunning) {
-        this.gameRunning = true;
-        this._app.ticker.add(this.gameLoop.bind(this));
-        this._app.stage.removeChild(this.startInfo);
-        this._app.stage.removeChild(this.pauseInfo);
-      } else if (e.key === "Escape" && this.gameRunning) {
+      if (e.key === "Escape" && this.gameRunning) {
         this.gameRunning = false;
         this._app.ticker.stop();
       } else if (e.key === "Escape" && !this.gameRunning) {
@@ -60,6 +68,22 @@ export class Game {
         this._app.ticker.start();
       }
     });
+
+    if (!this.tickerAdded) {
+      window.addEventListener("keydown", (e) => {
+        if (e.key === " " && !this.gameRunning && !this.tickerAdded) {
+          this.startGame();
+          this._app.ticker.add(this.gameLoop.bind(this));
+          this.tickerAdded = true;
+        }
+      });
+    } else if (this.tickerAdded) {
+      window.addEventListener("keydown", (e) => {
+        if (e.key === " " && !this.gameRunning && this.tickerAdded) {
+          this.startGame();
+        }
+      });
+    }
   }
 
   private control() {
@@ -72,6 +96,11 @@ export class Game {
     this.pauseInfo.anchor.set(0.5);
     this.pauseInfo.x = this._app.canvas.width / 2;
     this.pauseInfo.y = this._app.canvas.height * 0.3;
+
+    this._app.stage.addChild(this.restartInfo);
+    this.restartInfo.anchor.set(0.5);
+    this.restartInfo.x = this._app.canvas.width / 2;
+    this.restartInfo.y = this._app.canvas.height * 0.4;
   }
 
   public displayScore() {
@@ -95,13 +124,28 @@ export class Game {
     }
   }
 
+  private resetGame() {
+    window.addEventListener("keydown", (e) => {
+      if (e.key === "Enter") {
+        this.gameRunning = false;
+        this.score = 0;
+        this.displayScore();
+        this._player.resetPlayer();
+        this._gameWorld.resetGameWorld();
+        this._app.stage.addChild(this.startInfo);
+        this._app.stage.addChild(this.pauseInfo);
+        this._app.stage.addChild(this.restartInfo);
+        this.gameStatus();
+      }
+    });
+  }
+
   public gameLoop(): void {
     if (
       this.gameRunning &&
       !collideWithBoundaries(this) &&
       !collideWithObstacles(this)
     ) {
-      console.log(game._gameWorld.obstaclesArr);
       this.displayScore();
       this._player.movePlayer();
       this._gameWorld.animateWorld();
@@ -109,10 +153,13 @@ export class Game {
       this._gameWorld.obstaclesArr.forEach((obs) => {
         obs.x -= 5;
       });
-    } else if (!this.gameRunning) {
+    } else if (
+      !this.gameRunning &&
+      (collideWithBoundaries(this) || collideWithObstacles(this))
+    ) {
       this.setHighscore();
       this.displayHighscore();
-      this._app.ticker.stop();
+      this.resetGame();
     }
   }
 }
