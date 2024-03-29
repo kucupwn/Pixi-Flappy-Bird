@@ -40,6 +40,33 @@ export class GameWorld {
     this.initObstacles(this.obstacleTexture);
   }
 
+  private setBackgroundSprite(background: PIXI.TilingSprite) {
+    this.background = background;
+    this.game._app.stage.addChild(background);
+    background.width = this.game._app.canvas.width;
+  }
+
+  private setCeilSprite(ceil: PIXI.TilingSprite) {
+    this.ceil = ceil;
+    this.game._app.stage.addChild(this.ceil);
+    this.ceil.scale.y *= -1;
+    this.ceil.y = 20;
+    this.ceil.width = this.game._app.canvas.width;
+  }
+
+  private setFloorSprite(floor: PIXI.TilingSprite) {
+    this.floor = floor;
+    this.game._app.stage.addChild(this.floor);
+    this.floor.y = this.game._app.canvas.height * 0.9;
+    this.floor.width = this.game._app.canvas.width;
+  }
+
+  public animateWorld(): void {
+    this.background.tilePosition.x -= 0.1;
+    this.ceil.tilePosition.x -= 5;
+    this.floor.tilePosition.x -= 5;
+  }
+
   private initObstacles(texture: PIXI.Texture) {
     const firstObs1 = PIXI.Sprite.from(texture);
     this.game._app.stage.addChild(firstObs1);
@@ -81,30 +108,14 @@ export class GameWorld {
     }
   }
 
-  private setBackgroundSprite(background: PIXI.TilingSprite) {
-    this.background = background;
-    this.game._app.stage.addChild(background);
-    background.width = this.game._app.canvas.width;
-  }
+  public countObstacles(): number {
+    let count = 0;
+    this.obstaclesArr.forEach((obs) => {
+      if (obs.getBounds().maxX < this.game._player.bird.getBounds().minX) {
+        count++;
+      }
+    });
 
-  private setCeilSprite(ceil: PIXI.TilingSprite) {
-    this.ceil = ceil;
-    this.game._app.stage.addChild(this.ceil);
-    this.ceil.scale.y *= -1;
-    this.ceil.y = 20;
-    this.ceil.width = this.game._app.canvas.width;
-  }
-
-  private setFloorSprite(floor: PIXI.TilingSprite) {
-    this.floor = floor;
-    this.game._app.stage.addChild(this.floor);
-    this.floor.y = this.game._app.canvas.height * 0.9;
-    this.floor.width = this.game._app.canvas.width;
-  }
-
-  public animateWorld(): void {
-    this.background.tilePosition.x -= 0.1;
-    this.ceil.tilePosition.x -= 5;
-    this.floor.tilePosition.x -= 5;
+    return count / 2;
   }
 }

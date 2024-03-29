@@ -10,11 +10,13 @@ export class Game {
   _player: Player;
   _gameWorld: GameWorld;
   gameRunning: boolean = false;
+  score: PIXI.Text;
 
   constructor() {
     this._app = new PIXI.Application();
     this._player = new Player(this);
     this._gameWorld = new GameWorld(this);
+    this.score = new PIXI.Text({ text: "cica", style: { fill: "black" } });
   }
 
   public async init() {
@@ -24,6 +26,7 @@ export class Game {
     await this._player.initBirdSprite();
 
     this.gameStatus();
+    this.displayScore();
   }
 
   private gameStatus() {
@@ -41,6 +44,14 @@ export class Game {
     });
   }
 
+  public displayScore() {
+    this._app.stage.addChild(this.score);
+    this.score.y = this._app.canvas.height * 0.94;
+    // this.score.x = this._app.canvas.width / 2;
+    this.score.zIndex = 1;
+    this.score.text = `Score: ${this._gameWorld.countObstacles()}`;
+  }
+
   public gameLoop(): void {
     if (
       this.gameRunning &&
@@ -51,6 +62,7 @@ export class Game {
       this._player.movePlayer();
       this._gameWorld.animateWorld();
       this._gameWorld.getObstacles(this._gameWorld.obstacleTexture);
+      this.displayScore();
       this._gameWorld.obstaclesArr.forEach((obs) => {
         obs.x -= 5;
       });
