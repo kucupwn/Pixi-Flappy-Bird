@@ -31,7 +31,7 @@ export class Game {
 
     this.gameStatus();
     this.displayScore();
-    this.displayHighScore();
+    this.displayHighscore();
   }
 
   private gameStatus() {
@@ -57,7 +57,7 @@ export class Game {
     this.scoreLabel.text = `Score: ${this._gameWorld.countObstacles()}`;
   }
 
-  private displayHighScore() {
+  private displayHighscore() {
     this._app.stage.addChild(this.highscoreLabel);
     this.highscoreLabel.y = this._app.canvas.height * 0.94;
     this.highscoreLabel.x = this._app.canvas.width / 2;
@@ -65,7 +65,7 @@ export class Game {
     this.highscoreLabel.text = `Highscore: ${this.highScore}`;
   }
 
-  private setHighScore() {
+  private setHighscore() {
     if (this.score > this.highScore) {
       this.highScore = this.score / 2;
     }
@@ -78,16 +78,16 @@ export class Game {
       !collideWithObstacles(this)
     ) {
       console.log(game._gameWorld.obstaclesArr);
+      this.displayScore();
       this._player.movePlayer();
       this._gameWorld.animateWorld();
       this._gameWorld.getObstacles(this._gameWorld.obstacleTexture);
-      this.displayScore();
       this._gameWorld.obstaclesArr.forEach((obs) => {
         obs.x -= 5;
       });
     } else if (!this.gameRunning) {
-      this.setHighScore();
-      this.displayHighScore();
+      this.setHighscore();
+      this.displayHighscore();
       this._app.ticker.stop();
     }
   }

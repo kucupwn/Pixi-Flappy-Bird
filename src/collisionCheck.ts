@@ -6,7 +6,12 @@ export function collideWithBoundaries(game: Game): boolean {
   const ceilBottom = game._gameWorld.ceil.y;
   const floorTop = game._gameWorld.floor.y;
 
-  return playerTop <= ceilBottom || playerBottom >= floorTop;
+  if (playerTop <= ceilBottom || playerBottom >= floorTop) {
+    game.gameRunning = false;
+    return true;
+  } else {
+    return false;
+  }
 }
 
 export function collideWithObstacles(game: Game): boolean {
