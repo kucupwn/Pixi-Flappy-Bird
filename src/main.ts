@@ -10,6 +10,8 @@ export class Game {
   _player: Player;
   _gameWorld: GameWorld;
   gameRunning: boolean = false;
+  startInfo: PIXI.Text;
+  pauseInfo: PIXI.Text;
   scoreLabel: PIXI.Text;
   highscoreLabel: PIXI.Text;
   score: number = 0;
@@ -21,6 +23,14 @@ export class Game {
     this._gameWorld = new GameWorld(this);
     this.scoreLabel = new PIXI.Text({ text: "", style: { fill: "black" } });
     this.highscoreLabel = new PIXI.Text({ text: "", style: { fill: "black" } });
+    this.startInfo = new PIXI.Text({
+      text: "Press 'Space' to start!",
+      style: { fill: "black" },
+    });
+    this.pauseInfo = new PIXI.Text({
+      text: "Press 'Escape' to pause/unpause!",
+      style: { fill: "black" },
+    });
   }
 
   public async init() {
@@ -29,6 +39,7 @@ export class Game {
     await this._gameWorld.initGameWorldSprites();
     await this._player.initBirdSprite();
 
+    this.control();
     this.gameStatus();
     this.displayScore();
     this.displayHighscore();
@@ -39,6 +50,8 @@ export class Game {
       if (e.key === " " && !this.gameRunning) {
         this.gameRunning = true;
         this._app.ticker.add(this.gameLoop.bind(this));
+        this._app.stage.removeChild(this.startInfo);
+        this._app.stage.removeChild(this.pauseInfo);
       } else if (e.key === "Escape" && this.gameRunning) {
         this.gameRunning = false;
         this._app.ticker.stop();
@@ -49,10 +62,21 @@ export class Game {
     });
   }
 
+  private control() {
+    this._app.stage.addChild(this.startInfo);
+    this.startInfo.anchor.set(0.5);
+    this.startInfo.x = this._app.canvas.width / 2;
+    this.startInfo.y = this._app.canvas.height * 0.2;
+
+    this._app.stage.addChild(this.pauseInfo);
+    this.pauseInfo.anchor.set(0.5);
+    this.pauseInfo.x = this._app.canvas.width / 2;
+    this.pauseInfo.y = this._app.canvas.height * 0.3;
+  }
+
   public displayScore() {
     this._app.stage.addChild(this.scoreLabel);
     this.scoreLabel.y = this._app.canvas.height * 0.94;
-    // this.scoreLabel.x = this._app.canvas.width / 2;
     this.scoreLabel.zIndex = 1;
     this.scoreLabel.text = `Score: ${this._gameWorld.countObstacles()}`;
   }
