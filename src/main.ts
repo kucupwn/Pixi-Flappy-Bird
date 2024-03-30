@@ -95,10 +95,11 @@ export class Game {
     ) {
       this._texts.displayScore();
       this._player.movePlayer();
-      this._gameWorld.animateWorld();
+      // this._gameWorld.animateWorld();
       this._gameWorld.getObstacles(this._gameWorld.obstacleTexture);
+      this._gameWorld.gameWorldSpeedProgression();
       this._gameWorld.obstaclesArr.forEach((obs) => {
-        obs.x -= 5;
+        this._gameWorld.obstacleSpeedProgression(obs);
       });
     } else if (
       !this.gameRunning &&

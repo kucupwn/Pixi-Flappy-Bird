@@ -61,7 +61,7 @@ export class Texts {
 
   public setHighscore() {
     if (this.game.score > this.game.highScore) {
-      this.game.highScore = this.game.score / 2;
+      this.game.highScore = this.game.score;
     }
   }
 }

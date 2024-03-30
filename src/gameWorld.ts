@@ -16,8 +16,8 @@ export class GameWorld {
     this.ceil = new PIXI.TilingSprite();
     this.floor = new PIXI.TilingSprite();
     this.background = new PIXI.TilingSprite();
-    this.initGameWorldSprites();
     this.obstacleTexture = new PIXI.Texture();
+    this.initGameWorldSprites();
   }
 
   public async initGameWorldSprites(): Promise<void> {
@@ -61,11 +61,11 @@ export class GameWorld {
     this.floor.width = this.game._app.canvas.width;
   }
 
-  public animateWorld(): void {
-    this.background.tilePosition.x -= 0.2;
-    this.ceil.tilePosition.x -= 5;
-    this.floor.tilePosition.x -= 5;
-  }
+  // public animateWorld(): void {
+  //   this.background.tilePosition.x -= 0.2;
+  //   this.ceil.tilePosition.x -= 5;
+  //   this.floor.tilePosition.x -= 5;
+  // }
 
   private initObstacles(texture: PIXI.Texture) {
     const firstObs1 = PIXI.Sprite.from(texture);
@@ -115,9 +115,41 @@ export class GameWorld {
         count++;
       }
     });
-    this.game.score = count;
+    this.game.score = count / 2;
 
     return count / 2;
+  }
+
+  public gameWorldSpeedProgression() {
+    if (this.game.score >= 50) {
+      this.background.tilePosition.x -= 0.5;
+      this.ceil.tilePosition.x -= 6;
+      this.floor.tilePosition.x -= 6;
+    } else if (this.game.score >= 30) {
+      this.background.tilePosition.x -= 0.4;
+      this.ceil.tilePosition.x -= 5;
+      this.floor.tilePosition.x -= 5;
+    } else if (this.game.score >= 10) {
+      this.background.tilePosition.x -= 0.3;
+      this.ceil.tilePosition.x -= 4;
+      this.floor.tilePosition.x -= 4;
+    } else if (this.game.score < 10) {
+      this.background.tilePosition.x -= 0.2;
+      this.ceil.tilePosition.x -= 3;
+      this.floor.tilePosition.x -= 3;
+    }
+  }
+
+  public obstacleSpeedProgression(obstacle: PIXI.Sprite) {
+    if (this.game.score >= 50) {
+      obstacle.x -= 6;
+    } else if (this.game.score >= 30) {
+      obstacle.x -= 5;
+    } else if (this.game.score >= 10) {
+      obstacle.x -= 4;
+    } else if (this.game.score < 10) {
+      obstacle.x -= 3;
+    }
   }
 
   public resetGameWorld() {
