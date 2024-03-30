@@ -33,7 +33,7 @@ export class Player {
   }
 
   private keyDown(e: KeyboardEvent): void {
-    if (e.key === " " && this.game.gameRunning) {
+    if (e.key === " ") {
       this.velY = this.jumpStrength;
     }
   }
