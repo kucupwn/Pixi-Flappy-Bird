@@ -46,11 +46,19 @@ export class Game {
 
   private gameStatus() {
     window.addEventListener("keydown", (e) => {
-      if (e.key === "Escape" && this.gameRunning) {
+      if (
+        e.key === "Escape" &&
+        this.gameRunning &&
+        this._gameWorld.obstaclesArr.length > 2
+      ) {
         this.keylock = true;
         this.gameRunning = false;
         this._app.ticker.stop();
-      } else if (e.key === "Escape" && !this.gameRunning) {
+      } else if (
+        e.key === "Escape" &&
+        !this.gameRunning &&
+        this._gameWorld.obstaclesArr.length > 2
+      ) {
         this.keylock = false;
         this.gameRunning = true;
         this._app.ticker.start();
