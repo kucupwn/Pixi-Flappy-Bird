@@ -13,6 +13,7 @@ export class Game {
   _texts: Texts;
   gameRunning: boolean = false;
   tickerAdded: boolean = false;
+  keylock: boolean = false;
 
   score: number = 0;
   highScore: number = 0;
@@ -46,9 +47,11 @@ export class Game {
   private gameStatus() {
     window.addEventListener("keydown", (e) => {
       if (e.key === "Escape" && this.gameRunning) {
+        this.keylock = true;
         this.gameRunning = false;
         this._app.ticker.stop();
       } else if (e.key === "Escape" && !this.gameRunning) {
+        this.keylock = false;
         this.gameRunning = true;
         this._app.ticker.start();
       }
@@ -56,7 +59,12 @@ export class Game {
 
     if (!this.tickerAdded) {
       window.addEventListener("keydown", (e) => {
-        if (e.key === " " && !this.gameRunning && !this.tickerAdded) {
+        if (
+          e.key === " " &&
+          !this.gameRunning &&
+          !this.tickerAdded &&
+          !this.keylock
+        ) {
           this.startGame();
           this._app.ticker.add(this.gameLoop.bind(this));
           this.tickerAdded = true;
@@ -64,7 +72,12 @@ export class Game {
       });
     } else if (this.tickerAdded) {
       window.addEventListener("keydown", (e) => {
-        if (e.key === " " && !this.gameRunning && this.tickerAdded) {
+        if (
+          e.key === " " &&
+          !this.gameRunning &&
+          this.tickerAdded &&
+          !this.keylock
+        ) {
           this.startGame();
         }
       });
@@ -73,7 +86,7 @@ export class Game {
 
   private resetGame() {
     window.addEventListener("keydown", (e) => {
-      if (e.key === "Enter") {
+      if (e.key === "Enter" && !this.keylock) {
         this.gameRunning = false;
         this.score = 0;
         this._texts.displayScore();
@@ -93,9 +106,9 @@ export class Game {
       !collideWithBoundaries(this) &&
       !collideWithObstacles(this)
     ) {
+      this.resetGame();
       this._texts.displayScore();
       this._player.movePlayer();
-      // this._gameWorld.animateWorld();
       this._gameWorld.getObstacles(this._gameWorld.obstacleTexture);
       this._gameWorld.gameWorldSpeedProgression();
       this._gameWorld.obstaclesArr.forEach((obs) => {

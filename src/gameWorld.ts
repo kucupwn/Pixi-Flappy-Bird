@@ -61,12 +61,6 @@ export class GameWorld {
     this.floor.width = this.game._app.canvas.width;
   }
 
-  // public animateWorld(): void {
-  //   this.background.tilePosition.x -= 0.2;
-  //   this.ceil.tilePosition.x -= 5;
-  //   this.floor.tilePosition.x -= 5;
-  // }
-
   private initObstacles(texture: PIXI.Texture) {
     const firstObs1 = PIXI.Sprite.from(texture);
     this.game._app.stage.addChild(firstObs1);
