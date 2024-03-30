@@ -3,27 +3,39 @@ import { Game } from "./main";
 
 export class Player {
   game: Game;
-  bird: PIXI.Sprite;
+  bird: PIXI.AnimatedSprite;
   velY: number = 0;
   jumpStrength: number = -6;
 
   constructor(game: Game) {
     this.game = game;
-    this.bird = new PIXI.Sprite();
+    const placeholderTexture = PIXI.Texture.WHITE;
+    this.bird = new PIXI.AnimatedSprite([placeholderTexture]);
     this.jumpEventListener();
   }
 
   public async initBirdSprite() {
-    const birdTexture = await PIXI.Assets.load(
-      "./assets/yellowbird-upflap.png"
-    );
-    const birdSprite = PIXI.Sprite.from(birdTexture);
-    this.setPlayer(birdSprite);
+    const birdImages = [
+      "./assets/yellowbird-upflap.png",
+      "./assets/yellowbird-midflap.png",
+      "./assets/yellowbird-downflap.png",
+    ];
+
+    const textureArr: PIXI.Texture[] = [];
+
+    for (const image of birdImages) {
+      const texture = await PIXI.Assets.load(image);
+      textureArr.push(texture);
+    }
+
+    const animatedBirdSprite = new PIXI.AnimatedSprite(textureArr);
+    this.setPlayer(animatedBirdSprite);
   }
 
-  public setPlayer(bird: PIXI.Sprite): void {
+  public setPlayer(bird: PIXI.AnimatedSprite): void {
     this.bird = bird;
     this.bird.anchor.set(0.5);
+    this.bird.animationSpeed = 0.1;
     this.bird.x = this.game._app.canvas.width * 0.3;
     this.bird.y = this.game._app.canvas.height / 2;
     this.game._app.stage.addChild(this.bird);
@@ -45,10 +57,11 @@ export class Player {
     this.bird.rotation = Math.atan2(this.velY, 45);
   }
 
-  public resetPlayer() {
+  public resetPlayer(): void {
     this.bird.x = this.game._app.canvas.width * 0.3;
     this.bird.y = this.game._app.canvas.height / 2;
     this.velY = 0;
     this.bird.rotation = 0;
+    this.bird.gotoAndStop(0);
   }
 }

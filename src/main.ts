@@ -53,6 +53,7 @@ export class Game {
       ) {
         this.keylock = true;
         this.gameRunning = false;
+        this._player.bird.stop();
         this._app.ticker.stop();
       } else if (
         e.key === "Escape" &&
@@ -61,6 +62,7 @@ export class Game {
       ) {
         this.keylock = false;
         this.gameRunning = true;
+        this._player.bird.play();
         this._app.ticker.start();
       }
     });
@@ -119,6 +121,7 @@ export class Game {
       this._player.movePlayer();
       this._gameWorld.getObstacles(this._gameWorld.obstacleTexture);
       this._gameWorld.gameWorldSpeedProgression();
+      this._player.bird.play();
       this._gameWorld.obstaclesArr.forEach((obs) => {
         this._gameWorld.obstacleSpeedProgression(obs);
       });
@@ -126,6 +129,7 @@ export class Game {
       !this.gameRunning &&
       (collideWithBoundaries(this) || collideWithObstacles(this))
     ) {
+      this._player.bird.stop();
       this._texts.setHighscore();
       this._texts.displayHighscore();
       this.resetGame();

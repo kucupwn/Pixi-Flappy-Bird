@@ -17,7 +17,6 @@ export class GameWorld {
     this.floor = new PIXI.TilingSprite();
     this.background = new PIXI.TilingSprite();
     this.obstacleTexture = new PIXI.Texture();
-    this.initGameWorldSprites();
   }
 
   public async initGameWorldSprites(): Promise<void> {
