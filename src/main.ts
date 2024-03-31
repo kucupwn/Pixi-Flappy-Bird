@@ -2,6 +2,7 @@ import * as PIXI from "pixi.js";
 import { Player } from "./player";
 import { GameWorld } from "./gameWorld";
 import { Texts } from "./texts";
+import { sound } from "@pixi/sound";
 import { collideWithBoundaries, collideWithObstacles } from "./collisionCheck";
 
 const appContainer = document.getElementById("app");
@@ -31,10 +32,17 @@ export class Game {
     await this._gameWorld.initGameWorldSprites();
     await this._player.initBirdSprite();
 
+    this.addSounds();
     this.gameStatus();
     this._texts.controlInfo();
     this._texts.displayScore();
     this._texts.displayHighscore();
+  }
+
+  private addSounds() {
+    sound.add("wing", "./sounds/sfx_wing.wav");
+    sound.add("point", "./sounds/sfx_point.wav");
+    sound.add("hit", "./sounds/sfx_hit.wav");
   }
 
   private startGame() {
@@ -116,7 +124,6 @@ export class Game {
       !collideWithBoundaries(this) &&
       !collideWithObstacles(this)
     ) {
-      this.resetGame();
       this._texts.displayScore();
       this._player.movePlayer();
       this._gameWorld.getObstacles(this._gameWorld.obstacleTexture);
@@ -125,10 +132,12 @@ export class Game {
       this._gameWorld.obstaclesArr.forEach((obs) => {
         this._gameWorld.obstacleSpeedProgression(obs);
       });
+      this.resetGame();
     } else if (
       !this.gameRunning &&
       (collideWithBoundaries(this) || collideWithObstacles(this))
     ) {
+      // sound.play("hit");
       this._player.bird.stop();
       this._texts.setHighscore();
       this._texts.displayHighscore();

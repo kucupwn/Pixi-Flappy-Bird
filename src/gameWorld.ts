@@ -1,5 +1,6 @@
 import * as PIXI from "pixi.js";
 import { Game } from "./main";
+import { sound } from "@pixi/sound";
 
 export class GameWorld {
   game: Game;
@@ -9,7 +10,8 @@ export class GameWorld {
   obstacleTexture: PIXI.Texture;
   obstaclesArr: PIXI.Sprite[] = [];
   obstacleGap: number = 120;
-  obstacleDistance: number = 400;
+  obstacleDistance: number = 300;
+  pointSoundPlayed: boolean = false;
 
   constructor(game: Game) {
     this.game = game;
@@ -90,7 +92,8 @@ export class GameWorld {
     obstacleClone2.y = obstacleClone1.y + this.obstacleGap;
 
     const distance =
-      this.obstaclesArr[this.obstaclesArr.length - 1]?.x >
+      this.game._app.canvas.width -
+        this.obstaclesArr[this.obstaclesArr.length - 1]?.x <=
       this.obstacleDistance;
 
     if (this.game.gameRunning && !distance) {
@@ -103,14 +106,29 @@ export class GameWorld {
 
   public countObstacles(): number {
     let count = 0;
-    this.obstaclesArr.forEach((obs) => {
-      if (obs.getBounds().maxX < this.game._player.bird.getBounds().minX) {
-        count++;
+    this.obstaclesArr.forEach((obs, i) => {
+      if (i % 2 === 0) {
+        if (obs.getBounds().maxX < this.game._player.bird.getBounds().minX) {
+          count++;
+          if (!this.pointSoundPlayed) {
+            sound.play("point");
+            this.pointSoundPlayed = true;
+          }
+        }
+        if (
+          Math.floor(obs.getBounds().maxX) === 162 ||
+          Math.floor(obs.getBounds().maxX) === 161 ||
+          Math.floor(obs.getBounds().maxX) === 160
+        ) {
+          this.pointSoundPlayed = false;
+        }
       }
     });
-    this.game.score = count / 2;
+    console.log(this.obstaclesArr[0].getBounds().maxX);
+    // console.log(Math.floor(this.game._player.bird.getBounds().minX));
+    this.game.score = count;
 
-    return count / 2;
+    return count;
   }
 
   public gameWorldSpeedProgression() {

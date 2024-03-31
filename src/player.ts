@@ -1,5 +1,6 @@
 import * as PIXI from "pixi.js";
 import { Game } from "./main";
+import { sound } from "@pixi/sound";
 
 export class Player {
   game: Game;
@@ -36,7 +37,7 @@ export class Player {
     this.bird = bird;
     this.bird.anchor.set(0.5);
     this.bird.animationSpeed = 0.1;
-    this.bird.x = this.game._app.canvas.width * 0.3;
+    this.bird.x = 180;
     this.bird.y = this.game._app.canvas.height / 2;
     this.game._app.stage.addChild(this.bird);
   }
@@ -48,6 +49,9 @@ export class Player {
   private keyDown(e: KeyboardEvent): void {
     if (e.key === " " && !this.game.keylock) {
       this.velY = this.jumpStrength;
+      if (this.game.gameRunning) {
+        sound.play("wing");
+      }
     }
   }
 
@@ -58,7 +62,7 @@ export class Player {
   }
 
   public resetPlayer(): void {
-    this.bird.x = this.game._app.canvas.width * 0.3;
+    this.bird.x = 180;
     this.bird.y = this.game._app.canvas.height / 2;
     this.velY = 0;
     this.bird.rotation = 0;
