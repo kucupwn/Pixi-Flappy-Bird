@@ -148,7 +148,7 @@ export class Game {
       this._gameWorld.obstaclesArr.forEach((obs) => {
         this._gameWorld.obstacleSpeedProgression(obs);
       });
-      this.resetGame();
+      // this.resetGame();
     } else if (
       !this.gameRunning &&
       (collideWithBoundaries(this) || collideWithObstacles(this))
