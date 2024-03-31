@@ -143,7 +143,7 @@ window.addEventListener("keydown", (e) => {
     });
   }
 
-  if (e.key === "Enter" && !game.keylock) {
+  if (e.key === "Enter" && !game.keylock && !game.gameRunning) {
     game._app.ticker.start();
     game.gameRunning = false;
     game.score = 0;
