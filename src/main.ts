@@ -34,6 +34,7 @@ export class Game {
 
     this.addSounds();
     this.gameStatus();
+    this._texts.initFps();
     this._texts.controlInfo();
     this._texts.displayScore();
     this._texts.displayHighscore();
@@ -138,6 +139,7 @@ export class Game {
       !collideWithBoundaries(this) &&
       !collideWithObstacles(this)
     ) {
+      this._texts.displayFps();
       this._texts.displayScore();
       this._player.movePlayer();
       this._gameWorld.getObstacles(this._gameWorld.obstacleTexture);

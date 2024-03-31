@@ -1,8 +1,13 @@
 import * as PIXI from "pixi.js";
 import { Game } from "./main";
 
+let prevFrame = Date.now();
+
 export class Texts {
   game: Game;
+  fpsCounter: number = 0;
+  fpsAcc: number = 0;
+  fpsLabel: PIXI.Text;
   startInfo: PIXI.Text;
   pauseInfo: PIXI.Text;
   restartInfo: PIXI.Text;
@@ -11,6 +16,7 @@ export class Texts {
 
   constructor(game: Game) {
     this.game = game;
+    this.fpsLabel = new PIXI.Text({ text: "FPS", style: { fill: "black" } });
     this.scoreLabel = new PIXI.Text({ text: "", style: { fill: "black" } });
     this.highscoreLabel = new PIXI.Text({ text: "", style: { fill: "black" } });
     this.startInfo = new PIXI.Text({
@@ -25,6 +31,30 @@ export class Texts {
       text: "Press 'Enter' to restart!",
       style: { fill: "black" },
     });
+  }
+
+  public initFps() {
+    this.game._app.stage.addChild(this.fpsLabel);
+    this.fpsLabel.x = 10;
+    this.fpsLabel.y = 15;
+    this.fpsLabel.zIndex = 1;
+  }
+
+  public displayFps() {
+    let currFrame = Date.now();
+    let difference = currFrame - prevFrame;
+    prevFrame = currFrame;
+
+    this.fpsAcc += difference;
+    this.fpsCounter++;
+
+    if (this.fpsAcc > 1000) {
+      let fps = Math.floor(this.fpsCounter / (this.fpsAcc / 1000));
+      this.fpsLabel.text = fps;
+
+      this.fpsAcc = 0;
+      this.fpsCounter = 0;
+    }
   }
 
   public controlInfo() {
