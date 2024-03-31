@@ -33,7 +33,6 @@ export class Game {
     await this._player.initBirdSprite();
 
     this.addSounds();
-    this.gameStatus();
     this._texts.initFps();
     this._texts.controlInfo();
     this._texts.displayScore();
@@ -51,7 +50,7 @@ export class Game {
     sound.find("hit").volume = 0.4;
   }
 
-  private startGame() {
+  public startGame() {
     this.gameRunning = true;
     this._app.stage.removeChild(this._texts.startInfo);
     this._app.stage.removeChild(this._texts.pauseInfo);
@@ -63,74 +62,6 @@ export class Game {
       sound.play("hit");
       this.hitSound = true;
     }
-  }
-
-  private gameStatus() {
-    window.addEventListener("keydown", (e) => {
-      if (
-        e.key === "Escape" &&
-        this.gameRunning &&
-        this._gameWorld.obstaclesArr.length > 2
-      ) {
-        this.keylock = true;
-        this.gameRunning = false;
-        this._player.bird.stop();
-        this._app.ticker.stop();
-      } else if (
-        e.key === "Escape" &&
-        !this.gameRunning &&
-        this._gameWorld.obstaclesArr.length > 2
-      ) {
-        this.keylock = false;
-        this.gameRunning = true;
-        this._player.bird.play();
-        this._app.ticker.start();
-      }
-    });
-
-    if (!this.tickerAdded) {
-      window.addEventListener("keydown", (e) => {
-        if (
-          e.key === " " &&
-          !this.gameRunning &&
-          !this.tickerAdded &&
-          !this.keylock
-        ) {
-          this.startGame();
-          this._app.ticker.add(this.gameLoop.bind(this));
-          this.tickerAdded = true;
-        }
-      });
-    } else if (this.tickerAdded) {
-      window.addEventListener("keydown", (e) => {
-        if (
-          e.key === " " &&
-          !this.gameRunning &&
-          this.tickerAdded &&
-          !this.keylock
-        ) {
-          this.startGame();
-        }
-      });
-    }
-  }
-
-  public resetGame() {
-    window.addEventListener("keydown", (e) => {
-      if (e.key === "Enter" && !this.keylock) {
-        this._app.ticker.start();
-        this.gameRunning = false;
-        this.score = 0;
-        this._texts.displayScore();
-        this._player.resetPlayer();
-        this._gameWorld.resetGameWorld();
-        this._app.stage.addChild(this._texts.startInfo);
-        this._app.stage.addChild(this._texts.pauseInfo);
-        this._app.stage.addChild(this._texts.restartInfo);
-        this.hitSound = false;
-        this.gameStatus();
-      }
-    });
   }
 
   public gameLoop(): void {
@@ -148,11 +79,11 @@ export class Game {
       this._gameWorld.obstaclesArr.forEach((obs) => {
         this._gameWorld.obstacleSpeedProgression(obs);
       });
-      // this.resetGame();
     } else if (
       !this.gameRunning &&
       (collideWithBoundaries(this) || collideWithObstacles(this))
     ) {
+      // this.resetGame();
       this.playHitSound();
       this._player.bird.stop();
       this._texts.setHighscore();
@@ -167,10 +98,61 @@ game.init();
 
 window.addEventListener("keydown", (e) => {
   if (
-    e.key === "Enter" &&
-    !game.gameRunning &&
-    (collideWithBoundaries(game) || collideWithObstacles(game))
+    e.key === "Escape" &&
+    game.gameRunning &&
+    game._gameWorld.obstaclesArr.length > 2
   ) {
-    game.resetGame();
+    game.keylock = true;
+    game.gameRunning = false;
+    game._player.bird.stop();
+    game._app.ticker.stop();
+  } else if (
+    e.key === "Escape" &&
+    !game.gameRunning &&
+    game._gameWorld.obstaclesArr.length > 2
+  ) {
+    game.keylock = false;
+    game.gameRunning = true;
+    game._player.bird.play();
+    game._app.ticker.start();
+  }
+
+  if (!game.tickerAdded) {
+    window.addEventListener("keydown", (e) => {
+      if (
+        e.key === " " &&
+        !game.gameRunning &&
+        !game.tickerAdded &&
+        !game.keylock
+      ) {
+        game.startGame();
+        game._app.ticker.add(game.gameLoop.bind(game));
+        game.tickerAdded = true;
+      }
+    });
+  } else if (game.tickerAdded) {
+    window.addEventListener("keydown", (e) => {
+      if (
+        e.key === " " &&
+        !game.gameRunning &&
+        game.tickerAdded &&
+        !game.keylock
+      ) {
+        game.startGame();
+      }
+    });
+  }
+
+  if (e.key === "Enter" && !game.keylock) {
+    game._app.ticker.start();
+    game.gameRunning = false;
+    game.score = 0;
+    game._texts.displayScore();
+    game._player.resetPlayer();
+    game._gameWorld.resetGameWorld();
+    game._app.stage.addChild(game._texts.startInfo);
+    game._app.stage.addChild(game._texts.pauseInfo);
+    game._app.stage.addChild(game._texts.restartInfo);
+    game.hitSound = false;
   }
 });
