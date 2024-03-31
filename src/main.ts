@@ -15,9 +15,9 @@ export class Game {
   gameRunning: boolean = false;
   tickerAdded: boolean = false;
   keylock: boolean = false;
-
   score: number = 0;
   highScore: number = 0;
+  hitSound: boolean = false;
 
   constructor() {
     this._app = new PIXI.Application();
@@ -50,6 +50,15 @@ export class Game {
     this._app.stage.removeChild(this._texts.startInfo);
     this._app.stage.removeChild(this._texts.pauseInfo);
     this._app.stage.removeChild(this._texts.restartInfo);
+  }
+
+  private playHitSound() {
+    if (!this.hitSound) {
+      sound.play("hit");
+      this.hitSound = true;
+    } else {
+      this.hitSound = false;
+    }
   }
 
   private gameStatus() {
@@ -102,7 +111,7 @@ export class Game {
     }
   }
 
-  private resetGame() {
+  public resetGame() {
     window.addEventListener("keydown", (e) => {
       if (e.key === "Enter" && !this.keylock) {
         this.gameRunning = false;
@@ -113,6 +122,7 @@ export class Game {
         this._app.stage.addChild(this._texts.startInfo);
         this._app.stage.addChild(this._texts.pauseInfo);
         this._app.stage.addChild(this._texts.restartInfo);
+        this.hitSound = false;
         this.gameStatus();
       }
     });
@@ -137,14 +147,26 @@ export class Game {
       !this.gameRunning &&
       (collideWithBoundaries(this) || collideWithObstacles(this))
     ) {
-      // sound.play("hit");
       this._player.bird.stop();
       this._texts.setHighscore();
       this._texts.displayHighscore();
-      this.resetGame();
+      this.playHitSound();
+      this._app.ticker.stop();
     }
+    this.resetGame();
   }
 }
 
 const game = new Game();
 game.init();
+
+window.addEventListener("keydown", (e) => {
+  if (
+    e.key === "Enter" &&
+    !game.gameRunning &&
+    (collideWithBoundaries(game) || collideWithObstacles(game))
+  ) {
+    game._app.ticker.start();
+    game.resetGame();
+  }
+});

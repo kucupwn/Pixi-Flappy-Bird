@@ -11,7 +11,7 @@ export class GameWorld {
   obstaclesArr: PIXI.Sprite[] = [];
   obstacleGap: number = 120;
   obstacleDistance: number = 300;
-  pointSoundPlayed: boolean = false;
+  pointSound: boolean = false;
 
   constructor(game: Game) {
     this.game = game;
@@ -110,9 +110,9 @@ export class GameWorld {
       if (i % 2 === 0) {
         if (obs.getBounds().maxX < this.game._player.bird.getBounds().minX) {
           count++;
-          if (!this.pointSoundPlayed) {
+          if (!this.pointSound) {
             sound.play("point");
-            this.pointSoundPlayed = true;
+            this.pointSound = true;
           }
         }
         if (
@@ -120,12 +120,10 @@ export class GameWorld {
           Math.floor(obs.getBounds().maxX) === 161 ||
           Math.floor(obs.getBounds().maxX) === 160
         ) {
-          this.pointSoundPlayed = false;
+          this.pointSound = false;
         }
       }
     });
-    console.log(this.obstaclesArr[0].getBounds().maxX);
-    // console.log(Math.floor(this.game._player.bird.getBounds().minX));
     this.game.score = count;
 
     return count;
