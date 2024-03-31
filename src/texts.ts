@@ -31,6 +31,8 @@ export class Texts {
       text: "Press 'Enter' to restart!",
       style: { fill: "black" },
     });
+    this.game._app.stage.addChild(this.scoreLabel);
+    this.game._app.stage.addChild(this.highscoreLabel);
   }
 
   public initFps() {
@@ -75,14 +77,12 @@ export class Texts {
   }
 
   public displayScore() {
-    this.game._app.stage.addChild(this.scoreLabel);
     this.scoreLabel.y = this.game._app.canvas.height * 0.94;
     this.scoreLabel.zIndex = 1;
-    this.scoreLabel.text = `Score: ${this.game._gameWorld.countObstacles()}`;
+    this.scoreLabel.text = `Score: ${this.game.score}`;
   }
 
   public displayHighscore() {
-    this.game._app.stage.addChild(this.highscoreLabel);
     this.highscoreLabel.y = this.game._app.canvas.height * 0.94;
     this.highscoreLabel.x = this.game._app.canvas.width * 0.75;
     this.highscoreLabel.zIndex = 1;

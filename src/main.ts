@@ -70,6 +70,7 @@ export class Game {
       !collideWithBoundaries(this) &&
       !collideWithObstacles(this)
     ) {
+      this.score = this._gameWorld.countObstacles();
       this._texts.displayFps();
       this._texts.displayScore();
       this._player.movePlayer();
