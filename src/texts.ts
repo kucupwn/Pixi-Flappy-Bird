@@ -77,6 +77,7 @@ export class Texts {
   }
 
   public displayScore() {
+    this.scoreLabel.x = 10;
     this.scoreLabel.y = this.game._app.canvas.height * 0.94;
     this.scoreLabel.zIndex = 1;
     this.scoreLabel.text = `Score: ${this.game.score}`;
