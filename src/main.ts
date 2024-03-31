@@ -42,8 +42,10 @@ export class Game {
   private addSounds() {
     sound.add("wing", "./sounds/sfx_wing.wav");
     sound.find("wing").volume = 0.2;
+
     sound.add("point", "./sounds/sfx_point.wav");
     sound.find("point").volume = 0.2;
+
     sound.add("hit", "./sounds/sfx_hit.wav");
     sound.find("hit").volume = 0.4;
   }
@@ -115,6 +117,7 @@ export class Game {
   public resetGame() {
     window.addEventListener("keydown", (e) => {
       if (e.key === "Enter" && !this.keylock) {
+        this._app.ticker.start();
         this.gameRunning = false;
         this.score = 0;
         this._texts.displayScore();
@@ -166,7 +169,6 @@ window.addEventListener("keydown", (e) => {
     !game.gameRunning &&
     (collideWithBoundaries(game) || collideWithObstacles(game))
   ) {
-    game._app.ticker.start();
     game.resetGame();
   }
 });
