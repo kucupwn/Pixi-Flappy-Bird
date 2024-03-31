@@ -7,6 +7,7 @@ export class GameWorld {
   background: PIXI.TilingSprite;
   ceil: PIXI.TilingSprite;
   floor: PIXI.TilingSprite;
+  animationSpeed: number = 3;
   obstacleTexture: PIXI.Texture;
   obstaclesArr: PIXI.Sprite[] = [];
   obstacleGap: number = 120;
@@ -104,6 +105,21 @@ export class GameWorld {
     }
   }
 
+  private pointSoundDefault(obs: PIXI.Sprite): void {
+    if (this.animationSpeed === 3 || this.animationSpeed === 6) {
+      if (Math.floor(obs.getBounds().maxX) === 164) {
+        this.pointSound = false;
+      }
+    } else if (this.animationSpeed === 4 || this.animationSpeed === 5) {
+      if (
+        Math.floor(obs.getBounds().maxX) === 160 ||
+        Math.floor(obs.getBounds().maxX) === 162
+      ) {
+        this.pointSound = false;
+      }
+    }
+  }
+
   public countObstacles(): number {
     let count = 0;
     this.obstaclesArr.forEach((obs, i) => {
@@ -115,13 +131,7 @@ export class GameWorld {
             this.pointSound = true;
           }
         }
-        if (
-          Math.floor(obs.getBounds().maxX) === 162 ||
-          Math.floor(obs.getBounds().maxX) === 161 ||
-          Math.floor(obs.getBounds().maxX) === 160
-        ) {
-          this.pointSound = false;
-        }
+        this.pointSoundDefault(obs);
       }
     });
     this.game.score = count;
@@ -132,32 +142,32 @@ export class GameWorld {
   public gameWorldSpeedProgression() {
     if (this.game.score >= 50) {
       this.background.tilePosition.x -= 0.5;
-      this.ceil.tilePosition.x -= 6;
-      this.floor.tilePosition.x -= 6;
+      this.ceil.tilePosition.x -= this.animationSpeed + 3;
+      this.floor.tilePosition.x -= this.animationSpeed + 3;
     } else if (this.game.score >= 30) {
       this.background.tilePosition.x -= 0.4;
-      this.ceil.tilePosition.x -= 5;
-      this.floor.tilePosition.x -= 5;
+      this.ceil.tilePosition.x -= this.animationSpeed + 2;
+      this.floor.tilePosition.x -= this.animationSpeed + 2;
     } else if (this.game.score >= 10) {
       this.background.tilePosition.x -= 0.3;
-      this.ceil.tilePosition.x -= 4;
-      this.floor.tilePosition.x -= 4;
-    } else if (this.game.score < 10) {
+      this.ceil.tilePosition.x -= this.animationSpeed + 1;
+      this.floor.tilePosition.x -= this.animationSpeed + 1;
+    } else {
       this.background.tilePosition.x -= 0.2;
-      this.ceil.tilePosition.x -= 3;
-      this.floor.tilePosition.x -= 3;
+      this.ceil.tilePosition.x -= this.animationSpeed;
+      this.floor.tilePosition.x -= this.animationSpeed;
     }
   }
 
   public obstacleSpeedProgression(obstacle: PIXI.Sprite) {
     if (this.game.score >= 50) {
-      obstacle.x -= 6;
+      obstacle.x -= this.animationSpeed + 3;
     } else if (this.game.score >= 30) {
-      obstacle.x -= 5;
+      obstacle.x -= this.animationSpeed + 2;
     } else if (this.game.score >= 10) {
-      obstacle.x -= 4;
-    } else if (this.game.score < 10) {
-      obstacle.x -= 3;
+      obstacle.x -= this.animationSpeed + 1;
+    } else {
+      obstacle.x -= this.animationSpeed;
     }
   }
 

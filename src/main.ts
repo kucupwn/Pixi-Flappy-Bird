@@ -84,7 +84,6 @@ export class Game {
       !this.gameRunning &&
       (collideWithBoundaries(this) || collideWithObstacles(this))
     ) {
-      // this.resetGame();
       this.playHitSound();
       this._player.bird.stop();
       this._texts.setHighscore();
