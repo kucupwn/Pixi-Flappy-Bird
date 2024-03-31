@@ -56,8 +56,6 @@ export class Game {
     if (!this.hitSound) {
       sound.play("hit");
       this.hitSound = true;
-    } else {
-      this.hitSound = false;
     }
   }
 
@@ -147,13 +145,12 @@ export class Game {
       !this.gameRunning &&
       (collideWithBoundaries(this) || collideWithObstacles(this))
     ) {
+      this.playHitSound();
       this._player.bird.stop();
       this._texts.setHighscore();
       this._texts.displayHighscore();
-      this.playHitSound();
       this._app.ticker.stop();
     }
-    this.resetGame();
   }
 }
 
