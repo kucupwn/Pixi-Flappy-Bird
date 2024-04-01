@@ -9,9 +9,9 @@ export function collideWithBoundaries(game: Game): boolean {
   if (playerTop <= ceilBottom || playerBottom >= floorTop) {
     game.gameRunning = false;
     return true;
-  } else {
-    return false;
   }
+
+  return false;
 }
 
 export function collideWithObstacles(game: Game): boolean {

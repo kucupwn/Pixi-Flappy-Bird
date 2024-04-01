@@ -149,7 +149,12 @@ window.addEventListener("keydown", (e) => {
     });
   }
 
-  if (e.key === "Enter" && !game.keylock && !game.gameRunning) {
+  if (
+    e.key === "Enter" &&
+    !game.keylock &&
+    !game.gameRunning &&
+    (collideWithBoundaries(game) || collideWithObstacles(game))
+  ) {
     game._app.ticker.start();
     game.gameRunning = false;
     game.score = 0;

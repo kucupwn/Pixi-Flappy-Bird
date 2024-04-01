@@ -135,6 +135,10 @@ export class GameWorld {
         }
         this.pointSoundDefault(obs);
       }
+
+      if (obs.getBounds().maxX < 0) {
+        this.obstaclesArr.shift();
+      }
     });
     this.game.score = count;
 
