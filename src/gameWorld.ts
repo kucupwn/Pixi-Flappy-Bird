@@ -24,20 +24,22 @@ export class GameWorld {
 
   public async initGameWorldSprites(): Promise<void> {
     const backgroundTexture = await PIXI.Assets.load(
-      "./assets/background-day.png"
+      "./assets/Sprites/background-day.png"
     );
     const tilingBackgroundSprite = PIXI.TilingSprite.from(backgroundTexture);
     this.setBackgroundSprite(tilingBackgroundSprite);
 
-    const floorTexture = await PIXI.Assets.load("./assets/base.png");
+    const floorTexture = await PIXI.Assets.load("./assets/Sprites/base.png");
     const tilingFloorSprite = PIXI.TilingSprite.from(floorTexture);
     this.setFloorSprite(tilingFloorSprite);
 
-    const ceilTexture = await PIXI.Assets.load("./assets/base.png");
+    const ceilTexture = await PIXI.Assets.load("./assets/Sprites/base.png");
     const tilingCeilSprite = PIXI.TilingSprite.from(ceilTexture);
     this.setCeilSprite(tilingCeilSprite);
 
-    const obstacleTexture = await PIXI.Assets.load("./assets/pipe-green.png");
+    const obstacleTexture = await PIXI.Assets.load(
+      "./assets/Sprites/pipe-green.png"
+    );
     this.obstacleTexture = obstacleTexture;
     this.initObstacles(this.obstacleTexture);
   }

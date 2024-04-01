@@ -17,9 +17,9 @@ export class Player {
 
   public async initBirdSprite() {
     const birdImages = [
-      "./assets/yellowbird-upflap.png",
-      "./assets/yellowbird-midflap.png",
-      "./assets/yellowbird-downflap.png",
+      "./assets/Sprites/yellowbird-upflap.png",
+      "./assets/Sprites/yellowbird-midflap.png",
+      "./assets/Sprites/yellowbird-downflap.png",
     ];
 
     const textureArr: PIXI.Texture[] = [];

@@ -35,6 +35,10 @@ export class Texts {
     this.game._app.stage.addChild(this.highscoreLabel);
   }
 
+  // public async initFontFamily() {
+  //   const fontFamily = await PIXI.Assets.load()
+  // }
+
   public initFps() {
     this.game._app.stage.addChild(this.fpsLabel);
     this.fpsLabel.x = 10;

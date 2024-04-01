@@ -40,13 +40,13 @@ export class Game {
   }
 
   private addSounds() {
-    sound.add("wing", "./sounds/sfx_wing.wav");
+    sound.add("wing", "./assets/Sounds/sfx_wing.wav");
     sound.find("wing").volume = 0.2;
 
-    sound.add("point", "./sounds/sfx_point.wav");
+    sound.add("point", "./assets/Sounds/sfx_point.wav");
     sound.find("point").volume = 0.2;
 
-    sound.add("hit", "./sounds/sfx_hit.wav");
+    sound.add("hit", "./assets/Sounds/sfx_hit.wav");
     sound.find("hit").volume = 0.4;
   }
 
