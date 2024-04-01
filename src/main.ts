@@ -28,8 +28,6 @@ export class Game {
   }
 
   public async init() {
-    await this._app.init({ antialias: true, width: 700, height: 540 });
-    appContainer?.appendChild(this._app.canvas);
     await this._gameWorld.initGameWorldSprites();
     await this._player.initBirdSprite();
     await this._texts.initFont();
@@ -39,6 +37,24 @@ export class Game {
     this._texts.controlInfo();
     this._texts.displayScore();
     this._texts.displayHighscore();
+  }
+
+  public async normalMode() {
+    await this._app.init({ antialias: true, width: 700, height: 540 });
+    appContainer?.appendChild(this._app.canvas);
+    await this.init();
+
+    this._gameWorld.animationSpeed = 3;
+    this._gameWorld.obstacleDistance = 300;
+  }
+
+  public async fastMode() {
+    await this._app.init({ antialias: true, width: 1050, height: 540 });
+    appContainer?.appendChild(this._app.canvas);
+    await this.init();
+
+    this._gameWorld.animationSpeed = 6;
+    this._gameWorld.obstacleDistance = 400;
   }
 
   private addSounds() {
@@ -104,7 +120,8 @@ export class Game {
 }
 
 const game = new Game();
-game.init();
+// game.normalMode();
+game.fastMode();
 
 window.addEventListener("keydown", (e) => {
   if (

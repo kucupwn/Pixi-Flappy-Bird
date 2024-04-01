@@ -7,11 +7,11 @@ export class GameWorld {
   background: PIXI.TilingSprite;
   ceil: PIXI.TilingSprite;
   floor: PIXI.TilingSprite;
-  animationSpeed: number = 3;
+  animationSpeed: number = 6;
   obstacleTexture: PIXI.Texture;
   obstaclesArr: PIXI.Sprite[] = [];
   obstacleGap: number = 120;
-  obstacleDistance: number = 300;
+  obstacleDistance: number = 400;
   pointSound: boolean = false;
 
   constructor(game: Game) {
@@ -114,12 +114,12 @@ export class GameWorld {
       if (this.animationSpeed === 6) {
         if (
           !this.pointSound &&
-          (obs.getBounds().maxX === 160 ||
-            obs.getBounds().maxX === 161 ||
+          (obs.getBounds().maxX === 161 ||
             obs.getBounds().maxX === 162 ||
             obs.getBounds().maxX === 163 ||
             obs.getBounds().maxX === 164 ||
-            obs.getBounds().maxX === 165)
+            obs.getBounds().maxX === 165 ||
+            obs.getBounds().maxX === 166)
         ) {
           sound.play("point");
           this.pointSound = true;
@@ -172,9 +172,9 @@ export class GameWorld {
   }
 
   public obstacleSpeedProgression(obstacle: PIXI.Sprite) {
-    if (this.game.score >= 10) {
+    if (this.game.score >= 50) {
       obstacle.x -= this.animationSpeed + 2;
-    } else if (this.game.score >= 5) {
+    } else if (this.game.score >= 20) {
       obstacle.x -= this.animationSpeed + 1;
     } else {
       obstacle.x -= this.animationSpeed;
@@ -182,14 +182,14 @@ export class GameWorld {
   }
 
   public setObstacleDistance() {
-    if (this.game.score >= 10 && this.obstacleDistance < 400) {
+    if (this.game.score >= 49 && this.obstacleDistance < 400) {
       this.obstacleDistance = 340;
-    } else if (this.game.score >= 10 && this.obstacleDistance >= 400) {
-      this.obstacleDistance = 500;
-    } else if (this.game.score >= 5 && this.obstacleDistance < 400) {
+    } else if (this.game.score >= 49 && this.obstacleDistance >= 400) {
+      this.obstacleDistance = 460;
+    } else if (this.game.score >= 19 && this.obstacleDistance < 400) {
       this.obstacleDistance = 320;
-    } else if (this.game.score >= 10 && this.obstacleDistance >= 400) {
-      this.obstacleDistance = 450;
+    } else if (this.game.score >= 19 && this.obstacleDistance >= 400) {
+      this.obstacleDistance = 430;
     }
   }
 
