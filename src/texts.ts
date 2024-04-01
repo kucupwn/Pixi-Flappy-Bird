@@ -11,6 +11,7 @@ export class Texts {
   startInfo: PIXI.Text;
   pauseInfo: PIXI.Text;
   restartInfo: PIXI.Text;
+  gameModeInfo: PIXI.Text;
   scoreLabel: PIXI.Text;
   highscoreLabel: PIXI.Text;
 
@@ -22,6 +23,7 @@ export class Texts {
     this.startInfo = new PIXI.Text();
     this.pauseInfo = new PIXI.Text();
     this.restartInfo = new PIXI.Text();
+    this.gameModeInfo = new PIXI.Text();
   }
 
   public async initFont() {
@@ -53,6 +55,10 @@ export class Texts {
     });
     this.restartInfo = new PIXI.Text({
       text: "Press 'Enter' to restart!",
+      style: { fill: "black", fontFamily: "ArcadeClassic", fontSize: 35 },
+    });
+    this.gameModeInfo = new PIXI.Text({
+      text: "Press 'F5' to select game mode!",
       style: { fill: "black", fontFamily: "ArcadeClassic", fontSize: 35 },
     });
 
@@ -99,6 +105,11 @@ export class Texts {
     this.pauseInfo.anchor.set(0.5);
     this.pauseInfo.x = this.game._app.canvas.width / 2;
     this.pauseInfo.y = this.game._app.canvas.height * 0.3;
+
+    this.game._app.stage.addChild(this.gameModeInfo);
+    this.gameModeInfo.anchor.set(0.5);
+    this.gameModeInfo.x = this.game._app.canvas.width / 2;
+    this.gameModeInfo.y = this.game._app.canvas.height * 0.4;
   }
 
   public displayScore() {

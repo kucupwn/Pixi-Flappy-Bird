@@ -80,6 +80,7 @@ export class Game {
     this._app.stage.removeChild(this._texts.startInfo);
     this._app.stage.removeChild(this._texts.pauseInfo);
     this._app.stage.removeChild(this._texts.restartInfo);
+    this._app.stage.removeChild(this._texts.gameModeInfo);
   }
 
   private playHitSound() {
@@ -200,6 +201,8 @@ window.addEventListener("keydown", (e) => {
     game._app.stage.addChild(game._texts.startInfo);
     game._app.stage.addChild(game._texts.pauseInfo);
     game._app.stage.addChild(game._texts.restartInfo);
+    game._app.stage.addChild(game._texts.gameModeInfo);
+
     game.hitSound = false;
   }
 });
