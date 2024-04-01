@@ -16,28 +16,49 @@ export class Texts {
 
   constructor(game: Game) {
     this.game = game;
-    this.fpsLabel = new PIXI.Text({ text: "FPS", style: { fill: "black" } });
-    this.scoreLabel = new PIXI.Text({ text: "", style: { fill: "black" } });
-    this.highscoreLabel = new PIXI.Text({ text: "", style: { fill: "black" } });
+    this.fpsLabel = new PIXI.Text();
+    this.scoreLabel = new PIXI.Text();
+    this.highscoreLabel = new PIXI.Text();
+    this.startInfo = new PIXI.Text();
+    this.pauseInfo = new PIXI.Text();
+    this.restartInfo = new PIXI.Text();
+  }
+
+  public async initFonts() {
+    PIXI.Assets.add({
+      alias: "ArcadeClassic",
+      src: "./assets/Font/ARCADECLASSIC.TTF",
+    });
+    await PIXI.Assets.load("ArcadeClassic");
+
+    this.fpsLabel = new PIXI.Text({
+      text: "FPS",
+      style: { fill: "black", fontFamily: "ArcadeClassic", fontSize: 30 },
+    });
+    this.scoreLabel = new PIXI.Text({
+      text: "",
+      style: { fill: "black", fontFamily: "ArcadeClassic", fontSize: 30 },
+    });
+    this.highscoreLabel = new PIXI.Text({
+      text: "",
+      style: { fill: "black", fontFamily: "ArcadeClassic", fontSize: 30 },
+    });
     this.startInfo = new PIXI.Text({
       text: "Press 'Space' to start!",
-      style: { fill: "black" },
+      style: { fill: "black", fontFamily: "ArcadeClassic", fontSize: 35 },
     });
     this.pauseInfo = new PIXI.Text({
-      text: "Press 'Escape' to pause/unpause!",
-      style: { fill: "black" },
+      text: "Press 'Escape' to pause / unpause!",
+      style: { fill: "black", fontFamily: "ArcadeClassic", fontSize: 35 },
     });
     this.restartInfo = new PIXI.Text({
       text: "Press 'Enter' to restart!",
-      style: { fill: "black" },
+      style: { fill: "black", fontFamily: "ArcadeClassic", fontSize: 35 },
     });
+
     this.game._app.stage.addChild(this.scoreLabel);
     this.game._app.stage.addChild(this.highscoreLabel);
   }
-
-  // public async initFontFamily() {
-  //   const fontFamily = await PIXI.Assets.load()
-  // }
 
   public initFps() {
     this.game._app.stage.addChild(this.fpsLabel);
@@ -67,17 +88,17 @@ export class Texts {
     this.game._app.stage.addChild(this.startInfo);
     this.startInfo.anchor.set(0.5);
     this.startInfo.x = this.game._app.canvas.width / 2;
-    this.startInfo.y = this.game._app.canvas.height * 0.2;
+    this.startInfo.y = this.game._app.canvas.height * 0.1;
 
     this.game._app.stage.addChild(this.restartInfo);
     this.restartInfo.anchor.set(0.5);
     this.restartInfo.x = this.game._app.canvas.width / 2;
-    this.restartInfo.y = this.game._app.canvas.height * 0.3;
+    this.restartInfo.y = this.game._app.canvas.height * 0.2;
 
     this.game._app.stage.addChild(this.pauseInfo);
     this.pauseInfo.anchor.set(0.5);
     this.pauseInfo.x = this.game._app.canvas.width / 2;
-    this.pauseInfo.y = this.game._app.canvas.height * 0.4;
+    this.pauseInfo.y = this.game._app.canvas.height * 0.3;
   }
 
   public displayScore() {
@@ -89,7 +110,7 @@ export class Texts {
 
   public displayHighscore() {
     this.highscoreLabel.y = this.game._app.canvas.height * 0.94;
-    this.highscoreLabel.x = this.game._app.canvas.width * 0.75;
+    this.highscoreLabel.x = this.game._app.canvas.width * 0.7;
     this.highscoreLabel.zIndex = 1;
     this.highscoreLabel.text = `Highscore: ${this.game.highScore}`;
   }

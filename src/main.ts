@@ -31,6 +31,7 @@ export class Game {
     appContainer?.appendChild(this._app.canvas);
     await this._gameWorld.initGameWorldSprites();
     await this._player.initBirdSprite();
+    await this._texts.initFonts();
 
     this.addSounds();
     this._texts.initFps();
