@@ -48,10 +48,10 @@ export class Game {
     sound.find("wing").volume = 0.2;
 
     sound.add("point", "./assets/Sounds/sfx_point.wav");
-    sound.find("point").volume = 0.2;
+    sound.find("point").volume = 0.1;
 
     sound.add("hit", "./assets/Sounds/sfx_hit.wav");
-    sound.find("hit").volume = 0.4;
+    sound.find("hit").volume = 0.3;
   }
 
   public startGame() {
