@@ -130,15 +130,16 @@ export class GameWorld {
           !this.pointSound &&
           (obs.getBounds().maxX === 160 ||
             obs.getBounds().maxX === 161 ||
-            obs.getBounds().maxX === 162)
+            obs.getBounds().maxX === 162 ||
+            obs.getBounds().maxX === 163)
         ) {
           sound.play("point");
           this.pointSound = true;
           break;
         }
       }
+      this.pointSound = false;
     }
-    this.pointSound = false;
   }
 
   public countObstacles(): number {
@@ -183,11 +184,11 @@ export class GameWorld {
 
   public setObstacleDistance() {
     if (this.game.score >= 49 && this.obstacleDistance < 400) {
-      this.obstacleDistance = 340;
+      this.obstacleDistance = 360;
     } else if (this.game.score >= 49 && this.obstacleDistance >= 400) {
       this.obstacleDistance = 460;
     } else if (this.game.score >= 19 && this.obstacleDistance < 400) {
-      this.obstacleDistance = 320;
+      this.obstacleDistance = 330;
     } else if (this.game.score >= 19 && this.obstacleDistance >= 400) {
       this.obstacleDistance = 430;
     }

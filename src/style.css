@@ -7,3 +7,24 @@ body {
   align-items: center;
   background-color: lemonchiffon;
 }
+
+button {
+  margin: 2rem;
+  display: inline-block;
+  padding: 10px 20px;
+  font-size: 3rem;
+  border: 2px solid #8f7f7f;
+  border-radius: 5px;
+  background-color: #f5f5dc;
+  color: #556b2f;
+  text-align: center;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background-color 0.3s, color 0.3s, border-color 0.3s;
+}
+
+button:hover {
+  background-color: #98fb98;
+  color: #006400;
+  border-color: #228b22;
+}

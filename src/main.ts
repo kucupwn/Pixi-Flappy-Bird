@@ -51,7 +51,7 @@ export class Game {
   }
 
   public async fastMode() {
-    await this._app.init({ antialias: true, width: 1050, height: 540 });
+    await this._app.init({ antialias: true, width: 960, height: 540 });
     appContainer?.appendChild(this._app.canvas);
     await this.init();
 
@@ -68,7 +68,7 @@ export class Game {
     sound.find("wing").volume = 0.2;
 
     sound.add("point", "./assets/Sounds/sfx_point.wav");
-    sound.find("point").volume = 0.5;
+    sound.find("point").volume = 0.2;
 
     sound.add("hit", "./assets/Sounds/sfx_hit.wav");
     sound.find("hit").volume = 0.3;
@@ -100,8 +100,8 @@ export class Game {
       this._texts.displayScore();
       this._player.movePlayer();
       this._gameWorld.playPointSound();
-      this._gameWorld.getObstacles(this._gameWorld.obstacleTexture);
       this._gameWorld.setObstacleDistance();
+      this._gameWorld.getObstacles(this._gameWorld.obstacleTexture);
       this._gameWorld.gameWorldSpeedProgression();
       this._player.bird.play();
       this._gameWorld.obstaclesArr.forEach((obs) => {
@@ -122,8 +122,6 @@ export class Game {
 }
 
 const game = new Game();
-// game.normalMode();
-// game.fastMode();
 
 normalModeBtn?.addEventListener("click", () => {
   game.normalMode();
