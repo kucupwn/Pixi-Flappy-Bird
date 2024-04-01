@@ -28,11 +28,11 @@ export class Game {
   }
 
   public async init() {
-    await this._app.init({ antialias: true, width: 700, height: 500 });
+    await this._app.init({ antialias: true, width: 700, height: 540 });
     appContainer?.appendChild(this._app.canvas);
     await this._gameWorld.initGameWorldSprites();
     await this._player.initBirdSprite();
-    await this._texts.initFonts();
+    await this._texts.initFont();
 
     this.addSounds();
     this._texts.initFps();
@@ -50,7 +50,7 @@ export class Game {
     sound.find("wing").volume = 0.2;
 
     sound.add("point", "./assets/Sounds/sfx_point.wav");
-    sound.find("point").volume = 0.1;
+    sound.find("point").volume = 0.5;
 
     sound.add("hit", "./assets/Sounds/sfx_hit.wav");
     sound.find("hit").volume = 0.3;
@@ -81,7 +81,9 @@ export class Game {
       this._texts.displayFps();
       this._texts.displayScore();
       this._player.movePlayer();
+      this._gameWorld.playPointSound();
       this._gameWorld.getObstacles(this._gameWorld.obstacleTexture);
+      this._gameWorld.setObstacleDistance();
       this._gameWorld.gameWorldSpeedProgression();
       this._player.bird.play();
       this._gameWorld.obstaclesArr.forEach((obs) => {

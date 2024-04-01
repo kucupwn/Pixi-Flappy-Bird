@@ -24,7 +24,7 @@ export class Texts {
     this.restartInfo = new PIXI.Text();
   }
 
-  public async initFonts() {
+  public async initFont() {
     PIXI.Assets.add({
       alias: "ArcadeClassic",
       src: "./assets/Font/ARCADECLASSIC.TTF",

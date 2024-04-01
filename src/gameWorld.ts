@@ -109,24 +109,45 @@ export class GameWorld {
     }
   }
 
-  private pointSoundDefault(obs: PIXI.Sprite): void {
-    if (obs.getBounds().maxX === 164 || obs.getBounds().maxX === 162) {
-      this.pointSound = false;
+  public playPointSound() {
+    for (const obs of this.obstaclesArr) {
+      if (this.animationSpeed === 6) {
+        if (
+          !this.pointSound &&
+          (obs.getBounds().maxX === 160 ||
+            obs.getBounds().maxX === 161 ||
+            obs.getBounds().maxX === 162 ||
+            obs.getBounds().maxX === 163 ||
+            obs.getBounds().maxX === 164 ||
+            obs.getBounds().maxX === 165)
+        ) {
+          sound.play("point");
+          this.pointSound = true;
+          break;
+        }
+      } else if (this.animationSpeed === 3) {
+        if (
+          !this.pointSound &&
+          (obs.getBounds().maxX === 160 ||
+            obs.getBounds().maxX === 161 ||
+            obs.getBounds().maxX === 162)
+        ) {
+          sound.play("point");
+          this.pointSound = true;
+          break;
+        }
+      }
     }
+    this.pointSound = false;
   }
 
   public countObstacles(): number {
     let count = 0;
     this.obstaclesArr.forEach((obs, i) => {
       if (i % 2 === 0) {
-        if (obs.getBounds().maxX < this.game._player.bird.getBounds().minX) {
+        if (obs.getBounds().maxX < 160) {
           count++;
-          if (!this.pointSound) {
-            sound.play("point");
-            this.pointSound = true;
-          }
         }
-        this.pointSoundDefault(obs);
       }
     });
     this.game.score = count;
@@ -151,20 +172,24 @@ export class GameWorld {
   }
 
   public obstacleSpeedProgression(obstacle: PIXI.Sprite) {
-    if (this.game.score >= 50) {
+    if (this.game.score >= 10) {
       obstacle.x -= this.animationSpeed + 2;
-    } else if (this.game.score >= 20) {
+    } else if (this.game.score >= 5) {
       obstacle.x -= this.animationSpeed + 1;
     } else {
       obstacle.x -= this.animationSpeed;
     }
+  }
 
-    if (this.game.score >= 49) {
+  public setObstacleDistance() {
+    if (this.game.score >= 10 && this.obstacleDistance < 400) {
       this.obstacleDistance = 340;
-    } else if (this.game.score >= 19) {
+    } else if (this.game.score >= 10 && this.obstacleDistance >= 400) {
+      this.obstacleDistance = 500;
+    } else if (this.game.score >= 5 && this.obstacleDistance < 400) {
       this.obstacleDistance = 320;
-    } else {
-      this.obstacleDistance = 300;
+    } else if (this.game.score >= 10 && this.obstacleDistance >= 400) {
+      this.obstacleDistance = 450;
     }
   }
 
