@@ -6,6 +6,7 @@ import { sound } from "@pixi/sound";
 import { collideWithBoundaries, collideWithObstacles } from "./collisionCheck";
 
 const appContainer = document.getElementById("app");
+const gameModeText = document.getElementById("game-mode-text");
 const normalModeBtn = document.getElementById("normal-mode");
 const fastModeBtn = document.getElementById("fast-mode");
 
@@ -126,12 +127,14 @@ const game = new Game();
 
 normalModeBtn?.addEventListener("click", () => {
   game.normalMode();
+  gameModeText?.remove();
   normalModeBtn.remove();
   fastModeBtn?.remove();
 });
 
 fastModeBtn?.addEventListener("click", () => {
   game.fastMode();
+  gameModeText?.remove();
   fastModeBtn.remove();
   normalModeBtn?.remove();
 });
