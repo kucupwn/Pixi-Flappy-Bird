@@ -160,9 +160,9 @@ export class GameWorld {
     }
 
     if (this.game.score >= 49) {
-      this.obstacleDistance = 360;
+      this.obstacleDistance = 340;
     } else if (this.game.score >= 19) {
-      this.obstacleDistance = 330;
+      this.obstacleDistance = 320;
     } else {
       this.obstacleDistance = 300;
     }
