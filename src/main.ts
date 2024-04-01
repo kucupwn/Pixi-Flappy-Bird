@@ -6,6 +6,8 @@ import { sound } from "@pixi/sound";
 import { collideWithBoundaries, collideWithObstacles } from "./collisionCheck";
 
 const appContainer = document.getElementById("app");
+const normalModeBtn = document.getElementById("normal-mode");
+const fastModeBtn = document.getElementById("fast-mode");
 
 export class Game {
   _app: PIXI.Application;
@@ -121,7 +123,19 @@ export class Game {
 
 const game = new Game();
 // game.normalMode();
-game.fastMode();
+// game.fastMode();
+
+normalModeBtn?.addEventListener("click", () => {
+  game.normalMode();
+  normalModeBtn.remove();
+  fastModeBtn?.remove();
+});
+
+fastModeBtn?.addEventListener("click", () => {
+  game.fastMode();
+  fastModeBtn.remove();
+  normalModeBtn?.remove();
+});
 
 window.addEventListener("keydown", (e) => {
   if (
