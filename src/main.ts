@@ -43,6 +43,7 @@ export class Game {
   private addSounds() {
     sound.add("music", "./assets/Sounds/music.mp3");
     sound.find("music").volume = 0.1;
+    sound.find("music").loop = true;
 
     sound.add("wing", "./assets/Sounds/sfx_wing.wav");
     sound.find("wing").volume = 0.2;

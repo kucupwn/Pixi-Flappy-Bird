@@ -53,6 +53,7 @@ export class GameWorld {
   private setCeilSprite(ceil: PIXI.TilingSprite) {
     this.ceil = ceil;
     this.game._app.stage.addChild(this.ceil);
+    this.ceil.zIndex = 1;
     this.ceil.scale.y *= -1;
     this.ceil.y = 20;
     this.ceil.width = this.game._app.canvas.width;
@@ -61,6 +62,7 @@ export class GameWorld {
   private setFloorSprite(floor: PIXI.TilingSprite) {
     this.floor = floor;
     this.game._app.stage.addChild(this.floor);
+    this.floor.zIndex = 1;
     this.floor.y = this.game._app.canvas.height * 0.9;
     this.floor.width = this.game._app.canvas.width;
   }

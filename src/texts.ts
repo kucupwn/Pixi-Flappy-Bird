@@ -104,14 +104,14 @@ export class Texts {
   public displayScore() {
     this.scoreLabel.x = 10;
     this.scoreLabel.y = this.game._app.canvas.height * 0.94;
-    this.scoreLabel.zIndex = 1;
+    this.scoreLabel.zIndex = 2;
     this.scoreLabel.text = `Score: ${this.game.score}`;
   }
 
   public displayHighscore() {
     this.highscoreLabel.y = this.game._app.canvas.height * 0.94;
     this.highscoreLabel.x = this.game._app.canvas.width * 0.7;
-    this.highscoreLabel.zIndex = 1;
+    this.highscoreLabel.zIndex = 2;
     this.highscoreLabel.text = `Highscore: ${this.game.highScore}`;
   }
 
