@@ -108,17 +108,11 @@ export class GameWorld {
   }
 
   private pointSoundDefault(obs: PIXI.Sprite): void {
-    if (this.animationSpeed === 3 || this.animationSpeed === 6) {
-      if (Math.floor(obs.getBounds().maxX) === 164) {
-        this.pointSound = false;
-      }
-    } else if (this.animationSpeed === 4 || this.animationSpeed === 5) {
-      if (
-        Math.floor(obs.getBounds().maxX) === 160 ||
-        Math.floor(obs.getBounds().maxX) === 162
-      ) {
-        this.pointSound = false;
-      }
+    if (
+      Math.floor(obs.getBounds().maxX) === 164 ||
+      Math.floor(obs.getBounds().maxX) === 162
+    ) {
+      this.pointSound = false;
     }
   }
 
@@ -136,6 +130,7 @@ export class GameWorld {
         this.pointSoundDefault(obs);
       }
     });
+    console.log(this.obstaclesArr[22]?.getBounds().maxX);
     this.game.score = count;
 
     return count;
@@ -143,14 +138,10 @@ export class GameWorld {
 
   public gameWorldSpeedProgression() {
     if (this.game.score >= 50) {
-      this.background.tilePosition.x -= 0.5;
-      this.ceil.tilePosition.x -= this.animationSpeed + 3;
-      this.floor.tilePosition.x -= this.animationSpeed + 3;
-    } else if (this.game.score >= 30) {
       this.background.tilePosition.x -= 0.4;
       this.ceil.tilePosition.x -= this.animationSpeed + 2;
       this.floor.tilePosition.x -= this.animationSpeed + 2;
-    } else if (this.game.score >= 10) {
+    } else if (this.game.score >= 20) {
       this.background.tilePosition.x -= 0.3;
       this.ceil.tilePosition.x -= this.animationSpeed + 1;
       this.floor.tilePosition.x -= this.animationSpeed + 1;
@@ -163,10 +154,8 @@ export class GameWorld {
 
   public obstacleSpeedProgression(obstacle: PIXI.Sprite) {
     if (this.game.score >= 50) {
-      obstacle.x -= this.animationSpeed + 3;
-    } else if (this.game.score >= 30) {
       obstacle.x -= this.animationSpeed + 2;
-    } else if (this.game.score >= 10) {
+    } else if (this.game.score >= 20) {
       obstacle.x -= this.animationSpeed + 1;
     } else {
       obstacle.x -= this.animationSpeed;
