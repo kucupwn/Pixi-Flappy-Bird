@@ -41,6 +41,9 @@ export class Game {
   }
 
   private addSounds() {
+    sound.add("music", "./assets/Sounds/music.mp3");
+    sound.find("music").volume = 0.1;
+
     sound.add("wing", "./assets/Sounds/sfx_wing.wav");
     sound.find("wing").volume = 0.2;
 
@@ -52,6 +55,7 @@ export class Game {
   }
 
   public startGame() {
+    sound.play("music");
     this.gameRunning = true;
     this._app.stage.removeChild(this._texts.startInfo);
     this._app.stage.removeChild(this._texts.pauseInfo);
@@ -85,6 +89,7 @@ export class Game {
       !this.gameRunning &&
       (collideWithBoundaries(this) || collideWithObstacles(this))
     ) {
+      sound.stop("music");
       this.playHitSound();
       this._player.bird.stop();
       this._texts.setHighscore();
