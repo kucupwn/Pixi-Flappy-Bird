@@ -151,9 +151,9 @@ export class GameWorld {
   }
 
   public obstacleSpeedProgression(obstacle: PIXI.Sprite) {
-    if (this.game.score >= 10) {
+    if (this.game.score >= 50) {
       obstacle.x -= this.animationSpeed + 2;
-    } else if (this.game.score >= 5) {
+    } else if (this.game.score >= 20) {
       obstacle.x -= this.animationSpeed + 1;
     } else {
       obstacle.x -= this.animationSpeed;
