@@ -158,6 +158,14 @@ export class GameWorld {
     } else {
       obstacle.x -= this.animationSpeed;
     }
+
+    if (this.game.score >= 49) {
+      this.obstacleDistance = 360;
+    } else if (this.game.score >= 19) {
+      this.obstacleDistance = 330;
+    } else {
+      this.obstacleDistance = 300;
+    }
   }
 
   public resetGameWorld() {
