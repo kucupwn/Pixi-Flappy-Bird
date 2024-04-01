@@ -13,6 +13,7 @@ export class Game {
   _gameWorld: GameWorld;
   _texts: Texts;
   gameRunning: boolean = false;
+  gameEnded: boolean = false;
   tickerAdded: boolean = false;
   keylock: boolean = false;
   score: number = 0;
@@ -71,6 +72,7 @@ export class Game {
   }
 
   public gameLoop(): void {
+    console.log(this.gameEnded);
     if (
       this.gameRunning &&
       !collideWithBoundaries(this) &&
@@ -130,7 +132,8 @@ window.addEventListener("keydown", (e) => {
         e.key === " " &&
         !game.gameRunning &&
         !game.tickerAdded &&
-        !game.keylock
+        !game.keylock &&
+        !game.gameEnded
       ) {
         game.startGame();
         game._app.ticker.add(game.gameLoop.bind(game));
@@ -143,7 +146,8 @@ window.addEventListener("keydown", (e) => {
         e.key === " " &&
         !game.gameRunning &&
         game.tickerAdded &&
-        !game.keylock
+        !game.keylock &&
+        !game.gameEnded
       ) {
         game.startGame();
       }
@@ -157,6 +161,7 @@ window.addEventListener("keydown", (e) => {
     (collideWithBoundaries(game) || collideWithObstacles(game))
   ) {
     game._app.ticker.start();
+    game.gameEnded = false;
     game.gameRunning = false;
     game.score = 0;
     game._texts.displayScore();
