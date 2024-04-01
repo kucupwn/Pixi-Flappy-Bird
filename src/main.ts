@@ -72,7 +72,6 @@ export class Game {
   }
 
   public gameLoop(): void {
-    console.log(this.gameEnded);
     if (
       this.gameRunning &&
       !collideWithBoundaries(this) &&

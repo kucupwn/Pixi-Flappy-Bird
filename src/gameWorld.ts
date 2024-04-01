@@ -110,10 +110,7 @@ export class GameWorld {
   }
 
   private pointSoundDefault(obs: PIXI.Sprite): void {
-    if (
-      Math.floor(obs.getBounds().maxX) === 164 ||
-      Math.floor(obs.getBounds().maxX) === 162
-    ) {
+    if (obs.getBounds().maxX === 164 || obs.getBounds().maxX === 162) {
       this.pointSound = false;
     }
   }
@@ -132,7 +129,6 @@ export class GameWorld {
         this.pointSoundDefault(obs);
       }
     });
-    console.log(this.obstaclesArr[22]?.getBounds().maxX);
     this.game.score = count;
 
     return count;
@@ -155,9 +151,9 @@ export class GameWorld {
   }
 
   public obstacleSpeedProgression(obstacle: PIXI.Sprite) {
-    if (this.game.score >= 50) {
+    if (this.game.score >= 10) {
       obstacle.x -= this.animationSpeed + 2;
-    } else if (this.game.score >= 20) {
+    } else if (this.game.score >= 5) {
       obstacle.x -= this.animationSpeed + 1;
     } else {
       obstacle.x -= this.animationSpeed;
