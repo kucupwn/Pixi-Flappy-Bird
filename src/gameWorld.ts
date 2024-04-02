@@ -10,7 +10,7 @@ export class GameWorld {
   obstacleTexture: PIXI.Texture;
   obstaclesArr: PIXI.Sprite[] = [];
   obstacleGap: number = 120;
-  obstacleDistance: number = 400;
+  obstacleDistance: number = 300;
   pointSound: boolean = false;
 
   constructor(game: Game) {

@@ -65,7 +65,7 @@ export class Game {
     await this.init();
 
     this._gameWorld.animationSpeed = 6;
-    this._gameWorld.obstacleDistance = 400;
+    this._gameWorld.obstacleDistance = 350;
   }
 
   private addSounds() {

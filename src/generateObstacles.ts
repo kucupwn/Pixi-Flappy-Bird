@@ -116,14 +116,14 @@ export function countObstacles(game: Game): number {
 }
 
 export function setObstacleDistance(game: Game) {
-  if (game.score >= 49 && game._gameWorld.obstacleDistance < 400) {
-    game._gameWorld.obstacleDistance = 360;
-  } else if (game.score >= 49 && game._gameWorld.obstacleDistance >= 400) {
-    game._gameWorld.obstacleDistance = 480;
-  } else if (game.score >= 19 && game._gameWorld.obstacleDistance < 400) {
-    game._gameWorld.obstacleDistance = 330;
-  } else if (game.score >= 19 && game._gameWorld.obstacleDistance >= 400) {
-    game._gameWorld.obstacleDistance = 440;
+  if (game.score >= 49 && game._gameWorld.obstacleDistance < 350) {
+    game._gameWorld.obstacleDistance = 340;
+  } else if (game.score >= 49 && game._gameWorld.obstacleDistance >= 350) {
+    game._gameWorld.obstacleDistance = 420;
+  } else if (game.score >= 19 && game._gameWorld.obstacleDistance < 350) {
+    game._gameWorld.obstacleDistance = 320;
+  } else if (game.score >= 19 && game._gameWorld.obstacleDistance >= 350) {
+    game._gameWorld.obstacleDistance = 380;
   }
 }
 
