@@ -20,8 +20,9 @@ export function getObstacles(game: Game, texture: PIXI.Texture): void {
 
   const distance =
     game._app.canvas.width -
-      game._gameWorld.obstaclesArr[game._gameWorld.obstaclesArr.length - 1]
-        ?.x <=
+      game._gameWorld.obstaclesArr[
+        game._gameWorld.obstaclesArr.length - 1
+      ]?.getBounds().maxX <=
     game._gameWorld.obstacleDistance;
 
   if (game.gameRunning && !distance) {
@@ -94,17 +95,19 @@ export function setObstacleDistance(game: Game): void {
     game.score >= game._gameWorld.level[2] - 1 &&
     game._gameWorld.obstacleDistance < 350
   ) {
-    game._gameWorld.obstacleDistance = 340;
-  } else if (
-    game.score >= game._gameWorld.level[2] - 1 &&
-    game._gameWorld.obstacleDistance >= 350
-  ) {
-    game._gameWorld.obstacleDistance = 420;
+    game._gameWorld.obstacleDistance = 320;
   } else if (
     game.score >= game._gameWorld.level[1] - 1 &&
     game._gameWorld.obstacleDistance < 350
   ) {
-    game._gameWorld.obstacleDistance = 320;
+    game._gameWorld.obstacleDistance = 280;
+  }
+
+  if (
+    game.score >= game._gameWorld.level[2] - 1 &&
+    game._gameWorld.obstacleDistance >= 350
+  ) {
+    game._gameWorld.obstacleDistance = 420;
   } else if (
     game.score >= game._gameWorld.level[1] - 1 &&
     game._gameWorld.obstacleDistance >= 350
@@ -113,30 +116,44 @@ export function setObstacleDistance(game: Game): void {
   }
 }
 
+function setAnimationSpeed(game: Game, num: number): number {
+  return game._gameWorld.animationSpeed + num;
+}
+
 // Set background, floor, ceil speed progression
 export function setGameWorldSpeed(game: Game): void {
+  let backgroundSpeedAdjustment = 0.1;
+  let animationLevel = 0;
+
   if (game.score >= game._gameWorld.level[2]) {
-    game._gameWorld.background.tilePosition.x -= 0.5;
-    game._gameWorld.ceil.tilePosition.x -= game._gameWorld.animationSpeed + 2;
-    game._gameWorld.floor.tilePosition.x -= game._gameWorld.animationSpeed + 2;
+    backgroundSpeedAdjustment = 0.2;
+    animationLevel = 2;
   } else if (game.score >= game._gameWorld.level[1]) {
-    game._gameWorld.background.tilePosition.x -= 0.4;
-    game._gameWorld.ceil.tilePosition.x -= game._gameWorld.animationSpeed + 1;
-    game._gameWorld.floor.tilePosition.x -= game._gameWorld.animationSpeed + 1;
-  } else {
-    game._gameWorld.background.tilePosition.x -= 0.3;
-    game._gameWorld.ceil.tilePosition.x -= game._gameWorld.animationSpeed;
-    game._gameWorld.floor.tilePosition.x -= game._gameWorld.animationSpeed;
+    backgroundSpeedAdjustment = 0.1;
+    animationLevel = 1;
   }
+
+  game._gameWorld.background.tilePosition.x -=
+    game._gameWorld.backgroundSpeed + backgroundSpeedAdjustment;
+
+  game._gameWorld.ceil.tilePosition.x -= setAnimationSpeed(
+    game,
+    animationLevel
+  );
+
+  game._gameWorld.floor.tilePosition.x -= setAnimationSpeed(
+    game,
+    animationLevel
+  );
 }
 
 // Set obstacle speed progression
 export function setObstacleSpeed(game: Game, obstacle: PIXI.Sprite): void {
   if (game.score >= game._gameWorld.level[2]) {
-    obstacle.x -= game._gameWorld.animationSpeed + 2;
+    obstacle.x -= setAnimationSpeed(game, 2);
   } else if (game.score >= game._gameWorld.level[1]) {
-    obstacle.x -= game._gameWorld.animationSpeed + 1;
+    obstacle.x -= setAnimationSpeed(game, 1);
   } else {
-    obstacle.x -= game._gameWorld.animationSpeed;
+    obstacle.x -= setAnimationSpeed(game, 0);
   }
 }

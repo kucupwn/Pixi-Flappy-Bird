@@ -59,7 +59,8 @@ export class Game {
     await this.init();
 
     this._gameWorld.animationSpeed = 3;
-    this._gameWorld.obstacleDistance = 300;
+    this._gameWorld.backgroundSpeed = 0.1;
+    this._gameWorld.obstacleDistance = 250;
   }
 
   // Initialize rapid game mode
@@ -69,6 +70,7 @@ export class Game {
     await this.init();
 
     this._gameWorld.animationSpeed = 6;
+    this._gameWorld.backgroundSpeed = 0.4;
     this._gameWorld.obstacleDistance = 350;
   }
 
