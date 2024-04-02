@@ -8,8 +8,8 @@ import {
   playPointSound,
   countObstacles,
   setObstacleDistance,
-  gameWorldSpeedProgression,
-  obstacleSpeedProgression,
+  setGameWorldSpeed,
+  setObstacleSpeed,
 } from "./obstaclesFunctions";
 import { collideWithBoundaries, collideWithObstacles } from "./collisionCheck";
 
@@ -38,6 +38,7 @@ export class Game {
     this._texts = new Texts(this);
   }
 
+  // Initialize assets and UI
   public async init() {
     await this._gameWorld.initGameWorldSprites();
     await this._player.initBirdSprite();
@@ -45,11 +46,12 @@ export class Game {
 
     this.addSounds();
     this._texts.initFps();
-    this._texts.controlInfo();
+    this._texts.userControlInfo();
     this._texts.displayScore();
     this._texts.displayHighscore();
   }
 
+  // Initialize normal game mode
   public async normalMode() {
     await this._app.init({ antialias: true, width: 700, height: 540 });
     appContainer?.appendChild(this._app.canvas);
@@ -59,6 +61,7 @@ export class Game {
     this._gameWorld.obstacleDistance = 300;
   }
 
+  // Initialize rapid game mode
   public async rapidMode() {
     await this._app.init({ antialias: true, width: 960, height: 540 });
     appContainer?.appendChild(this._app.canvas);
@@ -68,6 +71,7 @@ export class Game {
     this._gameWorld.obstacleDistance = 350;
   }
 
+  // Add game sounds to pixi sound
   private addSounds() {
     sound.add("music", "./assets/Sounds/music.mp3");
     sound.find("music").volume = 0.1;
@@ -83,6 +87,7 @@ export class Game {
     sound.find("hit").volume = 0.3;
   }
 
+  // Start run, remove user instructions
   public startGame() {
     sound.play("music");
     this.gameRunning = true;
@@ -92,6 +97,7 @@ export class Game {
     this._app.stage.removeChild(this._texts.gameModeInfo);
   }
 
+  // Play hit sound (game end)
   private playHitSound() {
     if (!this.hitSound) {
       sound.play("hit");
@@ -99,6 +105,7 @@ export class Game {
     }
   }
 
+  // This is the game
   public gameLoop(): void {
     if (
       this.gameRunning &&
@@ -113,9 +120,9 @@ export class Game {
       playPointSound(this);
       setObstacleDistance(this);
       getObstacles(this, this._gameWorld.obstacleTexture);
-      gameWorldSpeedProgression(this);
+      setGameWorldSpeed(this);
       this._gameWorld.obstaclesArr.forEach((obs) => {
-        obstacleSpeedProgression(this, obs);
+        setObstacleSpeed(this, obs);
       });
     } else if (
       !this.gameRunning &&
@@ -133,6 +140,7 @@ export class Game {
 
 const game = new Game();
 
+// Event listeners for game mode choice
 normalModeBtn?.addEventListener("click", () => {
   game.normalMode();
   gameModeText?.remove();
@@ -147,6 +155,7 @@ rapidModeBtn?.addEventListener("click", () => {
   normalModeBtn?.remove();
 });
 
+// Event listener for control game status
 window.addEventListener("keydown", (e) => {
   if (
     e.key === "Escape" &&

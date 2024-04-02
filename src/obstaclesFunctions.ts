@@ -2,10 +2,12 @@ import * as PIXI from "pixi.js";
 import { Game } from "./main";
 import { sound } from "@pixi/sound";
 
+// Get Y position for one obstacle
 function getObstacleOffset(): number {
   return Math.floor(Math.random() * 250 + 50);
 }
 
+// Set position and add obstacles to canvas and array
 export function getObstacles(game: Game, texture: PIXI.Texture): void {
   const obstacleClone1 = PIXI.Sprite.from(texture);
   obstacleClone1.x = game._app.canvas.width;
@@ -30,6 +32,7 @@ export function getObstacles(game: Game, texture: PIXI.Texture): void {
   }
 }
 
+// Valdate obstacle position to play point sound in normal mode
 function pointSoundValidatorNormalMode(game: Game, obs: PIXI.Sprite) {
   if (game._gameWorld.animationSpeed === 3) {
     if (
@@ -46,6 +49,7 @@ function pointSoundValidatorNormalMode(game: Game, obs: PIXI.Sprite) {
   }
 }
 
+// Valdate obstacle position to play point sound in rapid mode
 function pointSoundValidatorRapidMode(game: Game, obs: PIXI.Sprite) {
   if (game._gameWorld.animationSpeed === 6) {
     if (
@@ -62,6 +66,7 @@ function pointSoundValidatorRapidMode(game: Game, obs: PIXI.Sprite) {
   }
 }
 
+// Hit sound and switch
 export function playPointSound(game: Game) {
   for (const obs of game._gameWorld.obstaclesArr) {
     pointSoundValidatorNormalMode(game, obs);
@@ -70,6 +75,7 @@ export function playPointSound(game: Game) {
   game._gameWorld.pointSound = false;
 }
 
+// Count passed obstacles; set score
 export function countObstacles(game: Game): number {
   let count = 0;
   game._gameWorld.obstaclesArr.forEach((obs, i) => {
@@ -79,11 +85,12 @@ export function countObstacles(game: Game): number {
       }
     }
   });
-  game.score = count;
 
   return count;
 }
 
+// Set obstacles distance
+// adjusted with -1 relative to speed progression change values to make the right distance right after speed progression event
 export function setObstacleDistance(game: Game) {
   if (game.score >= 49 && game._gameWorld.obstacleDistance < 350) {
     game._gameWorld.obstacleDistance = 340;
@@ -96,7 +103,8 @@ export function setObstacleDistance(game: Game) {
   }
 }
 
-export function gameWorldSpeedProgression(game: Game) {
+// Set background, floor, ceil speed progression
+export function setGameWorldSpeed(game: Game) {
   if (game.score >= 50) {
     game._gameWorld.background.tilePosition.x -= 0.4;
     game._gameWorld.ceil.tilePosition.x -= game._gameWorld.animationSpeed + 2;
@@ -112,7 +120,8 @@ export function gameWorldSpeedProgression(game: Game) {
   }
 }
 
-export function obstacleSpeedProgression(game: Game, obstacle: PIXI.Sprite) {
+// Set obstacle speed progression
+export function setObstacleSpeed(game: Game, obstacle: PIXI.Sprite) {
   if (game.score >= 50) {
     obstacle.x -= game._gameWorld.animationSpeed + 2;
   } else if (game.score >= 20) {

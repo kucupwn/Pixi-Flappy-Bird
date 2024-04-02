@@ -26,6 +26,7 @@ export class Texts {
     this.gameModeInfo = new PIXI.Text();
   }
 
+  // Initialize font family and UI texts
   public async initFont() {
     PIXI.Assets.add({
       alias: "ArcadeClassic",
@@ -66,6 +67,7 @@ export class Texts {
     this.game._app.stage.addChild(this.highscoreLabel);
   }
 
+  // Add and position FPS counter
   public initFps() {
     this.game._app.stage.addChild(this.fpsLabel);
     this.fpsLabel.x = 10;
@@ -73,6 +75,7 @@ export class Texts {
     this.fpsLabel.zIndex = 1;
   }
 
+  // Calculate and display FPS
   public displayFps() {
     let currFrame = Date.now();
     let difference = currFrame - prevFrame;
@@ -90,7 +93,8 @@ export class Texts {
     }
   }
 
-  public controlInfo() {
+  // Add, position and display user contol info
+  public userControlInfo() {
     this.game._app.stage.addChild(this.startInfo);
     this.startInfo.anchor.set(0.5);
     this.startInfo.x = this.game._app.canvas.width / 2;
@@ -112,6 +116,7 @@ export class Texts {
     this.gameModeInfo.y = this.game._app.canvas.height * 0.4;
   }
 
+  // Display score
   public displayScore() {
     this.scoreLabel.x = 10;
     this.scoreLabel.y = this.game._app.canvas.height * 0.94;
@@ -119,6 +124,7 @@ export class Texts {
     this.scoreLabel.text = `Score: ${this.game.score}`;
   }
 
+  // Display highscore
   public displayHighscore() {
     this.highscoreLabel.y = this.game._app.canvas.height * 0.94;
     this.highscoreLabel.x = this.game._app.canvas.width * 0.7;
@@ -126,6 +132,7 @@ export class Texts {
     this.highscoreLabel.text = `Highscore: ${this.game.highScore}`;
   }
 
+  // Check and set highscore
   public setHighscore() {
     if (this.game.score > this.game.highScore) {
       this.game.highScore = this.game.score;

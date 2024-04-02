@@ -15,6 +15,7 @@ export class Player {
     this.jumpEventListener();
   }
 
+  // Initialize bird texture and wing animation
   public async initBirdSprite() {
     const birdImages = [
       "./assets/Sprites/yellowbird-upflap.png",
@@ -33,6 +34,7 @@ export class Player {
     this.setPlayer(animatedBirdSprite);
   }
 
+  // Add and set bird position
   public setPlayer(bird: PIXI.AnimatedSprite): void {
     this.bird = bird;
     this.bird.anchor.set(0.5);
@@ -42,10 +44,12 @@ export class Player {
     this.game._app.stage.addChild(this.bird);
   }
 
+  // Event listener for jump
   private jumpEventListener(): void {
     window.addEventListener("keydown", this.keyDown.bind(this));
   }
 
+  // Jump, play wing sound
   private keyDown(e: KeyboardEvent): void {
     if (e.key === " " && !this.game.keylock) {
       this.velY = this.jumpStrength;
@@ -55,12 +59,14 @@ export class Player {
     }
   }
 
+  // Set player velocity, position, rotation
   public movePlayer(): void {
     this.velY += 0.3;
     this.bird.y += this.velY;
     this.bird.rotation = Math.atan2(this.velY, 45);
   }
 
+  // Reset player
   public resetPlayer(): void {
     this.bird.x = Math.floor(this.game._app.canvas.width / 3);
     this.bird.y = this.game._app.canvas.height / 2;
