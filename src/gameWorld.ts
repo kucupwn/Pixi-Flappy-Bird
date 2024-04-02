@@ -9,11 +9,11 @@ export class GameWorld {
   obstacleTexture: PIXI.Texture;
   obstaclesArr: PIXI.Sprite[] = [];
   obstacleGap: number = 120;
-  obstacleDistance: number = 300;
+  obstacleDistance: number = 250;
   animationSpeed: number = 3;
   animationLevel: number = 0;
   backgroundSpeed: number = 0.3;
-  level: number[] = [0, 5, 10];
+  level: number[] = [0, 20, 50];
   pointSound: boolean = false;
 
   constructor(game: Game) {
