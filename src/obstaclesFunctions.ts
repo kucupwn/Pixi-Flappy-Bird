@@ -33,7 +33,7 @@ export function getObstacles(game: Game, texture: PIXI.Texture): void {
 }
 
 // Valdate obstacle position to play point sound in normal mode
-function pointSoundValidatorNormalMode(game: Game, obs: PIXI.Sprite) {
+function pointSoundValidatorNormalMode(game: Game, obs: PIXI.Sprite): void {
   if (game._gameWorld.animationSpeed === 3) {
     if (
       !game._gameWorld.pointSound &&
@@ -44,13 +44,12 @@ function pointSoundValidatorNormalMode(game: Game, obs: PIXI.Sprite) {
     ) {
       sound.play("point");
       game._gameWorld.pointSound = true;
-      return;
     }
   }
 }
 
 // Valdate obstacle position to play point sound in rapid mode
-function pointSoundValidatorRapidMode(game: Game, obs: PIXI.Sprite) {
+function pointSoundValidatorRapidMode(game: Game, obs: PIXI.Sprite): void {
   if (game._gameWorld.animationSpeed === 6) {
     if (
       !game._gameWorld.pointSound &&
@@ -61,13 +60,12 @@ function pointSoundValidatorRapidMode(game: Game, obs: PIXI.Sprite) {
     ) {
       sound.play("point");
       game._gameWorld.pointSound = true;
-      return;
     }
   }
 }
 
 // Hit sound and switch
-export function playPointSound(game: Game) {
+export function playPointSound(game: Game): void {
   for (const obs of game._gameWorld.obstaclesArr) {
     pointSoundValidatorNormalMode(game, obs);
     pointSoundValidatorRapidMode(game, obs);
@@ -91,7 +89,7 @@ export function countObstacles(game: Game): number {
 
 // Set obstacles distance
 // adjusted with -1 relative to speed progression change values to make the right distance right after speed progression event
-export function setObstacleDistance(game: Game) {
+export function setObstacleDistance(game: Game): void {
   if (
     game.score >= game._gameWorld.level[2] - 1 &&
     game._gameWorld.obstacleDistance < 350
@@ -116,7 +114,7 @@ export function setObstacleDistance(game: Game) {
 }
 
 // Set background, floor, ceil speed progression
-export function setGameWorldSpeed(game: Game) {
+export function setGameWorldSpeed(game: Game): void {
   if (game.score >= game._gameWorld.level[2]) {
     game._gameWorld.background.tilePosition.x -= 0.5;
     game._gameWorld.ceil.tilePosition.x -= game._gameWorld.animationSpeed + 2;
@@ -133,7 +131,7 @@ export function setGameWorldSpeed(game: Game) {
 }
 
 // Set obstacle speed progression
-export function setObstacleSpeed(game: Game, obstacle: PIXI.Sprite) {
+export function setObstacleSpeed(game: Game, obstacle: PIXI.Sprite): void {
   if (game.score >= game._gameWorld.level[2]) {
     obstacle.x -= game._gameWorld.animationSpeed + 2;
   } else if (game.score >= game._gameWorld.level[1]) {

@@ -24,13 +24,13 @@ export class Game {
   _player: Player;
   _gameWorld: GameWorld;
   _texts: Texts;
-  gameRunning: boolean = false;
-  gameEnded: boolean = false;
   tickerAdded: boolean = false;
+  gameRunning: boolean = false;
   keylock: boolean = false;
+  gameEnded: boolean = false;
+  hitSound: boolean = false;
   score: number = 0;
   highScore: number = 0;
-  hitSound: boolean = false;
 
   constructor() {
     this._app = new PIXI.Application();
@@ -40,7 +40,7 @@ export class Game {
   }
 
   // Initialize assets and UI
-  public async init() {
+  public async init(): Promise<void> {
     await this._gameWorld.initGameWorldSprites();
     await this._player.initBirdSprite();
     await this._texts.initFont();
@@ -53,7 +53,7 @@ export class Game {
   }
 
   // Initialize normal game mode
-  public async normalMode() {
+  public async normalMode(): Promise<void> {
     await this._app.init({ antialias: true, width: 700, height: 540 });
     appContainer?.appendChild(this._app.canvas);
     await this.init();
@@ -63,7 +63,7 @@ export class Game {
   }
 
   // Initialize rapid game mode
-  public async rapidMode() {
+  public async rapidMode(): Promise<void> {
     await this._app.init({ antialias: true, width: 960, height: 540 });
     appContainer?.appendChild(this._app.canvas);
     await this.init();
@@ -73,7 +73,7 @@ export class Game {
   }
 
   // Add game sounds to pixi sound
-  private addSounds() {
+  private addSounds(): void {
     sound.add("music", "./assets/Sounds/music.mp3");
     sound.find("music").volume = 0.1;
     sound.find("music").loop = true;
@@ -89,7 +89,7 @@ export class Game {
   }
 
   // Start run, remove user instructions
-  public startGame() {
+  public startGame(): void {
     sound.play("music");
     this.gameRunning = true;
     this._app.stage.removeChild(this._texts.startInfo);
@@ -99,7 +99,7 @@ export class Game {
   }
 
   // Play hit sound (game end)
-  private playHitSound() {
+  private playHitSound(): void {
     if (!this.hitSound) {
       sound.play("hit");
       this.hitSound = true;

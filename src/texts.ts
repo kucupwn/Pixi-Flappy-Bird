@@ -68,7 +68,7 @@ export class Texts {
   }
 
   // Add and position FPS counter
-  public initFps() {
+  public initFps(): void {
     this.game._app.stage.addChild(this.fpsLabel);
     this.fpsLabel.x = 10;
     this.fpsLabel.y = 15;
@@ -76,7 +76,7 @@ export class Texts {
   }
 
   // Calculate and display FPS
-  public displayFps() {
+  public displayFps(): void {
     let currFrame = Date.now();
     let difference = currFrame - prevFrame;
     prevFrame = currFrame;
@@ -94,7 +94,7 @@ export class Texts {
   }
 
   // Add, position and display user contol info
-  public userControlInfo() {
+  public userControlInfo(): void {
     this.game._app.stage.addChild(this.startInfo);
     this.startInfo.anchor.set(0.5);
     this.startInfo.x = this.game._app.canvas.width / 2;
@@ -117,7 +117,7 @@ export class Texts {
   }
 
   // Display score
-  public displayScore() {
+  public displayScore(): void {
     this.scoreLabel.x = 10;
     this.scoreLabel.y = this.game._app.canvas.height * 0.94;
     this.scoreLabel.zIndex = 2;
@@ -125,7 +125,7 @@ export class Texts {
   }
 
   // Display highscore
-  public displayHighscore() {
+  public displayHighscore(): void {
     this.highscoreLabel.y = this.game._app.canvas.height * 0.94;
     this.highscoreLabel.x = this.game._app.canvas.width * 0.7;
     this.highscoreLabel.zIndex = 2;
@@ -133,7 +133,7 @@ export class Texts {
   }
 
   // Check and set highscore
-  public setHighscore() {
+  public setHighscore(): void {
     if (this.game.score > this.game.highScore) {
       this.game.highScore = this.game.score;
     }

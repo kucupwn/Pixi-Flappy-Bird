@@ -46,14 +46,14 @@ export class GameWorld {
   }
 
   // Set background
-  private setBackgroundSprite(background: PIXI.TilingSprite) {
+  private setBackgroundSprite(background: PIXI.TilingSprite): void {
     this.background = background;
     this.game._app.stage.addChild(background);
     background.width = this.game._app.canvas.width;
   }
 
   // Set ceil
-  private setCeilSprite(ceil: PIXI.TilingSprite) {
+  private setCeilSprite(ceil: PIXI.TilingSprite): void {
     this.ceil = ceil;
     this.game._app.stage.addChild(this.ceil);
     this.ceil.zIndex = 1;
@@ -63,7 +63,7 @@ export class GameWorld {
   }
 
   // Set floor
-  private setFloorSprite(floor: PIXI.TilingSprite) {
+  private setFloorSprite(floor: PIXI.TilingSprite): void {
     this.floor = floor;
     this.game._app.stage.addChild(this.floor);
     this.floor.zIndex = 1;
@@ -72,7 +72,7 @@ export class GameWorld {
   }
 
   // Initialize first obstacle pair
-  private initObstacles(texture: PIXI.Texture) {
+  private initObstacles(texture: PIXI.Texture): void {
     const firstObs1 = PIXI.Sprite.from(texture);
     this.game._app.stage.addChild(firstObs1);
     firstObs1.x = this.game._app.canvas.width;
@@ -89,7 +89,7 @@ export class GameWorld {
   }
 
   // Reset game world
-  public resetGameWorld() {
+  public resetGameWorld(): void {
     this.obstaclesArr.forEach((obstacle) => {
       this.game._app.stage.removeChild(obstacle);
     });
