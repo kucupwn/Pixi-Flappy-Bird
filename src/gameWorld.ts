@@ -11,8 +11,8 @@ export class GameWorld {
   obstacleGap: number = 120;
   obstacleDistance: number = 300;
   animationSpeed: number = 3;
+  animationLevel: number = 0;
   backgroundSpeed: number = 0.3;
-  progressionStep: number = 1;
   level: number[] = [0, 5, 10];
   pointSound: boolean = false;
 

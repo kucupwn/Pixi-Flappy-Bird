@@ -20,9 +20,8 @@ export function getObstacles(game: Game, texture: PIXI.Texture): void {
 
   const distance =
     game._app.canvas.width -
-      game._gameWorld.obstaclesArr[
-        game._gameWorld.obstaclesArr.length - 1
-      ]?.getBounds().maxX <=
+      game._gameWorld.obstaclesArr[game._gameWorld.obstaclesArr.length - 1]
+        ?.x <=
     game._gameWorld.obstacleDistance;
 
   if (game.gameRunning && !distance) {
@@ -89,30 +88,15 @@ export function countObstacles(game: Game): number {
 }
 
 // Set obstacles distance
-// adjusted with -1 relative to speed progression change values to make the right distance right after speed progression event
 export function setObstacleDistance(game: Game): void {
-  if (
-    game.score >= game._gameWorld.level[2] - 1 &&
-    game._gameWorld.obstacleDistance < 350
-  ) {
-    game._gameWorld.obstacleDistance = 320;
-  } else if (
-    game.score >= game._gameWorld.level[1] - 1 &&
-    game._gameWorld.obstacleDistance < 350
-  ) {
-    game._gameWorld.obstacleDistance = 280;
-  }
+  const level2Threshold = game._gameWorld.level[2] - 1;
+  const level1Threshold = game._gameWorld.level[1] - 1;
+  const currentDistance = game._gameWorld.obstacleDistance;
 
-  if (
-    game.score >= game._gameWorld.level[2] - 1 &&
-    game._gameWorld.obstacleDistance >= 350
-  ) {
-    game._gameWorld.obstacleDistance = 420;
-  } else if (
-    game.score >= game._gameWorld.level[1] - 1 &&
-    game._gameWorld.obstacleDistance >= 350
-  ) {
-    game._gameWorld.obstacleDistance = 380;
+  if (game.score >= level2Threshold) {
+    game._gameWorld.obstacleDistance = currentDistance < 350 ? 320 : 420;
+  } else if (game.score >= level1Threshold) {
+    game._gameWorld.obstacleDistance = currentDistance < 350 ? 280 : 380;
   }
 }
 
@@ -121,9 +105,8 @@ function setAnimationSpeed(game: Game, num: number): number {
 }
 
 // Set background, floor, ceil speed progression
-export function setGameWorldSpeed(game: Game): void {
-  let backgroundSpeedAdjustment = 0.1;
-  let animationLevel = 0;
+export function setGameWorldSpeed(game: Game, animationLevel: number): void {
+  let backgroundSpeedAdjustment = 0;
 
   if (game.score >= game._gameWorld.level[2]) {
     backgroundSpeedAdjustment = 0.2;
@@ -148,12 +131,16 @@ export function setGameWorldSpeed(game: Game): void {
 }
 
 // Set obstacle speed progression
-export function setObstacleSpeed(game: Game, obstacle: PIXI.Sprite): void {
+export function setObstacleSpeed(
+  game: Game,
+  obstacle: PIXI.Sprite,
+  animationLevel: number
+): void {
   if (game.score >= game._gameWorld.level[2]) {
-    obstacle.x -= setAnimationSpeed(game, 2);
+    obstacle.x -= setAnimationSpeed(game, animationLevel);
   } else if (game.score >= game._gameWorld.level[1]) {
-    obstacle.x -= setAnimationSpeed(game, 1);
+    obstacle.x -= setAnimationSpeed(game, animationLevel);
   } else {
-    obstacle.x -= setAnimationSpeed(game, 0);
+    obstacle.x -= setAnimationSpeed(game, animationLevel);
   }
 }
