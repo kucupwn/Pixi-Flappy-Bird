@@ -110,16 +110,24 @@ export class GameWorld {
   }
 
   public playPointSound() {
+    console.log(Math.floor(this.game._player.bird.getBounds().minX - 5));
+    console.log(this.obstaclesArr[0]?.getBounds().maxX);
     for (const obs of this.obstaclesArr) {
       if (this.animationSpeed === 6) {
         if (
           !this.pointSound &&
-          (obs.getBounds().maxX === 161 ||
-            obs.getBounds().maxX === 162 ||
-            obs.getBounds().maxX === 163 ||
-            obs.getBounds().maxX === 164 ||
-            obs.getBounds().maxX === 165 ||
-            obs.getBounds().maxX === 166)
+          (obs.getBounds().maxX ===
+            Math.floor(this.game._player.bird.getBounds().minX) ||
+            obs.getBounds().maxX ===
+              Math.floor(this.game._player.bird.getBounds().minX) - 1 ||
+            obs.getBounds().maxX ===
+              Math.floor(this.game._player.bird.getBounds().minX) - 2 ||
+            obs.getBounds().maxX ===
+              Math.floor(this.game._player.bird.getBounds().minX) - 3 ||
+            obs.getBounds().maxX ===
+              Math.floor(this.game._player.bird.getBounds().minX) - 4 ||
+            obs.getBounds().maxX ===
+              Math.floor(this.game._player.bird.getBounds().minX) - 5)
         ) {
           sound.play("point");
           this.pointSound = true;
@@ -128,10 +136,14 @@ export class GameWorld {
       } else if (this.animationSpeed === 3) {
         if (
           !this.pointSound &&
-          (obs.getBounds().maxX === 160 ||
-            obs.getBounds().maxX === 161 ||
-            obs.getBounds().maxX === 162 ||
-            obs.getBounds().maxX === 163)
+          (obs.getBounds().maxX ===
+            Math.floor(this.game._player.bird.getBounds().minX) ||
+            obs.getBounds().maxX ===
+              Math.floor(this.game._player.bird.getBounds().minX) - 1 ||
+            obs.getBounds().maxX ===
+              Math.floor(this.game._player.bird.getBounds().minX) - 2 ||
+            obs.getBounds().maxX ===
+              Math.floor(this.game._player.bird.getBounds().minX) - 3)
         ) {
           sound.play("point");
           this.pointSound = true;
@@ -146,7 +158,7 @@ export class GameWorld {
     let count = 0;
     this.obstaclesArr.forEach((obs, i) => {
       if (i % 2 === 0) {
-        if (obs.getBounds().maxX < 160) {
+        if (obs.getBounds().maxX < this.game._player.bird.getBounds().minX) {
           count++;
         }
       }

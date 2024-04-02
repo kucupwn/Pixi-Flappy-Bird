@@ -37,7 +37,7 @@ export class Player {
     this.bird = bird;
     this.bird.anchor.set(0.5);
     this.bird.animationSpeed = 0.1;
-    this.bird.x = 180;
+    this.bird.x = Math.floor(this.game._app.canvas.width / 3);
     this.bird.y = this.game._app.canvas.height / 2;
     this.game._app.stage.addChild(this.bird);
   }
@@ -62,7 +62,7 @@ export class Player {
   }
 
   public resetPlayer(): void {
-    this.bird.x = 180;
+    this.bird.x = Math.floor(this.game._app.canvas.width / 3);
     this.bird.y = this.game._app.canvas.height / 2;
     this.velY = 0;
     this.bird.rotation = 0;
