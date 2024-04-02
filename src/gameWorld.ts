@@ -78,6 +78,7 @@ export class GameWorld {
     const firstObs2 = PIXI.Sprite.from(texture);
     this.game._app.stage.addChild(firstObs2);
     firstObs2.x = this.game._app.canvas.width;
+
     firstObs2.y = firstObs1.y + this.obstacleGap;
     this.obstaclesArr.push(firstObs2);
   }
@@ -110,24 +111,50 @@ export class GameWorld {
   }
 
   public playPointSound() {
-    console.log(Math.floor(this.game._player.bird.getBounds().minX - 5));
-    console.log(this.obstaclesArr[0]?.getBounds().maxX);
     for (const obs of this.obstaclesArr) {
       if (this.animationSpeed === 6) {
         if (
           !this.pointSound &&
           (obs.getBounds().maxX ===
-            Math.floor(this.game._player.bird.getBounds().minX) ||
+            Math.floor(
+              this.game._app.canvas.width / 3 - this.game._player.bird.width / 2
+            ) ||
             obs.getBounds().maxX ===
-              Math.floor(this.game._player.bird.getBounds().minX) - 1 ||
+              Math.floor(
+                this.game._app.canvas.width / 3 -
+                  this.game._player.bird.width / 2
+              ) -
+                1 ||
             obs.getBounds().maxX ===
-              Math.floor(this.game._player.bird.getBounds().minX) - 2 ||
+              Math.floor(
+                this.game._app.canvas.width / 3 -
+                  this.game._player.bird.width / 2
+              ) -
+                2 ||
             obs.getBounds().maxX ===
-              Math.floor(this.game._player.bird.getBounds().minX) - 3 ||
+              Math.floor(
+                this.game._app.canvas.width / 3 -
+                  this.game._player.bird.width / 2
+              ) -
+                3 ||
             obs.getBounds().maxX ===
-              Math.floor(this.game._player.bird.getBounds().minX) - 4 ||
+              Math.floor(
+                this.game._app.canvas.width / 3 -
+                  this.game._player.bird.width / 2
+              ) -
+                4 ||
             obs.getBounds().maxX ===
-              Math.floor(this.game._player.bird.getBounds().minX) - 5)
+              Math.floor(
+                this.game._app.canvas.width / 3 -
+                  this.game._player.bird.width / 2
+              ) -
+                5 ||
+            obs.getBounds().maxX ===
+              Math.floor(
+                this.game._app.canvas.width / 3 -
+                  this.game._player.bird.width / 2
+              ) -
+                6)
         ) {
           sound.play("point");
           this.pointSound = true;
@@ -137,13 +164,21 @@ export class GameWorld {
         if (
           !this.pointSound &&
           (obs.getBounds().maxX ===
-            Math.floor(this.game._player.bird.getBounds().minX) ||
+            Math.floor(
+              this.game._app.canvas.width / 3 - this.game._player.bird.width / 2
+            ) ||
             obs.getBounds().maxX ===
-              Math.floor(this.game._player.bird.getBounds().minX) - 1 ||
+              Math.floor(
+                this.game._app.canvas.width / 3 -
+                  this.game._player.bird.width / 2
+              ) -
+                1 ||
             obs.getBounds().maxX ===
-              Math.floor(this.game._player.bird.getBounds().minX) - 2 ||
-            obs.getBounds().maxX ===
-              Math.floor(this.game._player.bird.getBounds().minX) - 3)
+              Math.floor(
+                this.game._app.canvas.width / 3 -
+                  this.game._player.bird.width / 2
+              ) +
+                1)
         ) {
           sound.play("point");
           this.pointSound = true;
@@ -198,11 +233,11 @@ export class GameWorld {
     if (this.game.score >= 49 && this.obstacleDistance < 400) {
       this.obstacleDistance = 360;
     } else if (this.game.score >= 49 && this.obstacleDistance >= 400) {
-      this.obstacleDistance = 460;
+      this.obstacleDistance = 480;
     } else if (this.game.score >= 19 && this.obstacleDistance < 400) {
       this.obstacleDistance = 330;
     } else if (this.game.score >= 19 && this.obstacleDistance >= 400) {
-      this.obstacleDistance = 430;
+      this.obstacleDistance = 440;
     }
   }
 
