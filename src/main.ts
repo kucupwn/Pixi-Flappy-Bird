@@ -3,6 +3,14 @@ import { sound } from "@pixi/sound";
 import { GameWorld } from "./gameWorld";
 import { Player } from "./player";
 import { Texts } from "./texts";
+import {
+  getObstacles,
+  playPointSound,
+  countObstacles,
+  setObstacleDistance,
+  gameWorldSpeedProgression,
+  obstacleSpeedProgression,
+} from "./generateObstacles";
 import { collideWithBoundaries, collideWithObstacles } from "./collisionCheck";
 
 const appContainer = document.getElementById("app");
@@ -97,17 +105,17 @@ export class Game {
       !collideWithBoundaries(this) &&
       !collideWithObstacles(this)
     ) {
-      this.score = this._gameWorld.countObstacles();
+      this.score = countObstacles(this);
       this._texts.displayFps();
       this._texts.displayScore();
       this._player.movePlayer();
-      this._gameWorld.playPointSound();
-      this._gameWorld.setObstacleDistance();
-      this._gameWorld.getObstacles(this._gameWorld.obstacleTexture);
-      this._gameWorld.gameWorldSpeedProgression();
       this._player.bird.play();
+      playPointSound(this);
+      setObstacleDistance(this);
+      getObstacles(this, this._gameWorld.obstacleTexture);
+      gameWorldSpeedProgression(this);
       this._gameWorld.obstaclesArr.forEach((obs) => {
-        this._gameWorld.obstacleSpeedProgression(obs);
+        obstacleSpeedProgression(this, obs);
       });
     } else if (
       !this.gameRunning &&
