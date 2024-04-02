@@ -160,6 +160,7 @@ rapidModeBtn?.addEventListener("click", () => {
 
 // Event listener for control game status
 window.addEventListener("keydown", (e) => {
+  // Pause game
   if (
     e.key === "Escape" &&
     game.gameRunning &&
@@ -180,6 +181,7 @@ window.addEventListener("keydown", (e) => {
     game._app.ticker.start();
   }
 
+  // Start game and ticker; start only game
   if (!game.tickerAdded) {
     window.addEventListener("keydown", (e) => {
       if (
@@ -208,6 +210,7 @@ window.addEventListener("keydown", (e) => {
     });
   }
 
+  // Restart game
   if (
     e.key === "Enter" &&
     !game.keylock &&
@@ -217,6 +220,7 @@ window.addEventListener("keydown", (e) => {
     game._app.ticker.start();
     game.gameEnded = false;
     game.gameRunning = false;
+    game.hitSound = false;
     game.score = 0;
     game._texts.displayScore();
     game._player.resetPlayer();
@@ -225,7 +229,5 @@ window.addEventListener("keydown", (e) => {
     game._app.stage.addChild(game._texts.pauseInfo);
     game._app.stage.addChild(game._texts.restartInfo);
     game._app.stage.addChild(game._texts.gameModeInfo);
-
-    game.hitSound = false;
   }
 });
