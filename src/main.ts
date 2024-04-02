@@ -3,6 +3,7 @@ import { sound } from "@pixi/sound";
 import { GameWorld } from "./gameWorld";
 import { Player } from "./player";
 import { Texts } from "./texts";
+import { GameStatusEvents } from "./gameStatusEvents";
 import {
   getObstacles,
   playPointSound,
@@ -24,6 +25,7 @@ export class Game {
   _player: Player;
   _gameWorld: GameWorld;
   _texts: Texts;
+  gameStatusEvents: GameStatusEvents;
   tickerAdded: boolean = false;
   gameRunning: boolean = false;
   keylock: boolean = false;
@@ -37,6 +39,7 @@ export class Game {
     this._player = new Player(this);
     this._gameWorld = new GameWorld(this);
     this._texts = new Texts(this);
+    this.gameStatusEvents = new GameStatusEvents(this);
   }
 
   // Initialize assets and UI
@@ -50,6 +53,7 @@ export class Game {
     this._texts.userControlInfo();
     this._texts.displayScore();
     this._texts.displayHighscore();
+    this.gameStatusEvents.eventListener(this);
   }
 
   // Initialize normal game mode
@@ -158,78 +162,4 @@ rapidModeBtn?.addEventListener("click", () => {
   gameModeText?.remove();
   rapidModeBtn.remove();
   normalModeBtn?.remove();
-});
-
-// Event listener for control game status
-window.addEventListener("keydown", (e) => {
-  // Pause game
-  if (
-    e.key === "Escape" &&
-    game.gameRunning &&
-    game._gameWorld.obstaclesArr.length > 2
-  ) {
-    game.keylock = true;
-    game.gameRunning = false;
-    game._player.bird.stop();
-    game._app.ticker.stop();
-  } else if (
-    e.key === "Escape" &&
-    !game.gameRunning &&
-    game._gameWorld.obstaclesArr.length > 2
-  ) {
-    game.keylock = false;
-    game.gameRunning = true;
-    game._player.bird.play();
-    game._app.ticker.start();
-  }
-
-  // Start game and ticker; start only game
-  if (!game.tickerAdded) {
-    window.addEventListener("keydown", (e) => {
-      if (
-        e.key === " " &&
-        !game.gameRunning &&
-        !game.tickerAdded &&
-        !game.keylock &&
-        !game.gameEnded
-      ) {
-        game.startGame();
-        game._app.ticker.add(game.gameLoop.bind(game));
-        game.tickerAdded = true;
-      }
-    });
-  } else if (game.tickerAdded) {
-    window.addEventListener("keydown", (e) => {
-      if (
-        e.key === " " &&
-        !game.gameRunning &&
-        game.tickerAdded &&
-        !game.keylock &&
-        !game.gameEnded
-      ) {
-        game.startGame();
-      }
-    });
-  }
-
-  // Restart game
-  if (
-    e.key === "Enter" &&
-    !game.keylock &&
-    !game.gameRunning &&
-    (collideWithBoundaries(game) || collideWithObstacles(game))
-  ) {
-    game._app.ticker.start();
-    game.gameEnded = false;
-    game.gameRunning = false;
-    game.hitSound = false;
-    game.score = 0;
-    game._texts.displayScore();
-    game._player.resetPlayer();
-    game._gameWorld.resetGameWorld();
-    game._app.stage.addChild(game._texts.startInfo);
-    game._app.stage.addChild(game._texts.pauseInfo);
-    game._app.stage.addChild(game._texts.restartInfo);
-    game._app.stage.addChild(game._texts.gameModeInfo);
-  }
 });
