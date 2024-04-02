@@ -12,6 +12,7 @@ export class GameWorld {
   obstacleGap: number = 120;
   obstacleDistance: number = 300;
   pointSound: boolean = false;
+  level: number[] = [0, 20, 50];
 
   constructor(game: Game) {
     this.game = game;

@@ -92,29 +92,41 @@ export function countObstacles(game: Game): number {
 // Set obstacles distance
 // adjusted with -1 relative to speed progression change values to make the right distance right after speed progression event
 export function setObstacleDistance(game: Game) {
-  if (game.score >= 49 && game._gameWorld.obstacleDistance < 350) {
+  if (
+    game.score >= game._gameWorld.level[2] - 1 &&
+    game._gameWorld.obstacleDistance < 350
+  ) {
     game._gameWorld.obstacleDistance = 340;
-  } else if (game.score >= 49 && game._gameWorld.obstacleDistance >= 350) {
+  } else if (
+    game.score >= game._gameWorld.level[2] - 1 &&
+    game._gameWorld.obstacleDistance >= 350
+  ) {
     game._gameWorld.obstacleDistance = 420;
-  } else if (game.score >= 19 && game._gameWorld.obstacleDistance < 350) {
+  } else if (
+    game.score >= game._gameWorld.level[1] - 1 &&
+    game._gameWorld.obstacleDistance < 350
+  ) {
     game._gameWorld.obstacleDistance = 320;
-  } else if (game.score >= 19 && game._gameWorld.obstacleDistance >= 350) {
+  } else if (
+    game.score >= game._gameWorld.level[1] - 1 &&
+    game._gameWorld.obstacleDistance >= 350
+  ) {
     game._gameWorld.obstacleDistance = 380;
   }
 }
 
 // Set background, floor, ceil speed progression
 export function setGameWorldSpeed(game: Game) {
-  if (game.score >= 50) {
-    game._gameWorld.background.tilePosition.x -= 0.4;
+  if (game.score >= game._gameWorld.level[2]) {
+    game._gameWorld.background.tilePosition.x -= 0.5;
     game._gameWorld.ceil.tilePosition.x -= game._gameWorld.animationSpeed + 2;
     game._gameWorld.floor.tilePosition.x -= game._gameWorld.animationSpeed + 2;
-  } else if (game.score >= 20) {
-    game._gameWorld.background.tilePosition.x -= 0.3;
+  } else if (game.score >= game._gameWorld.level[1]) {
+    game._gameWorld.background.tilePosition.x -= 0.4;
     game._gameWorld.ceil.tilePosition.x -= game._gameWorld.animationSpeed + 1;
     game._gameWorld.floor.tilePosition.x -= game._gameWorld.animationSpeed + 1;
   } else {
-    game._gameWorld.background.tilePosition.x -= 0.2;
+    game._gameWorld.background.tilePosition.x -= 0.3;
     game._gameWorld.ceil.tilePosition.x -= game._gameWorld.animationSpeed;
     game._gameWorld.floor.tilePosition.x -= game._gameWorld.animationSpeed;
   }
@@ -122,9 +134,9 @@ export function setGameWorldSpeed(game: Game) {
 
 // Set obstacle speed progression
 export function setObstacleSpeed(game: Game, obstacle: PIXI.Sprite) {
-  if (game.score >= 50) {
+  if (game.score >= game._gameWorld.level[2]) {
     obstacle.x -= game._gameWorld.animationSpeed + 2;
-  } else if (game.score >= 20) {
+  } else if (game.score >= game._gameWorld.level[1]) {
     obstacle.x -= game._gameWorld.animationSpeed + 1;
   } else {
     obstacle.x -= game._gameWorld.animationSpeed;
