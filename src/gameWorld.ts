@@ -6,13 +6,13 @@ export class GameWorld {
   background: PIXI.TilingSprite;
   ceil: PIXI.TilingSprite;
   floor: PIXI.TilingSprite;
-  animationSpeed: number = 6;
   obstacleTexture: PIXI.Texture;
   obstaclesArr: PIXI.Sprite[] = [];
   obstacleGap: number = 120;
   obstacleDistance: number = 300;
-  pointSound: boolean = false;
+  animationSpeed: number = 6;
   level: number[] = [0, 20, 50];
+  pointSound: boolean = false;
 
   constructor(game: Game) {
     this.game = game;

@@ -14,6 +14,7 @@ import {
 import { collideWithBoundaries, collideWithObstacles } from "./collisionCheck";
 
 const appContainer = document.getElementById("app");
+const gameTitleText = document.getElementById("game-title-text");
 const gameModeText = document.getElementById("game-mode-text");
 const normalModeBtn = document.getElementById("normal-mode");
 const rapidModeBtn = document.getElementById("rapid-mode");
@@ -143,6 +144,7 @@ const game = new Game();
 // Event listeners for game mode choice
 normalModeBtn?.addEventListener("click", () => {
   game.normalMode();
+  gameTitleText?.remove();
   gameModeText?.remove();
   normalModeBtn.remove();
   rapidModeBtn?.remove();
@@ -150,6 +152,7 @@ normalModeBtn?.addEventListener("click", () => {
 
 rapidModeBtn?.addEventListener("click", () => {
   game.rapidMode();
+  gameTitleText?.remove();
   gameModeText?.remove();
   rapidModeBtn.remove();
   normalModeBtn?.remove();

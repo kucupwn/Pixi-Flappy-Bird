@@ -6,11 +6,20 @@ body {
   justify-content: center;
   align-items: center;
   background-color: lemonchiffon;
+  font-family: Arial, Helvetica, sans-serif;
 }
 
 h1 {
   text-align: center;
-  font-size: 4rem;
+  font-size: 5rem;
+  color: #e28411;
+  letter-spacing: 0.3rem;
+  margin-bottom: 5rem;
+}
+
+h2 {
+  text-align: center;
+  font-size: 2rem;
   color: #556b2f;
 }
 
@@ -21,9 +30,9 @@ button {
   padding: 10px 20px;
   font-size: 3rem;
   border: 2px solid #8f7f7f;
-  border-radius: 5px;
+  border-radius: 2rem;
   background-color: #f5f5dc;
-  color: #556b2f;
+  color: #c9730b;
   text-align: center;
   text-decoration: none;
   cursor: pointer;
