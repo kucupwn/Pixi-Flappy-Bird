@@ -30,40 +30,44 @@ export function getObstacles(game: Game, texture: PIXI.Texture): void {
   }
 }
 
+function pointSoundValidatorNormalMode(game: Game, obs: PIXI.Sprite) {
+  if (game._gameWorld.animationSpeed === 3) {
+    if (
+      !game._gameWorld.pointSound &&
+      obs.getBounds().maxX >=
+        Math.floor(game._player.bird.x - game._player.bird.width / 2) - 1 &&
+      obs.getBounds().maxX <=
+        Math.floor(game._player.bird.x - game._player.bird.width / 2) + 1
+    ) {
+      sound.play("point");
+      game._gameWorld.pointSound = true;
+      return;
+    }
+  }
+}
+
+function pointSoundValidatorRapidMode(game: Game, obs: PIXI.Sprite) {
+  if (game._gameWorld.animationSpeed === 6) {
+    if (
+      !game._gameWorld.pointSound &&
+      obs.getBounds().maxX >=
+        Math.floor(game._player.bird.x - game._player.bird.width / 2) &&
+      obs.getBounds().maxX <=
+        Math.floor(game._player.bird.x - game._player.bird.width / 2) + 6
+    ) {
+      sound.play("point");
+      game._gameWorld.pointSound = true;
+      return;
+    }
+  }
+}
+
 export function playPointSound(game: Game) {
   for (const obs of game._gameWorld.obstaclesArr) {
-    if (game._gameWorld.animationSpeed === 6) {
-      if (
-        !game._gameWorld.pointSound &&
-        obs.getBounds().maxX >=
-          Math.floor(
-            game._app.canvas.width / 3 - game._player.bird.width / 2
-          ) &&
-        obs.getBounds().maxX <=
-          Math.floor(game._app.canvas.width / 3 - game._player.bird.width / 2) +
-            6
-      ) {
-        sound.play("point");
-        game._gameWorld.pointSound = true;
-        break;
-      }
-    } else if (game._gameWorld.animationSpeed === 3) {
-      if (
-        !game._gameWorld.pointSound &&
-        obs.getBounds().maxX >=
-          Math.floor(game._app.canvas.width / 3 - game._player.bird.width / 2) -
-            1 &&
-        obs.getBounds().maxX <=
-          Math.floor(game._app.canvas.width / 3 - game._player.bird.width / 2) +
-            1
-      ) {
-        sound.play("point");
-        game._gameWorld.pointSound = true;
-        break;
-      }
-    }
-    game._gameWorld.pointSound = false;
+    pointSoundValidatorNormalMode(game, obs);
+    pointSoundValidatorRapidMode(game, obs);
   }
+  game._gameWorld.pointSound = false;
 }
 
 export function countObstacles(game: Game): number {
