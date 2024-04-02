@@ -10,13 +10,13 @@ import {
   setObstacleDistance,
   gameWorldSpeedProgression,
   obstacleSpeedProgression,
-} from "./generateObstacles";
+} from "./obstaclesFunctions";
 import { collideWithBoundaries, collideWithObstacles } from "./collisionCheck";
 
 const appContainer = document.getElementById("app");
 const gameModeText = document.getElementById("game-mode-text");
 const normalModeBtn = document.getElementById("normal-mode");
-const fastModeBtn = document.getElementById("fast-mode");
+const rapidModeBtn = document.getElementById("rapid-mode");
 
 export class Game {
   _app: PIXI.Application;
@@ -59,7 +59,7 @@ export class Game {
     this._gameWorld.obstacleDistance = 300;
   }
 
-  public async fastMode() {
+  public async rapidMode() {
     await this._app.init({ antialias: true, width: 960, height: 540 });
     appContainer?.appendChild(this._app.canvas);
     await this.init();
@@ -137,13 +137,13 @@ normalModeBtn?.addEventListener("click", () => {
   game.normalMode();
   gameModeText?.remove();
   normalModeBtn.remove();
-  fastModeBtn?.remove();
+  rapidModeBtn?.remove();
 });
 
-fastModeBtn?.addEventListener("click", () => {
-  game.fastMode();
+rapidModeBtn?.addEventListener("click", () => {
+  game.rapidMode();
   gameModeText?.remove();
-  fastModeBtn.remove();
+  rapidModeBtn.remove();
   normalModeBtn?.remove();
 });
 

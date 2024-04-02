@@ -35,40 +35,13 @@ export function playPointSound(game: Game) {
     if (game._gameWorld.animationSpeed === 6) {
       if (
         !game._gameWorld.pointSound &&
-        (obs.getBounds().maxX ===
+        obs.getBounds().maxX >=
           Math.floor(
             game._app.canvas.width / 3 - game._player.bird.width / 2
-          ) ||
-          obs.getBounds().maxX ===
-            Math.floor(
-              game._app.canvas.width / 3 - game._player.bird.width / 2
-            ) -
-              1 ||
-          obs.getBounds().maxX ===
-            Math.floor(
-              game._app.canvas.width / 3 - game._player.bird.width / 2
-            ) -
-              2 ||
-          obs.getBounds().maxX ===
-            Math.floor(
-              game._app.canvas.width / 3 - game._player.bird.width / 2
-            ) -
-              3 ||
-          obs.getBounds().maxX ===
-            Math.floor(
-              game._app.canvas.width / 3 - game._player.bird.width / 2
-            ) -
-              4 ||
-          obs.getBounds().maxX ===
-            Math.floor(
-              game._app.canvas.width / 3 - game._player.bird.width / 2
-            ) -
-              5 ||
-          obs.getBounds().maxX ===
-            Math.floor(
-              game._app.canvas.width / 3 - game._player.bird.width / 2
-            ) -
-              6)
+          ) &&
+        obs.getBounds().maxX <=
+          Math.floor(game._app.canvas.width / 3 - game._player.bird.width / 2) +
+            6
       ) {
         sound.play("point");
         game._gameWorld.pointSound = true;
@@ -77,20 +50,12 @@ export function playPointSound(game: Game) {
     } else if (game._gameWorld.animationSpeed === 3) {
       if (
         !game._gameWorld.pointSound &&
-        (obs.getBounds().maxX ===
-          Math.floor(
-            game._app.canvas.width / 3 - game._player.bird.width / 2
-          ) ||
-          obs.getBounds().maxX ===
-            Math.floor(
-              game._app.canvas.width / 3 - game._player.bird.width / 2
-            ) -
-              1 ||
-          obs.getBounds().maxX ===
-            Math.floor(
-              game._app.canvas.width / 3 - game._player.bird.width / 2
-            ) +
-              1)
+        obs.getBounds().maxX >=
+          Math.floor(game._app.canvas.width / 3 - game._player.bird.width / 2) -
+            1 &&
+        obs.getBounds().maxX <=
+          Math.floor(game._app.canvas.width / 3 - game._player.bird.width / 2) +
+            1
       ) {
         sound.play("point");
         game._gameWorld.pointSound = true;
