@@ -18,9 +18,9 @@ export class Player {
   // Initialize bird texture and wing animation
   public async initBirdSprite(): Promise<void> {
     const birdImages = [
-      "/assets/Sprites/yellowbird-upflap.png",
-      "/assets/Sprites/yellowbird-midflap.png",
-      "/assets/Sprites/yellowbird-downflap.png",
+      "./assets/Sprites/yellowbird-upflap.png",
+      "./assets/Sprites/yellowbird-midflap.png",
+      "./assets/Sprites/yellowbird-downflap.png",
     ];
 
     const textureArr: PIXI.Texture[] = [];

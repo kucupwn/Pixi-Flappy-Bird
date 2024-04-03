@@ -80,17 +80,17 @@ export class Game {
 
   // Add game sounds to pixi sound
   private addSounds(): void {
-    sound.add("music", "/assets/Sounds/music.mp3");
+    sound.add("music", "./assets/Sounds/music.mp3");
     sound.find("music").volume = 0.1;
     sound.find("music").loop = true;
 
-    sound.add("wing", "/assets/Sounds/sfx_wing.wav");
+    sound.add("wing", "./assets/Sounds/sfx_wing.wav");
     sound.find("wing").volume = 0.2;
 
-    sound.add("point", "/assets/Sounds/sfx_point.wav");
+    sound.add("point", "./assets/Sounds/sfx_point.wav");
     sound.find("point").volume = 0.1;
 
-    sound.add("hit", "/assets/Sounds/sfx_hit.wav");
+    sound.add("hit", "./assets/Sounds/sfx_hit.wav");
     sound.find("hit").volume = 0.3;
   }
 
