@@ -27,16 +27,16 @@ export class GameWorld {
   // Wait for textures to load
   public async initGameWorldSprites(): Promise<void> {
     const backgroundTexture = await PIXI.Assets.load(
-      "./assets/Sprites/background-day.png"
+      "/assets/Sprites/background-day.png"
     );
     const tilingBackgroundSprite = PIXI.TilingSprite.from(backgroundTexture);
     this.setBackgroundSprite(tilingBackgroundSprite);
 
-    const floorTexture = await PIXI.Assets.load("./assets/Sprites/base.png");
+    const floorTexture = await PIXI.Assets.load("/assets/Sprites/base.png");
     const tilingFloorSprite = PIXI.TilingSprite.from(floorTexture);
     this.setFloorSprite(tilingFloorSprite);
 
-    const ceilTexture = await PIXI.Assets.load("./assets/Sprites/base.png");
+    const ceilTexture = await PIXI.Assets.load("/assets/Sprites/base.png");
     const tilingCeilSprite = PIXI.TilingSprite.from(ceilTexture);
     this.setCeilSprite(tilingCeilSprite);
 
