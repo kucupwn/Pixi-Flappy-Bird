@@ -148,16 +148,16 @@ export class Game {
 const game = new Game();
 
 // Event listeners for game mode choice
-normalModeBtn?.addEventListener("click", async () => {
-  await game.normalMode();
+normalModeBtn?.addEventListener("click", () => {
+  game.normalMode();
   gameTitleText?.remove();
   gameModeText?.remove();
   normalModeBtn.remove();
   rapidModeBtn?.remove();
 });
 
-rapidModeBtn?.addEventListener("click", async () => {
-  await game.rapidMode();
+rapidModeBtn?.addEventListener("click", () => {
+  game.rapidMode();
   gameTitleText?.remove();
   gameModeText?.remove();
   rapidModeBtn.remove();
