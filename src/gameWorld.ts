@@ -10,10 +10,10 @@ export class GameWorld {
   obstaclesArr: PIXI.Sprite[] = [];
   obstacleGap: number = 120;
   obstacleDistance: number = 250;
-  animationSpeed: number = 3;
   animationLevel: number = 0;
+  animationSpeed: number = 3;
   backgroundSpeed: number = 0.3;
-  level: number[] = [0, 20, 50];
+  level: number[] = [0, 5, 10];
   pointSound: boolean = false;
 
   constructor(game: Game) {

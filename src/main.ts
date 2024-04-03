@@ -127,9 +127,9 @@ export class Game {
       playPointSound(this);
       setObstacleDistance(this);
       getObstacles(this, this._gameWorld.obstacleTexture);
-      setGameWorldSpeed(this, this._gameWorld.animationLevel);
+      setGameWorldSpeed(this);
       this._gameWorld.obstaclesArr.forEach((obs) => {
-        setObstacleSpeed(this, obs, this._gameWorld.animationLevel);
+        setObstacleSpeed(this, obs);
       });
     } else if (
       !this.gameRunning &&

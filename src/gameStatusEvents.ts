@@ -76,6 +76,7 @@ export class GameStatusEvents {
         game._texts.displayScore();
         game._player.resetPlayer();
         game._gameWorld.resetGameWorld();
+        game._gameWorld.animationLevel = 0;
         game._app.stage.addChild(game._texts.startInfo);
         game._app.stage.addChild(game._texts.pauseInfo);
         game._app.stage.addChild(game._texts.restartInfo);

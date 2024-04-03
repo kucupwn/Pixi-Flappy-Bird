@@ -100,47 +100,40 @@ export function setObstacleDistance(game: Game): void {
   }
 }
 
-function setAnimationSpeed(game: Game, num: number): number {
-  return game._gameWorld.animationSpeed + num;
+function setAnimationSpeed(game: Game, animLevel: number): number {
+  if (game.score >= game._gameWorld.level[2]) {
+    game._gameWorld.animationLevel = 2;
+  } else if (game.score >= game._gameWorld.level[1]) {
+    game._gameWorld.animationLevel = 1;
+  }
+
+  return game._gameWorld.animationSpeed + animLevel;
 }
 
 // Set background, floor, ceil speed progression
-export function setGameWorldSpeed(game: Game, animationLevel: number): void {
-  let backgroundSpeedAdjustment = 0;
-
-  if (game.score >= game._gameWorld.level[2]) {
-    backgroundSpeedAdjustment = 0.2;
-    animationLevel = 2;
-  } else if (game.score >= game._gameWorld.level[1]) {
-    backgroundSpeedAdjustment = 0.1;
-    animationLevel = 1;
-  }
-
+export function setGameWorldSpeed(game: Game): void {
   game._gameWorld.background.tilePosition.x -=
-    game._gameWorld.backgroundSpeed + backgroundSpeedAdjustment;
+    game._gameWorld.backgroundSpeed +
+    setAnimationSpeed(game, game._gameWorld.animationLevel) / 10;
 
   game._gameWorld.ceil.tilePosition.x -= setAnimationSpeed(
     game,
-    animationLevel
+    game._gameWorld.animationLevel
   );
 
   game._gameWorld.floor.tilePosition.x -= setAnimationSpeed(
     game,
-    animationLevel
+    game._gameWorld.animationLevel
   );
 }
 
 // Set obstacle speed progression
-export function setObstacleSpeed(
-  game: Game,
-  obstacle: PIXI.Sprite,
-  animationLevel: number
-): void {
+export function setObstacleSpeed(game: Game, obstacle: PIXI.Sprite): void {
   if (game.score >= game._gameWorld.level[2]) {
-    obstacle.x -= setAnimationSpeed(game, animationLevel);
+    obstacle.x -= setAnimationSpeed(game, game._gameWorld.animationLevel);
   } else if (game.score >= game._gameWorld.level[1]) {
-    obstacle.x -= setAnimationSpeed(game, animationLevel);
+    obstacle.x -= setAnimationSpeed(game, game._gameWorld.animationLevel);
   } else {
-    obstacle.x -= setAnimationSpeed(game, animationLevel);
+    obstacle.x -= setAnimationSpeed(game, game._gameWorld.animationLevel);
   }
 }
