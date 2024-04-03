@@ -43,10 +43,10 @@ export class Game {
   }
 
   // Initialize assets and UI
-  public async init(): Promise<void> {
-    await this._gameWorld.initGameWorldSprites();
-    await this._player.initBirdSprite();
-    await this._texts.initFont();
+  public init(): void {
+    this._gameWorld.initGameWorldSprites();
+    this._player.initBirdSprite();
+    this._texts.initFont();
 
     this.addSounds();
     this._texts.initFps();
@@ -57,10 +57,10 @@ export class Game {
   }
 
   // Initialize normal game mode
-  public async normalMode(): Promise<void> {
-    await this._app.init({ antialias: true, width: 700, height: 540 });
+  public normalMode(): void {
+    this._app.init({ antialias: true, width: 700, height: 540 });
     appContainer?.appendChild(this._app.canvas);
-    await this.init();
+    this.init();
 
     this._gameWorld.animationSpeed = 3;
     this._gameWorld.backgroundSpeed = 0.1;
@@ -68,10 +68,10 @@ export class Game {
   }
 
   // Initialize rapid game mode
-  public async rapidMode(): Promise<void> {
-    await this._app.init({ antialias: true, width: 960, height: 540 });
+  public rapidMode(): void {
+    this._app.init({ antialias: true, width: 960, height: 540 });
     appContainer?.appendChild(this._app.canvas);
-    await this.init();
+    this.init();
 
     this._gameWorld.animationSpeed = 6;
     this._gameWorld.backgroundSpeed = 0.4;
