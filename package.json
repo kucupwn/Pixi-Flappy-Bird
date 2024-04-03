@@ -1,6 +1,6 @@
 {
   "name": "pixi-flappy",
-  "private": true,
+  "private": false,
   "version": "0.0.0",
   "type": "module",
   "scripts": {
@@ -9,11 +9,11 @@
     "preview": "vite preview"
   },
   "devDependencies": {
-    "typescript": "^5.2.2",
-    "vite": "^5.2.0"
+    "typescript": "^5.4.3",
+    "vite": "^5.2.8"
   },
   "dependencies": {
     "@pixi/sound": "^6.0.0",
-    "pixi.js": "^8.0.2"
+    "pixi.js": "^8.0.5"
   }
 }
