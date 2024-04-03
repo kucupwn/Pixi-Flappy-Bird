@@ -89,8 +89,8 @@ export function countObstacles(game: Game): number {
 
 // Set obstacles distance
 export function setObstacleDistance(game: Game): void {
-  const level2Threshold = game._gameWorld.level[2] - 1;
-  const level1Threshold = game._gameWorld.level[1] - 1;
+  const level2Threshold = game._gameWorld.level[2] - 2;
+  const level1Threshold = game._gameWorld.level[1] - 2;
   const currentDistance = game._gameWorld.obstacleDistance;
 
   if (game.score >= level2Threshold) {
