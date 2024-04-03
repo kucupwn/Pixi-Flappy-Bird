@@ -13,7 +13,7 @@ export class GameWorld {
   animationLevel: number = 0;
   animationSpeed: number = 3;
   backgroundSpeed: number = 0.3;
-  level: number[] = [0, 5, 10];
+  level: number[] = [0, 20, 50];
   pointSound: boolean = false;
 
   constructor(game: Game) {
