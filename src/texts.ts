@@ -30,7 +30,7 @@ export class Texts {
   public async initFont() {
     PIXI.Assets.add({
       alias: "ArcadeClassic",
-      src: "./assets/Font/ARCADECLASSIC.TTF",
+      src: "/assets/Font/ARCADECLASSIC.TTF",
     });
     await PIXI.Assets.load("ArcadeClassic");
 
