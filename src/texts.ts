@@ -14,6 +14,7 @@ export class Texts {
   gameModeInfo: PIXI.Text;
   scoreLabel: PIXI.Text;
   highscoreLabel: PIXI.Text;
+  gameoverText: PIXI.Text;
 
   constructor(game: Game) {
     this.game = game;
@@ -24,6 +25,7 @@ export class Texts {
     this.pauseInfo = new PIXI.Text();
     this.restartInfo = new PIXI.Text();
     this.gameModeInfo = new PIXI.Text();
+    this.gameoverText = new PIXI.Text();
   }
 
   // Initialize font family and UI texts
@@ -61,6 +63,10 @@ export class Texts {
     this.gameModeInfo = new PIXI.Text({
       text: "Press 'F5' to select game mode!",
       style: { fill: "black", fontFamily: "ArcadeClassic", fontSize: 35 },
+    });
+    this.gameoverText = new PIXI.Text({
+      text: "Game Over",
+      style: { fill: "black", fontFamily: "ArcadeClassic", fontSize: 50 },
     });
 
     this.game._app.stage.addChild(this.scoreLabel);
@@ -137,5 +143,12 @@ export class Texts {
     if (this.game.score > this.game.highScore) {
       this.game.highScore = this.game.score;
     }
+  }
+
+  public displayGameoverText() {
+    this.game._app.stage.addChild(this.gameoverText);
+    this.gameoverText.anchor.set(0.5);
+    this.gameoverText.x = this.game._app.canvas.width / 2;
+    this.gameoverText.y = this.game._app.canvas.height * 0.3;
   }
 }

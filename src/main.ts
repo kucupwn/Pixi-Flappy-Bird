@@ -140,6 +140,7 @@ export class Game {
       this._player.bird.stop();
       this._texts.setHighscore();
       this._texts.displayHighscore();
+      this._texts.displayGameoverText();
       this._app.ticker.stop();
     }
   }

@@ -81,6 +81,7 @@ export class GameStatusEvents {
         game._app.stage.addChild(game._texts.pauseInfo);
         game._app.stage.addChild(game._texts.restartInfo);
         game._app.stage.addChild(game._texts.gameModeInfo);
+        game._app.stage.removeChild(game._texts.gameoverText);
       }
     });
   }
