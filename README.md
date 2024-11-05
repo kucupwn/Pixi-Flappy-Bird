@@ -14,7 +14,7 @@ I am amazed how successful this simple game could get, so I wanted to create my 
 ## Game modes
 
 Originally there was only one game mode, but I made two. The main difference is in the initial speed.
-The games speed is increased two times as passing through obstacles (by default afer 20th and 50th obstacles), at the same time obstacles distance is adjusted to game speed.
+The games speed is increased two times as passing through obstacles (by default after 20th and 50th obstacles), at the same time obstacles distance is adjusted to game speed.
 
 ### Normal mode
 
